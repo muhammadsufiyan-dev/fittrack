@@ -1,0 +1,58 @@
+.meal-breakfast {
+  background: rgba(249, 115, 22, 0.14);
+  color: #ea580c;
+}
+
+.meal-lunch {
+  background: rgba(20, 184, 166, 0.14);
+  color: var(--ft-primary);
+}
+
+.meal-dinner {
+  background: rgba(6, 182, 212, 0.14);
+  color: #0891b2;
+}
+
+.meal-snack {
+  background: rgba(132, 204, 22, 0.18);
+  color: #4d7c0f;
+}
+
+[data-bs-theme="dark"] .meal-breakfast {
+  color: #fb923c;
+}
+
+[data-bs-theme="dark"] .meal-dinner {
+  color: #22d3ee;
+}
+
+[data-bs-theme="dark"] .meal-snack {
+  color: #a3e635;
+}
+
+.meal-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--ft-border);
+}
+
+.date-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-input {
+  width: 175px;
+}
+
+@media (max-width: 575.98px) {
+  .date-nav {
+    justify-content: center;
+  }
+}
