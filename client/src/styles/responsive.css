@@ -1,0 +1,89 @@
+html,
+body {
+  overflow-x: clip;
+}
+
+@media (max-width: 991.98px) {
+  .hero-dark {
+    min-height: auto;
+  }
+
+  .hero-dark > .container {
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+  }
+
+  .hero-dark .col-lg-7 {
+    text-align: center;
+  }
+
+  .hero-dark .hero-text {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .hero-dark .col-lg-7 .d-flex,
+  .hero-dark .col-lg-7 ul {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .ft-nav .navbar-collapse {
+    text-align: center;
+  }
+
+  .ft-nav .navbar-collapse > div {
+    justify-content: center;
+  }
+
+  .bento .ft-card {
+    text-align: center;
+  }
+
+  .bento .ft-card .d-flex {
+    justify-content: center;
+  }
+
+  .bento .ft-card ul,
+  .bento .ft-card .bubble {
+    text-align: left;
+  }
+
+  #how .col-md-4 {
+    text-align: center;
+  }
+
+  .ft-footer .row > div {
+    text-align: center;
+  }
+
+  .ft-footer .col-lg-5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-text {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero-visual {
+    padding: 1rem 0.25rem;
+  }
+
+  .chip-top {
+    right: 0;
+  }
+
+  .chip-bottom {
+    left: 0;
+  }
+
+  .stat-value {
+    font-size: 2.4rem;
+  }
+}
