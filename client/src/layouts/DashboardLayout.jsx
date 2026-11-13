@@ -1,26 +1,27 @@
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import UserMenu from '../components/UserMenu'
 
 function DashboardLayout() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <div className="d-lg-flex min-vh-100">
-      <Sidebar />
-      <div className="flex-grow-1">
-        <header className="d-flex align-items-center justify-content-between px-3 py-2 sticky-top ft-glass">
-          <button
-            className="btn btn-outline-secondary d-lg-none"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#sidebar"
-            aria-label="Open menu"
-          >
+    <div className="app-shell">
+      <Sidebar open={open} onClose={() => setOpen(false)} />
+      {open && <div className="app-backdrop" onClick={() => setOpen(false)}></div>}
+
+      <div className="app-main">
+        <header className="app-header">
+          <button type="button" className="app-menu-btn" onClick={() => setOpen(true)} aria-label="Open menu">
             <i className="bi bi-list"></i>
           </button>
           <div className="ms-auto">
             <UserMenu />
           </div>
         </header>
-        <main className="p-3 p-md-4">
+
+        <main className="app-content">
           <Outlet />
         </main>
       </div>

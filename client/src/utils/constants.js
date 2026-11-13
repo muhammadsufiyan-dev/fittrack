@@ -1,0 +1,1 @@
+export const workoutCategories = ['Strength', 'Cardio', 'HIIT', 'Flexibility']
