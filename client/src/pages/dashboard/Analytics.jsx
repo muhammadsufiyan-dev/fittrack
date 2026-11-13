@@ -1,5 +1,7 @@
+import PageHeader from '../../components/PageHeader'
+
 function Analytics() {
-  return <h2 className="fw-bold">Analytics</h2>
+  return <PageHeader title="Analytics" subtitle="Your trends and insights will appear here." />
 }
 
 export default Analytics

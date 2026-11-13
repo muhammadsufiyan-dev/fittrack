@@ -16,7 +16,7 @@ function DashboardLayout() {
           <button type="button" className="app-menu-btn" onClick={() => setOpen(true)} aria-label="Open menu">
             <i className="bi bi-list"></i>
           </button>
-          <div className="ms-auto">
+          <div className="app-actions">
             <UserMenu />
           </div>
         </header>

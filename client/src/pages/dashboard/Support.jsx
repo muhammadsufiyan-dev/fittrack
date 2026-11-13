@@ -1,5 +1,7 @@
+import PageHeader from '../../components/PageHeader'
+
 function Support() {
-  return <h2 className="fw-bold">Support</h2>
+  return <PageHeader title="Support" subtitle="Contact support from here." />
 }
 
 export default Support
