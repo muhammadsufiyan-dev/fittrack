@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import Modal from '../../components/Modal'
-import PageHeader from '../../components/PageHeader'
-import WorkoutForm from '../../components/WorkoutForm'
+import EmptyState from '../../components/ui/EmptyState'
+import Loader from '../../components/ui/Loader'
+import Modal from '../../components/ui/Modal'
+import PageHeader from '../../components/ui/PageHeader'
+import WorkoutForm from '../../components/workouts/WorkoutForm'
 import { deleteWorkout, getWorkout, updateWorkout } from '../../services/workoutService'
 import { formatDate } from '../../utils/format'
 
@@ -28,23 +30,20 @@ function WorkoutDetails() {
     }
   }
 
-  if (item === undefined) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status"></div>
-      </div>
-    )
-  }
+  if (item === undefined) return <Loader />
 
   if (item === null) {
     return (
-      <div className="ft-card p-5 text-center">
-        <h2 className="h4">Workout not found</h2>
-        <p className="text-secondary">It may have been deleted.</p>
-        <Link to="/workouts" className="btn btn-primary">
-          Back to workouts
-        </Link>
-      </div>
+      <EmptyState
+        icon="bi-emoji-frown"
+        title="Workout not found"
+        text="It may have been deleted."
+        action={
+          <Link to="/workouts" className="btn btn-primary">
+            Back to workouts
+          </Link>
+        }
+      />
     )
   }
 
@@ -72,13 +71,19 @@ function WorkoutDetails() {
       <div className="row g-3 mb-4">
         <div className="col-4">
           <div className="ft-card p-3 text-center h-100">
-            <div className="stat-number">{item.duration}<small>min</small></div>
+            <div className="stat-number">
+              {item.duration}
+              <small>min</small>
+            </div>
             <div className="text-secondary small">Duration</div>
           </div>
         </div>
         <div className="col-4">
           <div className="ft-card p-3 text-center h-100">
-            <div className="stat-number">{item.calories}<small>kcal</small></div>
+            <div className="stat-number">
+              {item.calories}
+              <small>kcal</small>
+            </div>
             <div className="text-secondary small">Burned</div>
           </div>
         </div>

@@ -1,5 +1,7 @@
+import ComingSoon from '../../components/ui/ComingSoon'
+
 function SearchResults() {
-  return <h2 className="fw-bold">SearchResults</h2>
+  return <ComingSoon title="Search" subtitle="Search through your workouts and meals." icon="bi-search" />
 }
 
 export default SearchResults

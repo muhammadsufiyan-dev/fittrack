@@ -1,5 +1,7 @@
+import ComingSoon from '../../components/ui/ComingSoon'
+
 function UserProfile() {
-  return <h2 className="fw-bold">UserProfile</h2>
+  return <ComingSoon title="Member profile" subtitle="View another member's public profile." icon="bi-person-badge" />
 }
 
 export default UserProfile

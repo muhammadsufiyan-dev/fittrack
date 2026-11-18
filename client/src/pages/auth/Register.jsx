@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import AuthShell from '../../components/AuthShell'
-import FormField from '../../components/FormField'
-import PasswordField from '../../components/PasswordField'
+import AuthShell from '../../components/auth/AuthShell'
+import FormField from '../../components/auth/FormField'
+import PasswordField from '../../components/auth/PasswordField'
 import useAuth from '../../hooks/useAuth'
 import { passwordStrength, validateRegister } from '../../utils/validators'
 
@@ -119,7 +119,14 @@ function Register() {
         />
 
         <div className="form-check mb-4">
-          <input id="consent" name="consent" type="checkbox" className="form-check-input" checked={form.consent} onChange={handleChange} />
+          <input
+            id="consent"
+            name="consent"
+            type="checkbox"
+            className="form-check-input"
+            checked={form.consent}
+            onChange={handleChange}
+          />
           <label htmlFor="consent" className="form-check-label">
             I agree to the <Link to="/privacy">privacy policy</Link>
           </label>

@@ -14,7 +14,7 @@ function useGoTo() {
       scroll()
     } else {
       navigate('/')
-      setTimeout(scroll, 200)
+      setTimeout(scroll, 250)
     }
   }
 }

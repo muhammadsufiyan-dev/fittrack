@@ -1,4 +1,4 @@
-import Reveal from '../../components/Reveal'
+import Reveal from '../../components/ui/Reveal'
 
 const stats = [
   { value: '14', label: 'Core modules' },

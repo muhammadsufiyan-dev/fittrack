@@ -1,18 +1,9 @@
 import seedUsers from '../data/users.json'
+import { storage } from '../utils/storage'
+import { createStore } from './localStore'
 
-const USERS_KEY = 'ft_users'
 const SESSION_KEY = 'ft_session'
-
-const readUsers = () => {
-  const saved = localStorage.getItem(USERS_KEY)
-  if (saved) return JSON.parse(saved)
-  localStorage.setItem(USERS_KEY, JSON.stringify(seedUsers))
-  return seedUsers
-}
-
-const saveUsers = (users) => {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users))
-}
+const users = createStore('ft_users', seedUsers)
 
 const withoutPassword = (user) => {
   const safe = { ...user }
@@ -22,13 +13,13 @@ const withoutPassword = (user) => {
 
 const startSession = (user) => {
   const safe = withoutPassword(user)
-  localStorage.setItem(SESSION_KEY, JSON.stringify(safe))
+  storage.set(SESSION_KEY, JSON.stringify(safe))
   return safe
 }
 
 export const registerUser = async ({ name, email, password }) => {
-  const users = readUsers()
-  const exists = users.some((item) => item.email.toLowerCase() === email.toLowerCase())
+  const list = users.read()
+  const exists = list.some((item) => item.email.toLowerCase() === email.trim().toLowerCase())
 
   if (exists) {
     throw new Error('An account with this email already exists')
@@ -45,15 +36,14 @@ export const registerUser = async ({ name, email, password }) => {
     consentAcceptedAt: now,
   }
 
-  saveUsers([...users, user])
+  users.save([...list, user])
   return startSession(user)
 }
 
 export const loginUser = async ({ email, password }) => {
-  const users = readUsers()
-  const user = users.find(
-    (item) => item.email.toLowerCase() === email.trim().toLowerCase() && item.password === password
-  )
+  const user = users
+    .read()
+    .find((item) => item.email.toLowerCase() === email.trim().toLowerCase() && item.password === password)
 
   if (!user) {
     throw new Error('Incorrect email or password')
@@ -63,12 +53,12 @@ export const loginUser = async ({ email, password }) => {
 }
 
 export const logoutUser = () => {
-  localStorage.removeItem(SESSION_KEY)
+  storage.remove(SESSION_KEY)
 }
 
 export const getCurrentUser = () => {
   try {
-    return JSON.parse(localStorage.getItem(SESSION_KEY))
+    return JSON.parse(storage.get(SESSION_KEY))
   } catch {
     return null
   }

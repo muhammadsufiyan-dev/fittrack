@@ -7,13 +7,11 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(getCurrentUser)
 
   const login = async (credentials) => {
-    const loggedIn = await loginUser(credentials)
-    setUser(loggedIn)
+    setUser(await loginUser(credentials))
   }
 
   const register = async (details) => {
-    const created = await registerUser(details)
-    setUser(created)
+    setUser(await registerUser(details))
   }
 
   const logout = () => {

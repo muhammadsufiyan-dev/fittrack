@@ -1,4 +1,4 @@
-import Reveal from '../../components/Reveal'
+import Reveal from '../../components/ui/Reveal'
 
 const weekBars = [40, 65, 50, 80, 60, 92, 70]
 
@@ -16,6 +16,7 @@ const goals = [
 
 const circumference = 2 * Math.PI * 54
 let offset = 0
+
 const segments = macros.map((item) => {
   const length = (item.value / 100) * circumference
   const segment = { ...item, length, offset }
@@ -35,15 +36,19 @@ function Bento() {
 
         <div className="bento">
           <Reveal className="span-7">
-            <div className="ft-card ft-hover h-100 p-4">
-              <span className="ft-icon mb-3"><i className="bi bi-lightning-charge"></i></span>
-              <h4>Workout tracking</h4>
-              <p className="text-secondary">Build routines with exercises, sets, reps and weights. Organize them by category and tags.</p>
-              <div className="d-flex align-items-end gap-2 mt-4" style={{ height: 120 }}>
+            <div className="ft-card ft-hover bento-card h-100 p-4">
+              <span className="ft-icon mb-3">
+                <i className="bi bi-lightning-charge"></i>
+              </span>
+              <h3 className="h4">Workout tracking</h3>
+              <p className="text-secondary">
+                Build routines with exercises, sets, reps and weights. Organize them by category and tags.
+              </p>
+              <div className="week-bars">
                 {weekBars.map((value, index) => (
                   <div
                     key={index}
-                    className="bar-grow ft-bar flex-fill"
+                    className="week-bar"
                     style={{ height: `${value}%`, transitionDelay: `${index * 80}ms` }}
                   ></div>
                 ))}
@@ -52,11 +57,13 @@ function Bento() {
           </Reveal>
 
           <Reveal className="span-5" delay={100}>
-            <div className="ft-card ft-hover h-100 p-4">
-              <span className="ft-icon mb-3"><i className="bi bi-egg-fried"></i></span>
-              <h4>Nutrition logs</h4>
+            <div className="ft-card ft-hover bento-card h-100 p-4">
+              <span className="ft-icon mb-3">
+                <i className="bi bi-egg-fried"></i>
+              </span>
+              <h3 className="h4">Nutrition logs</h3>
               <p className="text-secondary">Log your meals and see calories and macros for every day.</p>
-              <div className="d-flex align-items-center gap-4 mt-4">
+              <div className="donut-row">
                 <svg viewBox="0 0 140 140" width="130" height="130" role="img" aria-label="Macro split">
                   <g transform="rotate(-90 70 70)">
                     <circle cx="70" cy="70" r="54" fill="none" stroke="rgba(148,163,184,0.2)" strokeWidth="18" />
@@ -75,10 +82,11 @@ function Bento() {
                     ))}
                   </g>
                 </svg>
-                <ul className="list-unstyled mb-0 small">
+
+                <ul className="legend-list">
                   {macros.map((item) => (
-                    <li key={item.label} className="d-flex align-items-center gap-2 mb-2">
-                      <span className="rounded-circle d-inline-block" style={{ width: 10, height: 10, background: item.color }}></span>
+                    <li key={item.label}>
+                      <span className="legend-dot" style={{ background: item.color }}></span>
                       {item.label}
                       <span className="text-secondary">{item.value}%</span>
                     </li>
@@ -89,9 +97,11 @@ function Bento() {
           </Reveal>
 
           <Reveal className="span-4">
-            <div className="ft-card ft-hover h-100 p-4">
-              <span className="ft-icon mb-3"><i className="bi bi-graph-up-arrow"></i></span>
-              <h5>Progress charts</h5>
+            <div className="ft-card ft-hover bento-card h-100 p-4">
+              <span className="ft-icon mb-3">
+                <i className="bi bi-graph-up-arrow"></i>
+              </span>
+              <h3 className="h5">Progress charts</h3>
               <p className="text-secondary">Weight, measurements and personal bests over time.</p>
               <svg viewBox="0 0 240 90" className="w-100 mt-2" aria-hidden="true">
                 <path className="line-area" d="M0 80 L40 70 L80 74 L120 52 L160 46 L200 28 L240 18 L240 90 L0 90 Z" />
@@ -110,9 +120,11 @@ function Bento() {
           </Reveal>
 
           <Reveal className="span-4" delay={100}>
-            <div className="ft-card ft-hover h-100 p-4">
-              <span className="ft-icon mb-3"><i className="bi bi-bullseye"></i></span>
-              <h5>Goals and reminders</h5>
+            <div className="ft-card ft-hover bento-card h-100 p-4">
+              <span className="ft-icon mb-3">
+                <i className="bi bi-bullseye"></i>
+              </span>
+              <h3 className="h5">Goals and reminders</h3>
               <p className="text-secondary">Set goals and get reminded for workouts and meals.</p>
               {goals.map((goal, index) => (
                 <div key={goal.label} className="mb-3">
@@ -132,30 +144,42 @@ function Bento() {
           </Reveal>
 
           <Reveal className="span-4" delay={200}>
-            <div className="ft-card ft-hover h-100 p-4">
-              <span className="ft-icon mb-3"><i className="bi bi-file-earmark-arrow-down"></i></span>
-              <h5>Reports and export</h5>
+            <div className="ft-card ft-hover bento-card h-100 p-4">
+              <span className="ft-icon mb-3">
+                <i className="bi bi-file-earmark-arrow-down"></i>
+              </span>
+              <h3 className="h5">Reports and export</h3>
               <p className="text-secondary">Download your progress and nutrition reports whenever you need them.</p>
-              <div className="d-flex gap-2 mt-3">
-                <span className="file-chip"><i className="bi bi-file-earmark-pdf"></i>PDF</span>
-                <span className="file-chip"><i className="bi bi-filetype-csv"></i>CSV</span>
+              <div className="file-chips">
+                <span className="file-chip">
+                  <i className="bi bi-file-earmark-pdf"></i>PDF
+                </span>
+                <span className="file-chip">
+                  <i className="bi bi-filetype-csv"></i>CSV
+                </span>
               </div>
             </div>
           </Reveal>
 
           <Reveal>
-            <div className="ft-card ft-hover p-4 p-md-5">
+            <div className="ft-card ft-hover bento-card p-4 p-md-5">
               <div className="row align-items-center g-4">
                 <div className="col-md-6">
                   <span className="ft-badge mb-3">Coming soon</span>
-                  <h4>Ask your fitness guide</h4>
-                  <p className="text-secondary mb-0">Get quick answers about workouts, nutrition and recovery from the built-in fitness chatbot.</p>
+                  <h3 className="h4">Ask your fitness guide</h3>
+                  <p className="text-secondary mb-0">
+                    Get quick answers about workouts, nutrition and recovery from the built-in fitness chatbot.
+                  </p>
                 </div>
                 <div className="col-md-6">
                   <div className="chat">
                     <div className="bubble bubble-user">How much protein do I need?</div>
                     <div className="bubble bubble-bot">It depends on your goal and body weight. Let us work it out together.</div>
-                    <div className="bubble bubble-bot typing"><span></span><span></span><span></span></div>
+                    <div className="bubble bubble-bot typing">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
                   </div>
                 </div>
               </div>

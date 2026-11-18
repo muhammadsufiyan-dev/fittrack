@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
+import Footer from '../components/layout/Footer'
+import Navbar from '../components/layout/Navbar'
 
 function PublicLayout() {
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="public-layout">
       <Navbar />
-      <main className="flex-grow-1">
+      <main className="public-main">
         <Outlet />
       </main>
       <Footer />

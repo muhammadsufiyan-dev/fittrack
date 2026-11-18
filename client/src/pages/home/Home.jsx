@@ -1,10 +1,10 @@
+import Bento from './Bento'
+import CtaBanner from './CtaBanner'
+import Faq from './Faq'
 import Hero from './Hero'
 import Marquee from './Marquee'
 import Stats from './Stats'
-import Bento from './Bento'
 import Steps from './Steps'
-import Faq from './Faq'
-import CtaBanner from './CtaBanner'
 
 function Home() {
   return (

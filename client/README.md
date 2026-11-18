@@ -1,16 +1,47 @@
-# React + Vite
+# FitTrack - client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite frontend for the FitTrack fitness tracker. Data is mocked in the browser (localStorage) for now.
 
-Currently, two official plugins are available:
+## Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```
+npm install
+npm run dev
+```
 
-## React Compiler
+Build for production with `npm run build`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Demo login: `demo@fittrack.com` / `Demo@123`
 
-## Expanding the ESLint configuration
+## Folder guide
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+src/
+  components/
+    layout/      Navbar, Footer, Sidebar, UserMenu, Brand, ThemeToggle
+    ui/          Modal, PageHeader, StatCard, Loader, EmptyState, ComingSoon, Reveal, CountUp, Ecg
+    auth/        AuthShell, FormField, PasswordField
+    charts/      ActivityRings, WeeklyChart, MacroChart
+    workouts/    WorkoutCard, WorkoutForm
+    nutrition/   MealCard, NutritionForm
+  pages/
+    home/        Landing page sections
+    auth/        Login, Register
+    dashboard/   All logged-in pages
+  layouts/       PublicLayout, DashboardLayout
+  routes/        AppRoutes, ProtectedRoute, ScrollToTop
+  context/       ThemeContext, AuthContext
+  hooks/         useTheme, useAuth, useGoTo
+  services/      Mock API functions (swap for axios calls later)
+  data/          Mock JSON data
+  utils/         Small helpers
+  styles/        variables, base, animations, layout, components, home, auth, dashboard
+```
+
+## Preloader
+
+The loading screen is `components/ui/Preloader.jsx` with its styles in `styles/preloader.css`.
+
+## Deploy (GitHub Pages)
+
+`vite.config.js` sets `base: '/fittrack/'`. Change it if your repository has a different name.

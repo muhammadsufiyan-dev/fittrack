@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import MacroChart from '../../components/MacroChart'
-import PageHeader from '../../components/PageHeader'
-import StatCard from '../../components/StatCard'
-import WeeklyChart from '../../components/WeeklyChart'
+import MacroChart from '../../components/charts/MacroChart'
+import WeeklyChart from '../../components/charts/WeeklyChart'
+import Loader from '../../components/ui/Loader'
+import PageHeader from '../../components/ui/PageHeader'
+import StatCard from '../../components/ui/StatCard'
 import useAuth from '../../hooks/useAuth'
 import { getDashboard } from '../../services/dashboardService'
 
@@ -22,13 +23,7 @@ function Dashboard() {
     getDashboard().then(setData)
   }, [])
 
-  if (!data) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status"></div>
-      </div>
-    )
-  }
+  if (!data) return <Loader />
 
   const { stats } = data
   const workoutProgress = Math.round((stats.workoutsThisWeek / stats.workoutsGoal) * 100)
@@ -48,13 +43,30 @@ function Dashboard() {
 
       <div className="row g-3 mb-4">
         <div className="col-6 col-xl-3">
-          <StatCard icon="bi-fire" label="Calories burned" value={stats.caloriesBurned.toLocaleString()} unit="kcal" change={stats.caloriesBurnedChange} />
+          <StatCard
+            icon="bi-fire"
+            label="Calories burned"
+            value={stats.caloriesBurned.toLocaleString()}
+            unit="kcal"
+            change={stats.caloriesBurnedChange}
+          />
         </div>
         <div className="col-6 col-xl-3">
-          <StatCard icon="bi-lightning-charge" label={`Workouts this week (goal ${stats.workoutsGoal})`} value={stats.workoutsThisWeek} progress={workoutProgress} />
+          <StatCard
+            icon="bi-lightning-charge"
+            label={`Workouts this week (goal ${stats.workoutsGoal})`}
+            value={stats.workoutsThisWeek}
+            progress={workoutProgress}
+          />
         </div>
         <div className="col-6 col-xl-3">
-          <StatCard icon="bi-egg-fried" label={`Calories eaten (target ${stats.caloriesTarget.toLocaleString()})`} value={stats.caloriesEaten.toLocaleString()} unit="kcal" progress={calorieProgress} />
+          <StatCard
+            icon="bi-egg-fried"
+            label={`Calories eaten (target ${stats.caloriesTarget.toLocaleString()})`}
+            value={stats.caloriesEaten.toLocaleString()}
+            unit="kcal"
+            progress={calorieProgress}
+          />
         </div>
         <div className="col-6 col-xl-3">
           <StatCard icon="bi-speedometer2" label="Current weight" value={stats.weight} unit="kg" change={stats.weightChange} />

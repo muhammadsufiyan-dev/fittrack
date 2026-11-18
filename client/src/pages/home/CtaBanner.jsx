@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import Reveal from '../../components/Reveal'
-import Ecg from '../../components/Ecg'
+import Ecg from '../../components/ui/Ecg'
+import Reveal from '../../components/ui/Reveal'
 
 function CtaBanner() {
   return (
@@ -11,7 +11,9 @@ function CtaBanner() {
             Ready to <span className="gradient-text">move?</span>
           </h2>
           <p className="text-secondary my-4">Create your free account and log your first workout today.</p>
-          <Link to="/register" className="btn btn-primary btn-lg btn-glow">Create free account</Link>
+          <Link to="/register" className="btn btn-primary btn-lg btn-glow">
+            Create free account
+          </Link>
           <Ecg />
         </div>
       </Reveal>

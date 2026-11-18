@@ -1,5 +1,7 @@
+import ComingSoon from '../../components/ui/ComingSoon'
+
 function Notifications() {
-  return <h2 className="fw-bold">Notifications</h2>
+  return <ComingSoon title="Notifications" subtitle="Your alerts and updates will show up here." icon="bi-bell" />
 }
 
 export default Notifications

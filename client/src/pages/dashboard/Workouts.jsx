@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-import Modal from '../../components/Modal'
-import PageHeader from '../../components/PageHeader'
-import WorkoutCard from '../../components/WorkoutCard'
-import WorkoutForm from '../../components/WorkoutForm'
+import EmptyState from '../../components/ui/EmptyState'
+import Loader from '../../components/ui/Loader'
+import Modal from '../../components/ui/Modal'
+import PageHeader from '../../components/ui/PageHeader'
+import WorkoutCard from '../../components/workouts/WorkoutCard'
+import WorkoutForm from '../../components/workouts/WorkoutForm'
 import { addWorkout, deleteWorkout, getWorkouts, updateWorkout } from '../../services/workoutService'
 import { workoutCategories } from '../../utils/constants'
 
@@ -37,41 +39,46 @@ function Workouts() {
     }
   }
 
-  if (!workouts) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status"></div>
-      </div>
-    )
-  }
+  if (!workouts) return <Loader />
 
   const term = search.trim().toLowerCase()
   const visible = workouts.filter((item) => {
     const matchCategory = category === 'All' || item.category === category
-    const matchSearch = item.name.toLowerCase().includes(term) || item.tags.some((tag) => tag.toLowerCase().includes(term))
+    const matchSearch =
+      item.name.toLowerCase().includes(term) || item.tags.some((tag) => tag.toLowerCase().includes(term))
     return matchCategory && matchSearch
   })
 
+  const addButton = (
+    <button type="button" className="btn btn-primary" onClick={() => setModal({ mode: 'add' })}>
+      <i className="bi bi-plus-lg me-1"></i>Add workout
+    </button>
+  )
+
   return (
     <>
-      <PageHeader
-        title="Workouts"
-        subtitle="Plan, log and review your training sessions."
-        action={
-          <button type="button" className="btn btn-primary" onClick={() => setModal({ mode: 'add' })}>
-            <i className="bi bi-plus-lg me-1"></i>Add workout
-          </button>
-        }
-      />
+      <PageHeader title="Workouts" subtitle="Plan, log and review your training sessions." action={addButton} />
 
       <div className="toolbar">
         <div className="field toolbar-search">
           <i className="bi bi-search field-icon"></i>
-          <input className="field-input" placeholder="Search by name or tag" aria-label="Search workouts" value={search} onChange={(event) => setSearch(event.target.value)} />
+          <input
+            className="field-input"
+            placeholder="Search by name or tag"
+            aria-label="Search workouts"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
         </div>
+
         <div className="chip-row">
           {['All', ...workoutCategories].map((item) => (
-            <button key={item} type="button" className={`chip-btn ${category === item ? 'active' : ''}`} onClick={() => setCategory(item)}>
+            <button
+              key={item}
+              type="button"
+              className={`chip-btn ${category === item ? 'active' : ''}`}
+              onClick={() => setCategory(item)}
+            >
               {item}
             </button>
           ))}
@@ -79,19 +86,21 @@ function Workouts() {
       </div>
 
       {visible.length === 0 ? (
-        <div className="ft-card p-5 text-center">
-          <i className="bi bi-search fs-1 text-secondary"></i>
-          <h3 className="h5 mt-3">No workouts found</h3>
-          <p className="text-secondary mb-3">Try a different search or add a new workout.</p>
-          <button type="button" className="btn btn-primary" onClick={() => setModal({ mode: 'add' })}>
-            Add workout
-          </button>
-        </div>
+        <EmptyState
+          icon="bi-search"
+          title="No workouts found"
+          text="Try a different search or add a new workout."
+          action={addButton}
+        />
       ) : (
         <div className="row g-3">
           {visible.map((item) => (
             <div className="col-md-6 col-xl-4" key={item.id}>
-              <WorkoutCard item={item} onEdit={() => setModal({ mode: 'edit', item })} onDelete={() => handleDelete(item)} />
+              <WorkoutCard
+                item={item}
+                onEdit={() => setModal({ mode: 'edit', item })}
+                onDelete={() => handleDelete(item)}
+              />
             </div>
           ))}
         </div>

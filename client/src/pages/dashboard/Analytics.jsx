@@ -1,7 +1,7 @@
-import PageHeader from '../../components/PageHeader'
+import ComingSoon from '../../components/ui/ComingSoon'
 
 function Analytics() {
-  return <PageHeader title="Analytics" subtitle="Your trends and insights will appear here." />
+  return <ComingSoon title="Analytics" subtitle="See trends and insights from your activity." icon="bi-bar-chart" />
 }
 
 export default Analytics

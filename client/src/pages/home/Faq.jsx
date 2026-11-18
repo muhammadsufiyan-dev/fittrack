@@ -1,4 +1,4 @@
-import Reveal from '../../components/Reveal'
+import Reveal from '../../components/ui/Reveal'
 
 const questions = [
   {
@@ -27,8 +27,9 @@ function Faq() {
           <span className="ft-badge mb-3">FAQ</span>
           <h2 className="section-title">Questions? Answered</h2>
         </div>
+
         <Reveal>
-          <div className="accordion ft-accordion mx-auto" id="faqList">
+          <div className="accordion faq-list" id="faqList">
             {questions.map((item, index) => (
               <div className="accordion-item" key={item.q}>
                 <h3 className="accordion-header">
@@ -41,7 +42,11 @@ function Faq() {
                     {item.q}
                   </button>
                 </h3>
-                <div id={`faq-${index}`} className={`accordion-collapse collapse ${index === 0 ? 'show' : ''}`} data-bs-parent="#faqList">
+                <div
+                  id={`faq-${index}`}
+                  className={`accordion-collapse collapse ${index === 0 ? 'show' : ''}`}
+                  data-bs-parent="#faqList"
+                >
                   <div className="accordion-body text-secondary">{item.a}</div>
                 </div>
               </div>

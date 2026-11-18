@@ -1,5 +1,7 @@
+import ComingSoon from '../../components/ui/ComingSoon'
+
 function Help() {
-  return <h2 className="fw-bold">Help</h2>
+  return <ComingSoon title="Help and FAQ" subtitle="Answers to common questions." icon="bi-question-circle" />
 }
 
 export default Help

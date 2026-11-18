@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
-import AuthShell from '../../components/AuthShell'
-import FormField from '../../components/FormField'
-import PasswordField from '../../components/PasswordField'
+import AuthShell from '../../components/auth/AuthShell'
+import FormField from '../../components/auth/FormField'
+import PasswordField from '../../components/auth/PasswordField'
 import useAuth from '../../hooks/useAuth'
 import { isEmail } from '../../utils/validators'
 

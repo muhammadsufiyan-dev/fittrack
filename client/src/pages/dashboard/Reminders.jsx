@@ -1,5 +1,7 @@
+import ComingSoon from '../../components/ui/ComingSoon'
+
 function Reminders() {
-  return <h2 className="fw-bold">Reminders</h2>
+  return <ComingSoon title="Reminders" subtitle="Get reminded about workouts and meals." icon="bi-alarm" />
 }
 
 export default Reminders
