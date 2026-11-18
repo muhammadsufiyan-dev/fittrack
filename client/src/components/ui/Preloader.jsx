@@ -34,7 +34,10 @@ function Preloader() {
       fill.style.clipPath = 'inset(0 0 0 0)'
       timer = setTimeout(() => {
         setDone(true)
-        timer = setTimeout(() => setRemoved(true), 950)
+        timer = setTimeout(() => {
+          document.documentElement.style.overflow = ''
+          setRemoved(true)
+        }, 950)
       }, 450)
     }
 

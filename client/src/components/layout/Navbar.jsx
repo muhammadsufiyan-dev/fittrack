@@ -35,7 +35,7 @@ function Navbar() {
 
   return (
     <header className={`nav-wrap ${scrolled ? 'scrolled' : ''}`}>
-      <nav className="container site-nav navbar navbar-expand-md">
+      <nav className="container site-nav navbar navbar-expand-lg">
         <Brand />
 
         <button
@@ -51,7 +51,7 @@ function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navMenu">
-          <ul className="navbar-nav mx-auto gap-md-1">
+          <ul className="navbar-nav mx-auto gap-lg-1">
             {links.map((item) => (
               <li className="nav-item" key={item.id}>
                 <button type="button" className="nav-link-btn" onClick={() => handleLink(item.id)}>
@@ -66,7 +66,7 @@ function Navbar() {
             </li>
           </ul>
 
-          <div className="nav-actions d-flex align-items-center gap-2 mt-3 mt-md-0">
+          <div className="nav-actions d-flex align-items-center gap-2 mt-3 mt-lg-0">
             <ThemeToggle />
             {user ? (
               <Link to="/dashboard" className="btn btn-primary" onClick={closeMenu}>
