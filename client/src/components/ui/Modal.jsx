@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+﻿import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 function Modal({ title, onClose, children }) {
   useEffect(() => {
@@ -15,7 +16,7 @@ function Modal({ title, onClose, children }) {
     }
   }, [onClose])
 
-  return (
+  return createPortal(
     <div className="ft-modal" onClick={onClose}>
       <div
         className="ft-modal-box"
@@ -28,9 +29,10 @@ function Modal({ title, onClose, children }) {
           <h2 className="h5 fw-bold mb-0">{title}</h2>
           <button type="button" className="btn-close" onClick={onClose} aria-label="Close"></button>
         </div>
-        <div className="ft-modal-body">{children}</div>
+        {children}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

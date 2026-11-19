@@ -1,23 +1,41 @@
-import { Link } from 'react-router-dom'
+﻿import { Link } from 'react-router-dom'
 import { formatDate } from '../../utils/format'
+
+const icons = {
+  Strength: 'bi-trophy',
+  Cardio: 'bi-heart-pulse',
+  HIIT: 'bi-fire',
+  Flexibility: 'bi-flower1',
+}
 
 function WorkoutCard({ item, onEdit, onDelete }) {
   return (
-    <div className="ft-card ft-hover h-100 p-3 p-md-4 d-flex flex-column">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <span className={`cat cat-${item.category.toLowerCase()}`}>{item.category}</span>
-        <small className="text-secondary">{formatDate(item.date)}</small>
+    <div className="ft-card ft-hover workout-card h-100 p-3 p-md-4 d-flex flex-column">
+      <div className="workout-top">
+        <span className={`workout-icon cat-${item.category.toLowerCase()}`}>
+          <i className={`bi ${icons[item.category]}`}></i>
+        </span>
+        <div>
+          <span className={`cat cat-${item.category.toLowerCase()}`}>{item.category}</span>
+          <div className="text-secondary small mt-1">{formatDate(item.date)}</div>
+        </div>
       </div>
 
-      <h3 className="h5 fw-bold">{item.name}</h3>
+      <h3 className="h5 fw-bold mb-3">{item.name}</h3>
 
-      <div className="text-secondary small mb-3">
-        <i className="bi bi-clock me-1"></i>
-        {item.duration} min
-        <i className="bi bi-fire ms-3 me-1"></i>
-        {item.calories} kcal
-        <i className="bi bi-list-check ms-3 me-1"></i>
-        {item.exercises.length}
+      <div className="workout-stats">
+        <div className="workout-stat">
+          <strong>{item.duration}</strong>
+          <small>min</small>
+        </div>
+        <div className="workout-stat">
+          <strong>{item.calories}</strong>
+          <small>kcal</small>
+        </div>
+        <div className="workout-stat">
+          <strong>{item.exercises.length}</strong>
+          <small>exercises</small>
+        </div>
       </div>
 
       <div className="tags mb-3">
@@ -30,7 +48,7 @@ function WorkoutCard({ item, onEdit, onDelete }) {
 
       <div className="mt-auto d-flex gap-2">
         <Link to={`/workouts/${item.id}`} className="btn btn-outline-primary btn-sm flex-grow-1">
-          View
+          View details
         </Link>
         <button type="button" className="btn btn-outline-secondary btn-sm" onClick={onEdit} aria-label="Edit workout">
           <i className="bi bi-pencil"></i>

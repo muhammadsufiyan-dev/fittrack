@@ -1,0 +1,250 @@
+.page-enter {
+  animation: page-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-'],
+.meal-card {
+  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(4) {
+  animation-delay: 0.18s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(5) {
+  animation-delay: 0.24s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(7) {
+  animation-delay: 0.36s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(8) {
+  animation-delay: 0.42s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(9) {
+  animation-delay: 0.48s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(10) {
+  animation-delay: 0.54s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(11) {
+  animation-delay: 0.6s;
+}
+
+.app-content .row:not(:has(.reveal)) > [class*='col-']:nth-child(12) {
+  animation-delay: 0.66s;
+}
+
+.meal-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.meal-card:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.meal-card:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
+.page-title::after {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 4px;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  background: var(--ft-gradient);
+  animation: title-bar 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
+}
+
+@keyframes title-bar {
+  from {
+    width: 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .page-title::after {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+.btn {
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 22px rgba(20, 184, 166, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible,
+.chip-btn:focus-visible,
+.side-link:focus-visible,
+.quick-link:focus-visible {
+  outline: 2px solid var(--ft-teal);
+  outline-offset: 2px;
+}
+
+.chip-btn {
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.chip-btn:active {
+  transform: scale(0.95);
+}
+
+.side-link i {
+  transition: transform 0.2s ease;
+}
+
+.side-link:hover i {
+  transform: translateX(2px) scale(1.12);
+}
+
+.table > tbody > tr:hover > * {
+  --bs-table-bg-state: rgba(20, 184, 166, 0.07);
+}
+
+.empty-state > i {
+  display: inline-block;
+  animation: float 4s ease-in-out infinite;
+}
+
+.workout-top {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.workout-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.workout-card:hover .workout-icon {
+  transform: scale(1.1) rotate(-6deg);
+}
+
+.workout-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.workout-stat {
+  padding: 0.55rem 0.4rem;
+  border-radius: 12px;
+  background: var(--bs-tertiary-bg);
+  text-align: center;
+}
+
+.workout-stat strong,
+.workout-stat small {
+  display: block;
+}
+
+.workout-stat small {
+  color: var(--ft-muted);
+  font-size: 0.72rem;
+}
+
+.meal-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.meal-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  font-size: 1.15rem;
+}
+
+.skeleton {
+  border-radius: 16px;
+  background: linear-gradient(90deg, var(--ft-border) 25%, var(--bs-tertiary-bg) 50%, var(--ft-border) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.4s linear infinite;
+}
+
+.skeleton-title {
+  width: 240px;
+  max-width: 70%;
+  height: 34px;
+}
+
+.skeleton-line {
+  width: 360px;
+  max-width: 90%;
+  height: 16px;
+  margin-top: 0.75rem;
+}
+
+.skeleton-card {
+  height: 130px;
+}
+
+.skeleton-chart {
+  height: 280px;
+}
+
+@keyframes skeleton {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .app-content .row > [class*='col-'],
+  .meal-card,
+  .page-title::after,
+  .empty-state > i,
+  .skeleton {
+    animation: none;
+  }
+}

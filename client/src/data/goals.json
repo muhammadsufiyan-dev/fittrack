@@ -1,0 +1,5 @@
+[
+  { "id": "1", "title": "Reach 78 kg", "type": "weight", "start": 84.2, "target": 78, "current": 0, "unit": "kg", "deadline": "2026-12-31" },
+  { "id": "2", "title": "Train 5 times a week", "type": "workouts", "start": 0, "target": 5, "current": 0, "unit": "workouts", "deadline": "" },
+  { "id": "3", "title": "Bench press 80 kg", "type": "custom", "start": 60, "target": 80, "current": 65, "unit": "kg", "deadline": "2027-01-31" }
+]

@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+﻿import { useState } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
+import AppHeader from '../components/layout/AppHeader'
 import Sidebar from '../components/layout/Sidebar'
-import UserMenu from '../components/layout/UserMenu'
 
 function DashboardLayout() {
   const [open, setOpen] = useState(false)
+  const location = useLocation()
 
   return (
     <div className="app-shell">
@@ -12,17 +13,12 @@ function DashboardLayout() {
       {open && <div className="app-backdrop" onClick={() => setOpen(false)}></div>}
 
       <div className="app-main">
-        <header className="app-header">
-          <button type="button" className="app-menu-btn" onClick={() => setOpen(true)} aria-label="Open menu">
-            <i className="bi bi-list"></i>
-          </button>
-          <div className="app-actions">
-            <UserMenu />
-          </div>
-        </header>
+        <AppHeader onMenu={() => setOpen(true)} />
 
         <main className="app-content">
-          <Outlet />
+          <div className="page-enter" key={location.pathname}>
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

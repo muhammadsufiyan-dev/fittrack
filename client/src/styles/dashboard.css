@@ -341,3 +341,31 @@
   background: rgba(20, 184, 166, 0.1);
   color: var(--ft-primary);
 }
+
+.goal-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.goal-head .ft-icon {
+  flex-shrink: 0;
+}
+
+.goal-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.35rem;
+}
+
+.goal-numbers {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.goal-card.reached .mini-bar span {
+  background: #22c55e;
+}

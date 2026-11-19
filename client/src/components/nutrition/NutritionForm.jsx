@@ -1,7 +1,23 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
+import DatePicker from '../ui/DatePicker'
+import FormGroup from '../ui/FormGroup'
 import { mealTypes } from '../../utils/constants'
 
 const emptyItem = { name: '', calories: '', protein: '', carbs: '', fats: '' }
+
+const mealIcons = {
+  Breakfast: 'bi-cup-hot',
+  Lunch: 'bi-egg-fried',
+  Dinner: 'bi-moon-stars',
+  Snack: 'bi-apple',
+}
+
+const macroFields = [
+  { key: 'calories', label: 'Calories (kcal)' },
+  { key: 'protein', label: 'Protein (g)' },
+  { key: 'carbs', label: 'Carbs (g)' },
+  { key: 'fats', label: 'Fats (g)' },
+]
 
 const startForm = (initial, date) => {
   if (initial) return { ...initial }
@@ -54,68 +70,108 @@ function NutritionForm({ initial, date, onSubmit, onCancel }) {
     })
   }
 
-  return (
-    <form onSubmit={handleSubmit} noValidate>
-      <div className="row g-3 mb-3">
-        <div className="col-sm-6">
-          <label htmlFor="mealType" className="form-label fw-semibold small">
-            Meal
-          </label>
-          <select id="mealType" name="mealType" className="form-select" value={form.mealType} onChange={handleChange}>
-            {mealTypes.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="date" className="form-label fw-semibold small">
-            Date
-          </label>
-          <input
-            id="date"
-            name="date"
-            type="date"
-            className={`form-control ${errors.date ? 'is-invalid' : ''}`}
-            value={form.date}
-            onChange={handleChange}
-          />
-          <div className="invalid-feedback">{errors.date}</div>
-        </div>
-      </div>
+  const totalCalories = form.items.reduce((sum, item) => sum + (Number(item.calories) || 0), 0)
 
-      <div className="mb-3">
-        <label className="form-label fw-semibold small">Food items</label>
+  return (
+    <form className="form-shell" onSubmit={handleSubmit} noValidate>
+      <div className="form-body">
+        <div className="form-section">Meal</div>
+
+        <FormGroup label="Meal type" className="mb-3">
+          <div className="chip-row">
+            {mealTypes.map((item) => (
+              <button
+                key={item}
+                type="button"
+                className={`chip-btn ${form.mealType === item ? 'active' : ''}`}
+                onClick={() => setForm({ ...form, mealType: item })}
+              >
+                <i className={`bi ${mealIcons[item]} me-1`}></i>
+                {item}
+              </button>
+            ))}
+          </div>
+        </FormGroup>
+
+        <FormGroup label="Date" htmlFor="date" error={errors.date} className="mb-3">
+          <DatePicker
+            id="date"
+            value={form.date}
+            invalid={Boolean(errors.date)}
+            onChange={(value) => setForm({ ...form, date: value })}
+          />
+        </FormGroup>
+
+        <div className="form-section">
+          Food items
+          <span className="form-total">{totalCalories} kcal</span>
+        </div>
+
         {form.items.map((item, index) => (
-          <div className="ex-row" key={index}>
-            <input className="form-control ex-name" placeholder="Food name" aria-label="Food name" value={item.name} onChange={(event) => updateItem(index, 'name', event.target.value)} />
-            <input className="form-control ex-num" type="number" min="0" placeholder="kcal" aria-label="Calories" value={item.calories} onChange={(event) => updateItem(index, 'calories', event.target.value)} />
-            <input className="form-control ex-num" type="number" min="0" placeholder="Protein g" aria-label="Protein in grams" value={item.protein} onChange={(event) => updateItem(index, 'protein', event.target.value)} />
-            <input className="form-control ex-num" type="number" min="0" placeholder="Carbs g" aria-label="Carbs in grams" value={item.carbs} onChange={(event) => updateItem(index, 'carbs', event.target.value)} />
-            <input className="form-control ex-num" type="number" min="0" placeholder="Fats g" aria-label="Fats in grams" value={item.fats} onChange={(event) => updateItem(index, 'fats', event.target.value)} />
-            <button type="button" className="btn btn-outline-danger" onClick={() => removeItem(index)} aria-label="Remove item">
-              <i className="bi bi-x-lg"></i>
-            </button>
+          <div className="ex-card" key={index}>
+            <div className="ex-card-head">
+              <span className="ex-number">{index + 1}</span>
+              <input
+                className="form-control"
+                placeholder="Food name"
+                aria-label="Food name"
+                value={item.name}
+                onChange={(event) => updateItem(index, 'name', event.target.value)}
+              />
+              <button type="button" className="ex-remove" onClick={() => removeItem(index)} aria-label="Remove item">
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div className="ex-grid four">
+              {macroFields.map((field) => (
+                <div key={field.key}>
+                  <span className="ex-label">{field.label}</span>
+                  <input
+                    className="form-control"
+                    type="number"
+                    min="0"
+                    aria-label={field.label}
+                    value={item[field.key]}
+                    onChange={(event) => updateItem(index, field.key, event.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         ))}
-        {errors.items && <div className="field-error mb-2">{errors.items}</div>}
-        <button type="button" className="btn btn-outline-primary btn-sm" onClick={addItem}>
-          <i className="bi bi-plus-lg me-1"></i>Add food item
+
+        {errors.items && (
+          <div className="form-error mb-2">
+            <i className="bi bi-exclamation-circle"></i>
+            {errors.items}
+          </div>
+        )}
+
+        <button type="button" className="add-row-btn" onClick={addItem}>
+          <i className="bi bi-plus-lg"></i>Add food item
         </button>
+
+        <div className="form-section">Notes</div>
+
+        <textarea
+          id="notes"
+          name="notes"
+          rows="2"
+          className="form-control"
+          placeholder="Anything to remember about this meal?"
+          aria-label="Notes"
+          value={form.notes}
+          onChange={handleChange}
+        ></textarea>
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="notes" className="form-label fw-semibold small">
-          Notes
-        </label>
-        <textarea id="notes" name="notes" rows="2" className="form-control" value={form.notes} onChange={handleChange}></textarea>
-      </div>
-
-      <div className="d-flex justify-content-end gap-2">
+      <div className="form-footer">
         <button type="button" className="btn btn-outline-secondary" onClick={onCancel}>
           Cancel
         </button>
         <button type="submit" className="btn btn-primary">
-          Save meal
+          <i className="bi bi-check2 me-1"></i>Save meal
         </button>
       </div>
     </form>

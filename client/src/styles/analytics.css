@@ -1,0 +1,47 @@
+﻿.donut-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.donut-box {
+  width: 100%;
+  max-width: 220px;
+  height: 220px;
+}
+
+.donut-legend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem 1.5rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.donut-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.donut-legend span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.donut-legend strong {
+  margin-left: auto;
+}
+
+.macro-row {
+  margin-bottom: 1.1rem;
+}
+
+.macro-row:last-child {
+  margin-bottom: 0;
+}

@@ -1,3 +1,5 @@
+﻿import CountUp from './CountUp'
+
 function StatCard({ icon, label, value, unit, change, positive = true, progress }) {
   return (
     <div className="ft-card ft-hover stat-card h-100 p-3 p-md-4">
@@ -9,14 +11,14 @@ function StatCard({ icon, label, value, unit, change, positive = true, progress 
       </div>
 
       <div className="stat-number mt-3">
-        {value}
+        {typeof value === 'number' ? <CountUp to={value} /> : value}
         {unit && <small>{unit}</small>}
       </div>
       <div className="text-secondary small">{label}</div>
 
       {progress !== undefined && (
         <div className="mini-bar">
-          <span style={{ width: `${progress}%` }}></span>
+          <span style={{ width: `${Math.min(progress, 100)}%` }}></span>
         </div>
       )}
     </div>

@@ -1,10 +1,23 @@
+﻿const icons = {
+  Breakfast: 'bi-cup-hot',
+  Lunch: 'bi-egg-fried',
+  Dinner: 'bi-moon-stars',
+  Snack: 'bi-apple',
+}
+
 function MealCard({ log, onEdit, onDelete }) {
   const total = log.items.reduce((sum, item) => sum + item.calories, 0)
 
   return (
-    <div className="ft-card p-3 p-md-4 mb-3">
-      <div className="d-flex align-items-center justify-content-between mb-2">
-        <span className={`cat meal-${log.mealType.toLowerCase()}`}>{log.mealType}</span>
+    <div className="ft-card ft-hover meal-card p-3 p-md-4 mb-3">
+      <div className="meal-head">
+        <span className={`meal-icon meal-${log.mealType.toLowerCase()}`}>
+          <i className={`bi ${icons[log.mealType]}`}></i>
+        </span>
+        <div className="flex-grow-1">
+          <div className="fw-bold">{log.mealType}</div>
+          <small className="text-secondary">{total} kcal</small>
+        </div>
         <div className="d-flex gap-2">
           <button type="button" className="btn btn-outline-secondary btn-sm" onClick={onEdit} aria-label="Edit meal">
             <i className="bi bi-pencil"></i>
@@ -27,10 +40,11 @@ function MealCard({ log, onEdit, onDelete }) {
         </div>
       ))}
 
-      <div className="meal-total">
-        <span className="text-secondary small">{log.notes || 'Total'}</span>
-        <strong>{total} kcal</strong>
-      </div>
+      {log.notes && (
+        <div className="meal-total">
+          <span className="text-secondary small">{log.notes}</span>
+        </div>
+      )}
     </div>
   )
 }

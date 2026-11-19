@@ -1,4 +1,6 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
+import DatePicker from '../ui/DatePicker'
+import FormGroup from '../ui/FormGroup'
 import { workoutCategories } from '../../utils/constants'
 import { todayISO } from '../../utils/format'
 
@@ -20,6 +22,12 @@ const startForm = (initial) => {
     exercises: [{ ...emptyExercise }],
   }
 }
+
+const splitTags = (value) =>
+  value
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean)
 
 function WorkoutForm({ initial, onSubmit, onCancel }) {
   const [form, setForm] = useState(() => startForm(initial))
@@ -48,7 +56,7 @@ function WorkoutForm({ initial, onSubmit, onCancel }) {
     const found = {}
     if (!form.name.trim()) found.name = 'Enter a workout name'
     if (!form.date) found.date = 'Choose a date'
-    if (!(Number(form.duration) > 0)) found.duration = 'Enter the duration in minutes'
+    if (!(Number(form.duration) > 0)) found.duration = 'Enter the duration'
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
@@ -59,10 +67,7 @@ function WorkoutForm({ initial, onSubmit, onCancel }) {
       duration: Number(form.duration),
       calories: Number(form.calories) || 0,
       notes: form.notes.trim(),
-      tags: form.tags
-        .split(',')
-        .map((tag) => tag.trim())
-        .filter(Boolean),
+      tags: splitTags(form.tags),
       exercises: form.exercises
         .filter((item) => item.name.trim())
         .map((item, index) => ({
@@ -75,109 +80,182 @@ function WorkoutForm({ initial, onSubmit, onCancel }) {
     })
   }
 
+  const tags = splitTags(form.tags)
+
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      <div className="mb-3">
-        <label htmlFor="name" className="form-label fw-semibold small">
-          Workout name
-        </label>
-        <input
-          id="name"
-          name="name"
-          className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-          placeholder="e.g. Upper body strength"
-          value={form.name}
-          onChange={handleChange}
-        />
-        <div className="invalid-feedback">{errors.name}</div>
-      </div>
+    <form className="form-shell" onSubmit={handleSubmit} noValidate>
+      <div className="form-body">
+        <div className="form-section">Basics</div>
 
-      <div className="row g-3 mb-3">
-        <div className="col-sm-6">
-          <label htmlFor="category" className="form-label fw-semibold small">
-            Category
-          </label>
-          <select id="category" name="category" className="form-select" value={form.category} onChange={handleChange}>
+        <FormGroup label="Workout name" htmlFor="name" error={errors.name} className="mb-3">
+          <input
+            id="name"
+            name="name"
+            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+            placeholder="e.g. Upper body strength"
+            value={form.name}
+            onChange={handleChange}
+          />
+        </FormGroup>
+
+        <FormGroup label="Category" className="mb-3">
+          <div className="chip-row">
             {workoutCategories.map((item) => (
-              <option key={item}>{item}</option>
+              <button
+                key={item}
+                type="button"
+                className={`chip-btn ${form.category === item ? 'active' : ''}`}
+                onClick={() => setForm({ ...form, category: item })}
+              >
+                {item}
+              </button>
             ))}
-          </select>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="date" className="form-label fw-semibold small">
-            Date
-          </label>
-          <input
-            id="date"
-            name="date"
-            type="date"
-            className={`form-control ${errors.date ? 'is-invalid' : ''}`}
-            value={form.date}
-            onChange={handleChange}
-          />
-          <div className="invalid-feedback">{errors.date}</div>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="duration" className="form-label fw-semibold small">
-            Duration (min)
-          </label>
-          <input
-            id="duration"
-            name="duration"
-            type="number"
-            min="0"
-            className={`form-control ${errors.duration ? 'is-invalid' : ''}`}
-            value={form.duration}
-            onChange={handleChange}
-          />
-          <div className="invalid-feedback">{errors.duration}</div>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="calories" className="form-label fw-semibold small">
-            Calories burned
-          </label>
-          <input id="calories" name="calories" type="number" min="0" className="form-control" value={form.calories} onChange={handleChange} />
-        </div>
-      </div>
+          </div>
+        </FormGroup>
 
-      <div className="mb-3">
-        <label className="form-label fw-semibold small">Exercises</label>
+        <div className="row g-3">
+          <FormGroup label="Date" htmlFor="date" error={errors.date} className="col-sm-4">
+            <DatePicker
+              id="date"
+              value={form.date}
+              invalid={Boolean(errors.date)}
+              onChange={(value) => setForm({ ...form, date: value })}
+            />
+          </FormGroup>
+
+          <FormGroup label="Duration" htmlFor="duration" error={errors.duration} className="col-6 col-sm-4">
+            <div className="unit-input">
+              <input
+                id="duration"
+                name="duration"
+                type="number"
+                min="0"
+                className={`form-control ${errors.duration ? 'is-invalid' : ''}`}
+                value={form.duration}
+                onChange={handleChange}
+              />
+              <span>min</span>
+            </div>
+          </FormGroup>
+
+          <FormGroup label="Calories" htmlFor="calories" className="col-6 col-sm-4">
+            <div className="unit-input">
+              <input
+                id="calories"
+                name="calories"
+                type="number"
+                min="0"
+                className="form-control"
+                value={form.calories}
+                onChange={handleChange}
+              />
+              <span>kcal</span>
+            </div>
+          </FormGroup>
+        </div>
+
+        <div className="form-section">Exercises</div>
+
         {form.exercises.map((item, index) => (
-          <div className="ex-row" key={index}>
-            <input className="form-control ex-name" placeholder="Exercise name" aria-label="Exercise name" value={item.name} onChange={(event) => updateExercise(index, 'name', event.target.value)} />
-            <input className="form-control ex-num" type="number" min="0" placeholder="Sets" aria-label="Sets" value={item.sets} onChange={(event) => updateExercise(index, 'sets', event.target.value)} />
-            <input className="form-control ex-num" type="number" min="0" placeholder="Reps" aria-label="Reps" value={item.reps} onChange={(event) => updateExercise(index, 'reps', event.target.value)} />
-            <input className="form-control ex-num" type="number" min="0" placeholder="kg" aria-label="Weight in kg" value={item.weight} onChange={(event) => updateExercise(index, 'weight', event.target.value)} />
-            <button type="button" className="btn btn-outline-danger" onClick={() => removeExercise(index)} aria-label="Remove exercise">
-              <i className="bi bi-x-lg"></i>
-            </button>
+          <div className="ex-card" key={index}>
+            <div className="ex-card-head">
+              <span className="ex-number">{index + 1}</span>
+              <input
+                className="form-control"
+                placeholder="Exercise name"
+                aria-label="Exercise name"
+                value={item.name}
+                onChange={(event) => updateExercise(index, 'name', event.target.value)}
+              />
+              <button type="button" className="ex-remove" onClick={() => removeExercise(index)} aria-label="Remove exercise">
+                <i className="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div className="ex-grid">
+              <div>
+                <span className="ex-label">Sets</span>
+                <input
+                  className="form-control"
+                  type="number"
+                  min="0"
+                  aria-label="Sets"
+                  value={item.sets}
+                  onChange={(event) => updateExercise(index, 'sets', event.target.value)}
+                />
+              </div>
+              <div>
+                <span className="ex-label">Reps</span>
+                <input
+                  className="form-control"
+                  type="number"
+                  min="0"
+                  aria-label="Reps"
+                  value={item.reps}
+                  onChange={(event) => updateExercise(index, 'reps', event.target.value)}
+                />
+              </div>
+              <div>
+                <span className="ex-label">Weight (kg)</span>
+                <input
+                  className="form-control"
+                  type="number"
+                  min="0"
+                  step="any"
+                  aria-label="Weight in kg"
+                  value={item.weight}
+                  onChange={(event) => updateExercise(index, 'weight', event.target.value)}
+                />
+              </div>
+            </div>
           </div>
         ))}
-        <button type="button" className="btn btn-outline-primary btn-sm" onClick={addExercise}>
-          <i className="bi bi-plus-lg me-1"></i>Add exercise
+
+        <button type="button" className="add-row-btn" onClick={addExercise}>
+          <i className="bi bi-plus-lg"></i>Add exercise
         </button>
+
+        <div className="form-section">More details</div>
+
+        <FormGroup label="Tags" htmlFor="tags" hint="Separate tags with commas" className="mb-3">
+          <input
+            id="tags"
+            name="tags"
+            className="form-control"
+            placeholder="chest, gym"
+            value={form.tags}
+            onChange={handleChange}
+          />
+          {tags.length > 0 && (
+            <div className="tags mt-2">
+              {tags.map((tag) => (
+                <span className="tag" key={tag}>
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </FormGroup>
+
+        <FormGroup label="Notes" htmlFor="notes">
+          <textarea
+            id="notes"
+            name="notes"
+            rows="3"
+            className="form-control"
+            placeholder="How did it feel?"
+            value={form.notes}
+            onChange={handleChange}
+          ></textarea>
+        </FormGroup>
       </div>
 
-      <div className="mb-3">
-        <label htmlFor="tags" className="form-label fw-semibold small">
-          Tags (separate with commas)
-        </label>
-        <input id="tags" name="tags" className="form-control" placeholder="chest, gym" value={form.tags} onChange={handleChange} />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="notes" className="form-label fw-semibold small">
-          Notes
-        </label>
-        <textarea id="notes" name="notes" rows="3" className="form-control" value={form.notes} onChange={handleChange}></textarea>
-      </div>
-
-      <div className="d-flex justify-content-end gap-2">
+      <div className="form-footer">
         <button type="button" className="btn btn-outline-secondary" onClick={onCancel}>
           Cancel
         </button>
         <button type="submit" className="btn btn-primary">
-          Save workout
+          <i className="bi bi-check2 me-1"></i>Save workout
         </button>
       </div>
     </form>

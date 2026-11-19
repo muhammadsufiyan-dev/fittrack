@@ -1,10 +1,14 @@
-import seedLogs from '../data/nutrition.json'
+﻿import seedLogs from '../data/nutrition.json'
 import { createStore } from './localStore'
 
 const store = createStore('ft_nutrition', seedLogs)
 
 export const getLogsByDate = async (date) => {
   return store.read().filter((item) => item.date === date)
+}
+
+export const getAllLogs = async () => {
+  return store.read()
 }
 
 export const addLog = async (data) => {

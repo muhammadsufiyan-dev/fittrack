@@ -1,0 +1,373 @@
+.app-header {
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.app-header.scrolled {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  animation: header-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.header-title small,
+.header-title strong {
+  display: block;
+  line-height: 1.2;
+}
+
+.header-title small {
+  color: var(--ft-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header-title strong {
+  overflow: hidden;
+  font-size: 1.05rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(20, 184, 166, 0.14);
+  color: var(--ft-primary);
+  font-size: 1.15rem;
+}
+
+.app-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.header-search {
+  position: relative;
+  display: none;
+}
+
+.header-search i {
+  position: absolute;
+  top: 50%;
+  left: 0.9rem;
+  color: var(--ft-muted);
+  transform: translateY(-50%);
+}
+
+.header-search input {
+  width: 200px;
+  padding: 0.5rem 0.9rem 0.5rem 2.4rem;
+  border: 1px solid var(--ft-border);
+  border-radius: 999px;
+  background: var(--ft-surface);
+  color: var(--bs-body-color);
+  transition: width 0.3s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.header-search input:focus {
+  width: 280px;
+  border-color: var(--ft-teal);
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15);
+  outline: 0;
+}
+
+@media (min-width: 768px) {
+  .header-search {
+    display: block;
+  }
+}
+
+.theme-btn i {
+  display: inline-block;
+  animation: icon-spin 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bell-btn:hover i {
+  display: inline-block;
+  animation: bell-ring 0.7s ease;
+}
+
+.account {
+  position: relative;
+}
+
+.account-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+  border: 1px solid var(--ft-border);
+  border-radius: 999px;
+  background: var(--ft-surface);
+  color: var(--bs-body-color);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.account-btn:hover,
+.account-btn.open {
+  border-color: var(--ft-teal);
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+}
+
+.avatar-online {
+  position: relative;
+}
+
+.avatar-online::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--ft-surface);
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.account-info {
+  display: none;
+  text-align: left;
+  line-height: 1.15;
+}
+
+.account-info strong,
+.account-info small {
+  display: block;
+}
+
+.account-info small {
+  color: var(--ft-muted);
+  font-size: 0.72rem;
+}
+
+@media (min-width: 576px) {
+  .account-info {
+    display: block;
+  }
+}
+
+.account-chevron {
+  color: var(--ft-muted);
+  font-size: 0.75rem;
+  transition: transform 0.25s ease;
+}
+
+.account-btn.open .account-chevron {
+  transform: rotate(180deg);
+}
+
+.account-card {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 1100;
+  width: 300px;
+  max-width: calc(100vw - 2rem);
+  overflow: hidden;
+  border: 1px solid var(--ft-border);
+  border-radius: 22px;
+  background: var(--ft-surface);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+  transform-origin: top right;
+  animation: menu-in 0.25s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.account-cover {
+  height: 72px;
+  background: linear-gradient(135deg, #0b1220, #0f766e);
+}
+
+.account-body {
+  padding: 0 1.25rem 1rem;
+  border-bottom: 1px solid var(--ft-border);
+}
+
+.account-avatar {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-top: -32px;
+  border: 4px solid var(--ft-surface);
+  border-radius: 50%;
+  background: var(--ft-gradient);
+  color: #0b1220;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.account-name {
+  margin: 0.6rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.account-email {
+  overflow: hidden;
+  color: var(--ft-muted);
+  font-size: 0.88rem;
+  text-overflow: ellipsis;
+}
+
+.account-since {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(20, 184, 166, 0.12);
+  color: var(--ft-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.account-links {
+  padding: 0.5rem;
+}
+
+.account-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--bs-body-color);
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  animation: rise 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(var(--i) * 45ms + 0.1s);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.account-link > i:first-child {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.account-link:hover {
+  background: rgba(20, 184, 166, 0.1);
+  color: var(--bs-body-color);
+}
+
+.account-link:hover > i:first-child {
+  transform: scale(1.15);
+}
+
+.account-arrow {
+  margin-left: auto;
+  color: var(--ft-muted);
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.account-link:hover .account-arrow {
+  transform: translateX(3px);
+}
+
+.account-logout {
+  margin-top: 0.25rem;
+  color: #ef4444;
+}
+
+.account-logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.side-link {
+  animation: side-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(var(--i) * 35ms);
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+
+@keyframes side-in {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+}
+
+@keyframes icon-spin {
+  from {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.5);
+  }
+}
+
+@keyframes bell-ring {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(18deg);
+  }
+  40% {
+    transform: rotate(-16deg);
+  }
+  60% {
+    transform: rotate(10deg);
+  }
+  80% {
+    transform: rotate(-6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-title,
+  .theme-btn i,
+  .bell-btn:hover i,
+  .account-card,
+  .account-link,
+  .side-link {
+    animation: none;
+  }
+}
+
+.app-sidebar {
+  padding: 0.9rem;
+  scrollbar-width: none;
+}
+
+.app-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.side-group {
+  margin: 0.9rem 0.75rem 0.3rem;
+}
+
+.side-link {
+  padding: 0.5rem 0.85rem;
+}

@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react'
 import MacroChart from '../../components/charts/MacroChart'
 import MealCard from '../../components/nutrition/MealCard'
 import NutritionForm from '../../components/nutrition/NutritionForm'
+import CountUp from '../../components/ui/CountUp'
+import DatePicker from '../../components/ui/DatePicker'
 import EmptyState from '../../components/ui/EmptyState'
 import Loader from '../../components/ui/Loader'
+import useConfirm from '../../hooks/useConfirm'
 import Modal from '../../components/ui/Modal'
 import PageHeader from '../../components/ui/PageHeader'
 import StatCard from '../../components/ui/StatCard'
@@ -17,6 +20,7 @@ function Nutrition() {
   const [date, setDate] = useState(todayISO)
   const [logs, setLogs] = useState(null)
   const [modal, setModal] = useState(null)
+  const confirm = useConfirm()
 
   const load = async () => {
     setLogs(await getLogsByDate(date))
@@ -38,7 +42,7 @@ function Nutrition() {
   }
 
   const handleDelete = async (log) => {
-    if (window.confirm(`Delete this ${log.mealType.toLowerCase()}?`)) {
+    if (await confirm({ title: 'Delete meal?', message: `This ${log.mealType.toLowerCase()} will be removed.` })) {
       await deleteLog(log.id)
       load()
     }
@@ -83,13 +87,9 @@ function Nutrition() {
         >
           <i className="bi bi-chevron-left"></i>
         </button>
-        <input
-          type="date"
-          className="form-control date-input"
-          value={date}
-          onChange={(event) => event.target.value && setDate(event.target.value)}
-          aria-label="Choose date"
-        />
+        <div className="date-pick">
+          <DatePicker value={date} onChange={setDate} />
+        </div>
         <button
           type="button"
           className="btn btn-outline-secondary"
@@ -110,7 +110,7 @@ function Nutrition() {
           <StatCard
             icon="bi-fire"
             label={`Calories (target ${nutritionTargets.calories})`}
-            value={calories.toLocaleString()}
+            value={calories}
             unit="kcal"
             progress={percent(calories, nutritionTargets.calories)}
           />
@@ -163,7 +163,7 @@ function Nutrition() {
         <div className="col-lg-4">
           <div className="ft-card p-3 p-md-4 mb-3 text-center">
             <div className="stat-number">
-              {Math.abs(remaining).toLocaleString()}
+              <CountUp to={Math.abs(remaining)} />
               <small>kcal</small>
             </div>
             <div className="text-secondary small">{remaining >= 0 ? 'Remaining today' : 'Over your target'}</div>
