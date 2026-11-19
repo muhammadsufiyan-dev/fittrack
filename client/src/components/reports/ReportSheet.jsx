@@ -1,0 +1,174 @@
+﻿import { formatDate } from '../../utils/format'
+
+const show = (value, unit) => (value === null || value === undefined ? '-' : `${value} ${unit}`)
+
+const row = (key, columns, cells) => (
+  <tr key={key} className={columns.includes('head') ? 'keep' : undefined}>
+    <td>
+      <div className="sheet-pad">
+        <div className={`sheet-line ${columns}`}>
+          {cells.map((cell, index) => (
+            <span key={index}>{cell}</span>
+          ))}
+        </div>
+      </div>
+    </td>
+  </tr>
+)
+
+function ReportSheet({ report }) {
+  const summary = [
+    { label: 'Workouts', value: report.workouts.length },
+    { label: 'Time trained', value: `${report.minutes} min` },
+    { label: 'Calories burned', value: `${report.burned} kcal` },
+    { label: 'Avg calories eaten', value: `${report.avgEaten} kcal` },
+    {
+      label: 'Weight change',
+      value: report.weightChange === null ? '-' : `${report.weightChange > 0 ? '+' : ''}${report.weightChange} kg`,
+    },
+    { label: 'Goals completed', value: `${report.goalsDone} of ${report.goals.length}` },
+  ]
+
+  return (
+    <table className="sheet">
+      <thead>
+        <tr>
+          <td>
+            <div className="sheet-space"></div>
+          </td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>
+            <div className="sheet-pad">
+              <div className="sheet-head">
+                <div className="sheet-brand">
+                  <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" />
+                  <span>
+                    FIT<span>TRACK</span>
+                  </span>
+                </div>
+                <div className="sheet-meta">
+                  <strong>Progress report</strong>
+                  <span>
+                    {formatDate(report.from)} - {formatDate(report.to)}
+                  </span>
+                </div>
+              </div>
+              <div className="sheet-rule"></div>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div className="sheet-pad">
+              <div className="sheet-summary">
+                {summary.map((item) => (
+                  <div key={item.label}>
+                    <small>{item.label}</small>
+                    <strong>{item.value}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr className="keep">
+          <td>
+            <div className="sheet-pad">
+              <h2 className="sheet-title">Workouts</h2>
+            </div>
+          </td>
+        </tr>
+        {report.workouts.length === 0
+          ? row('none', 'one', ['No workouts in this period.'])
+          : [
+              row('head', 'workouts head', ['Date', 'Workout', 'Duration', 'Calories']),
+              ...report.workouts.map((item) =>
+                row(item.id, 'workouts', [
+                  formatDate(item.date),
+                  <>
+                    <b>{item.name}</b>
+                    <em>{item.category}</em>
+                  </>,
+                  `${item.duration} min`,
+                  `${item.calories} kcal`,
+                ])
+              ),
+            ]}
+
+        <tr className="keep">
+          <td>
+            <div className="sheet-pad">
+              <h2 className="sheet-title">Body progress</h2>
+            </div>
+          </td>
+        </tr>
+        {report.entries.length === 0
+          ? row('none-body', 'one', ['No entries in this period.'])
+          : [
+              row('head-body', 'body head', ['Date', 'Weight', 'Body fat', 'Waist', 'Chest', 'Hips']),
+              ...report.entries.map((item) =>
+                row(item.id, 'body', [
+                  formatDate(item.date),
+                  show(item.weight, 'kg'),
+                  show(item.bodyFat, '%'),
+                  show(item.waist, 'cm'),
+                  show(item.chest, 'cm'),
+                  show(item.hips, 'cm'),
+                ])
+              ),
+            ]}
+
+        <tr className="keep">
+          <td>
+            <div className="sheet-pad">
+              <h2 className="sheet-title">Goals</h2>
+            </div>
+          </td>
+        </tr>
+        {report.goals.length === 0
+          ? row('none-goals', 'one', ['No goals yet.'])
+          : report.goals.map((goal) => (
+              <tr key={goal.id}>
+                <td>
+                  <div className="sheet-pad">
+                    <div className="sheet-goal">
+                      <div>
+                        <b>{goal.title}</b>
+                        <span>{goal.percent}%</span>
+                      </div>
+                      <div className="sheet-track">
+                        <span style={{ width: `${goal.percent}%` }}></span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ))}
+
+        <tr>
+          <td>
+            <div className="sheet-pad">
+              <p className="sheet-foot">Generated by FitTrack on {formatDate(report.to)}</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td>
+            <div className="sheet-space"></div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  )
+}
+
+export default ReportSheet

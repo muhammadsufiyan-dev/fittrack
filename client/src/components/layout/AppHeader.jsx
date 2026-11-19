@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { getUnreadCount } from '../../services/notificationService'
 import { navLinks } from '../../utils/navigation'
 import AccountMenu from './AccountMenu'
 import ThemeToggle from './ThemeToggle'
@@ -7,6 +8,7 @@ import ThemeToggle from './ThemeToggle'
 function AppHeader({ onMenu }) {
   const [scrolled, setScrolled] = useState(false)
   const [term, setTerm] = useState('')
+  const [unread, setUnread] = useState(0)
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
@@ -16,6 +18,13 @@ function AppHeader({ onMenu }) {
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    const load = () => getUnreadCount().then(setUnread)
+    load()
+    window.addEventListener('ft-notifications', load)
+    return () => window.removeEventListener('ft-notifications', load)
+  }, [pathname])
 
   const current = navLinks.find((item) => pathname === item.to || pathname.startsWith(`${item.to}/`))
 
@@ -54,8 +63,17 @@ function AppHeader({ onMenu }) {
           />
         </form>
 
-        <Link to="/notifications" className="btn btn-outline-secondary bell-btn" aria-label="Notifications">
+        <Link
+          to="/notifications"
+          className="btn btn-outline-secondary bell-btn"
+          aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}
+        >
           <i className="bi bi-bell"></i>
+          {unread > 0 && (
+            <span className="bell-badge" key={unread}>
+              {unread > 9 ? '9+' : unread}
+            </span>
+          )}
         </Link>
         <ThemeToggle />
         <AccountMenu />
