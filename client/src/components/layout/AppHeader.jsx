@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { getUnreadCount } from '../../services/notificationService'
 import { navLinks } from '../../utils/navigation'
 import AccountMenu from './AccountMenu'
+import Brand from './Brand'
 import ThemeToggle from './ThemeToggle'
 
 function AppHeader({ onMenu }) {
@@ -40,6 +41,10 @@ function AppHeader({ onMenu }) {
       <button type="button" className="app-menu-btn" onClick={onMenu} aria-label="Open menu">
         <i className="bi bi-list"></i>
       </button>
+
+      <div className="header-brand">
+        <Brand to="/dashboard" />
+      </div>
 
       <div className="header-title" key={pathname}>
         <span className="header-icon">

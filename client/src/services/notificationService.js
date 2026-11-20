@@ -8,6 +8,7 @@ import { getReminders } from './reminderService'
 import { getWorkouts } from './workoutService'
 
 const store = createStore('ft_notifications', [])
+const hidden = createStore('ft_notifications_hidden', [])
 
 const pad = (value) => String(value).padStart(2, '0')
 
@@ -30,24 +31,28 @@ const build = async () => {
   if (workouts.length === 0) {
     list.push({
       id: 'idle-none',
+      type: 'workout',
+      group: 'attention',
       icon: 'bi-lightning-charge',
       tone: 'amber',
       title: 'Log your first workout',
       text: 'Add a session to start seeing your stats and analytics.',
       to: '/workouts',
-      action: 'Workouts',
+      action: 'Log a workout',
     })
   } else {
     const gap = daysBetween(workouts[0].date, today)
     if (gap >= 3) {
       list.push({
         id: `idle-${workouts[0].date}`,
+        type: 'workout',
+        group: 'attention',
         icon: 'bi-lightning-charge',
         tone: 'amber',
         title: `No workout for ${gap} days`,
         text: `Your last session was "${workouts[0].name}". Even a short one today keeps you on track.`,
         to: '/workouts',
-        action: 'Workouts',
+        action: 'Log a workout',
       })
     }
   }
@@ -55,12 +60,14 @@ const build = async () => {
   if (!logs.some((item) => item.date === today)) {
     list.push({
       id: `meal-${today}`,
+      type: 'meal',
+      group: 'attention',
       icon: 'bi-egg-fried',
       tone: 'indigo',
       title: 'No meals logged today',
       text: 'Log what you eat to see your calories and macros.',
       to: '/nutrition',
-      action: 'Nutrition',
+      action: 'Log a meal',
     })
   }
 
@@ -69,12 +76,14 @@ const build = async () => {
     if (gap >= 14) {
       list.push({
         id: `weigh-${entries[0].date}`,
+        type: 'progress',
+        group: 'attention',
         icon: 'bi-speedometer2',
         tone: 'indigo',
         title: 'Time for a weigh-in',
         text: `Your last entry was ${gap} days ago.`,
         to: '/progress',
-        action: 'Progress',
+        action: 'Add an entry',
       })
     }
   }
@@ -84,12 +93,14 @@ const build = async () => {
     .forEach((item) => {
       list.push({
         id: `rem-${item.id}-${today}`,
+        type: 'reminder',
+        group: 'attention',
         icon: 'bi-alarm',
         tone: 'amber',
         title: item.title,
         text: `Scheduled for ${formatTime(item.time)} today.`,
         to: '/reminders',
-        action: 'Reminders',
+        action: 'Open reminders',
       })
     })
 
@@ -99,32 +110,38 @@ const build = async () => {
     if (goal.percent >= 100) {
       list.push({
         id: `goal-done-${goal.id}`,
+        type: 'goal',
+        group: 'wins',
         icon: 'bi-trophy',
         tone: 'teal',
         title: `Goal reached: ${goal.title}`,
         text: 'Well done! Set a new target to keep going.',
         to: '/goals',
-        action: 'Goals',
+        action: 'View goals',
       })
     } else if (left !== null && left >= 0 && left <= 14) {
       list.push({
         id: `goal-due-${goal.id}-${goal.deadline}`,
+        type: 'goal',
+        group: 'attention',
         icon: 'bi-flag',
         tone: left <= 7 ? 'red' : 'amber',
         title: `${goal.title}: ${left} days left`,
         text: `You are ${goal.percent}% of the way there.`,
         to: '/goals',
-        action: 'Goals',
+        action: 'View goals',
       })
     } else if (goal.percent >= 75) {
       list.push({
         id: `goal-near-${goal.id}`,
+        type: 'goal',
+        group: 'wins',
         icon: 'bi-bullseye',
         tone: 'teal',
         title: 'Almost there',
         text: `"${goal.title}" is ${goal.percent}% done.`,
         to: '/goals',
-        action: 'Goals',
+        action: 'View goals',
       })
     }
   })
@@ -134,12 +151,14 @@ const build = async () => {
     .forEach((item) => {
       list.push({
         id: `rem-${item.id}-${today}`,
+        type: 'reminder',
+        group: 'upcoming',
         icon: 'bi-alarm',
         tone: 'teal',
         title: item.title,
         text: `Coming up at ${formatTime(item.time)} today.`,
         to: '/reminders',
-        action: 'Reminders',
+        action: 'Open reminders',
       })
     })
 
@@ -148,7 +167,10 @@ const build = async () => {
 
 export const getNotifications = async () => {
   const read = store.read()
-  return (await build()).map((item) => ({ ...item, read: read.includes(item.id) }))
+  const gone = hidden.read()
+  return (await build())
+    .filter((item) => !gone.includes(item.id))
+    .map((item) => ({ ...item, read: read.includes(item.id) }))
 }
 
 export const getUnreadCount = async () => {
@@ -157,5 +179,10 @@ export const getUnreadCount = async () => {
 
 export const markRead = async (ids) => {
   store.save([...new Set([...store.read(), ...ids])])
+  window.dispatchEvent(new Event('ft-notifications'))
+}
+
+export const dismiss = async (ids) => {
+  hidden.save([...new Set([...hidden.read(), ...ids])])
   window.dispatchEvent(new Event('ft-notifications'))
 }

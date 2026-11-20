@@ -1,0 +1,266 @@
+﻿.day-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  padding: 0.35rem;
+  border: 1px solid var(--ft-border);
+  border-radius: 18px;
+  background: var(--ft-surface);
+}
+
+@media (min-width: 576px) {
+  .day-bar {
+    max-width: 460px;
+  }
+}
+
+.day-step {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.day-step:hover {
+  background: rgba(20, 184, 166, 0.16);
+}
+
+.day-step:active {
+  transform: scale(0.94);
+}
+
+.day-pick {
+  flex: 1;
+  min-width: 0;
+}
+
+.day-pick .datepick-btn {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  font-weight: 700;
+}
+
+.day-pick .datepick-btn span {
+  text-align: center;
+}
+
+.day-today {
+  flex-shrink: 0;
+  padding: 0.55rem 0.9rem;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ft-gradient);
+  color: #0b1220;
+  font-size: 0.85rem;
+  font-weight: 700;
+  animation: fade 0.25s ease both;
+}
+
+.cal-card {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.25rem 1.4rem;
+}
+
+.cal-ring {
+  position: relative;
+  flex-shrink: 0;
+  width: 132px;
+  height: 132px;
+}
+
+.cal-ring svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.cal-ring circle {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.cal-track {
+  stroke: var(--ft-border);
+}
+
+.cal-value {
+  stroke: #14b8a6;
+  animation: ring-fill 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.cal-card.over .cal-value {
+  stroke: #ef4444;
+}
+
+@keyframes ring-fill {
+  from {
+    stroke-dashoffset: var(--len);
+  }
+}
+
+.cal-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.cal-center strong {
+  font-family: var(--ft-display);
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.cal-center small {
+  margin-top: 0.2rem;
+  color: var(--ft-muted);
+  font-size: 0.72rem;
+}
+
+.cal-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cal-label {
+  color: var(--ft-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cal-card.over .cal-label {
+  color: #ef4444;
+}
+
+.cal-big {
+  font-family: var(--ft-display);
+  font-size: 2.7rem;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.cal-big small {
+  margin-left: 0.35rem;
+  color: var(--ft-muted);
+  font-family: var(--bs-body-font-family);
+  font-size: 0.85rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.cal-target {
+  display: block;
+  margin: 0.15rem 0 0.8rem;
+  color: var(--ft-muted);
+  font-size: 0.85rem;
+}
+
+.macro-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.1rem;
+}
+
+.macro-name {
+  color: var(--ft-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.macro-value {
+  margin: 0.35rem 0 0.7rem;
+  font-family: var(--ft-display);
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.macro-value small {
+  margin-left: 0.2rem;
+  color: var(--ft-muted);
+  font-family: var(--bs-body-font-family);
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.macro-goal {
+  margin-top: 0.45rem;
+  color: var(--ft-muted);
+  font-size: 0.78rem;
+}
+
+.macro-card.carbs .mini-bar span {
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+}
+
+.macro-card.fats .mini-bar span {
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+}
+
+@media (max-width: 575.98px) {
+  .cal-card {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .cal-ring {
+    width: 104px;
+    height: 104px;
+  }
+
+  .cal-center strong {
+    font-size: 1.6rem;
+  }
+
+  .cal-center small {
+    font-size: 0.65rem;
+  }
+
+  .cal-big {
+    font-size: 2.1rem;
+  }
+
+  .macro-card {
+    padding: 0.8rem;
+  }
+
+  .macro-name {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+
+  .macro-value {
+    margin: 0.25rem 0 0.5rem;
+    font-size: 1.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cal-value,
+  .day-today {
+    animation: none;
+  }
+}

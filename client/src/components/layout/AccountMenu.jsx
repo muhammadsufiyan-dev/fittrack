@@ -2,6 +2,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import useConfirm from '../../hooks/useConfirm'
+import useTheme from '../../hooks/useTheme'
 import { formatDate } from '../../utils/format'
 
 const links = [
@@ -13,6 +14,7 @@ const links = [
 function AccountMenu() {
   const { user, logout } = useAuth()
   const confirm = useConfirm()
+  const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const box = useRef(null)
@@ -51,6 +53,7 @@ function AccountMenu() {
   }
 
   const initial = user.name.charAt(0).toUpperCase()
+  const isDark = theme === 'dark'
 
   return (
     <div className="account" ref={box}>
@@ -100,8 +103,22 @@ function AccountMenu() {
 
             <button
               type="button"
-              className="account-link account-logout"
+              className="account-link"
               style={{ '--i': links.length }}
+              onClick={toggleTheme}
+              role="menuitem"
+            >
+              <i className={`bi ${isDark ? 'bi-sun' : 'bi-moon-stars'}`}></i>
+              {isDark ? 'Light mode' : 'Dark mode'}
+              <span className={`theme-switch ${isDark ? 'on' : ''}`}>
+                <span></span>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className="account-link account-logout"
+              style={{ '--i': links.length + 1 }}
               onClick={handleLogout}
               role="menuitem"
             >
