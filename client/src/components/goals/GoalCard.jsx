@@ -1,5 +1,6 @@
-import { goalTypes } from '../../utils/constants'
+﻿import { goalTypes } from '../../utils/constants'
 import { formatDate, todayISO } from '../../utils/format'
+import { toWeight, weightUnit } from '../../utils/units'
 
 const getDeadlineText = (goal) => {
   if (goal.percent >= 100) return 'Goal reached'
@@ -14,6 +15,7 @@ const getDeadlineText = (goal) => {
 function GoalCard({ goal, onEdit, onDelete }) {
   const type = goalTypes.find((item) => item.value === goal.type)
   const reached = goal.percent >= 100
+  const isWeight = goal.type === 'weight'
 
   return (
     <div className={`ft-card ft-hover goal-card p-3 p-md-4 h-100 ${reached ? 'reached' : ''}`}>
@@ -37,7 +39,8 @@ function GoalCard({ goal, onEdit, onDelete }) {
 
       <div className="goal-numbers">
         <span>
-          <strong>{goal.current}</strong> / {goal.target} {goal.unit}
+          <strong>{isWeight ? toWeight(goal.current) : goal.current}</strong> / {isWeight ? toWeight(goal.target) : goal.target}{' '}
+          {isWeight ? weightUnit() : goal.unit}
         </span>
         <strong>{goal.percent}%</strong>
       </div>
@@ -55,3 +58,4 @@ function GoalCard({ goal, onEdit, onDelete }) {
 }
 
 export default GoalCard
+

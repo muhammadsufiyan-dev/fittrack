@@ -12,6 +12,7 @@ const tabs = [
   { key: 'progress', label: 'Progress', icon: 'bi-graph-up-arrow' },
   { key: 'goal', label: 'Goals', icon: 'bi-bullseye' },
   { key: 'reminder', label: 'Reminders', icon: 'bi-alarm' },
+  { key: 'community', label: 'Community', icon: 'bi-people' },
 ]
 
 const groups = [
@@ -230,3 +231,4 @@ function Notifications() {
 }
 
 export default Notifications
+

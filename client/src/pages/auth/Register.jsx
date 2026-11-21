@@ -1,12 +1,13 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import AuthShell from '../../components/auth/AuthShell'
 import FormField from '../../components/auth/FormField'
 import PasswordField from '../../components/auth/PasswordField'
+import PhotoPicker from '../../components/profile/PhotoPicker'
 import useAuth from '../../hooks/useAuth'
 import { passwordStrength, validateRegister } from '../../utils/validators'
 
-const emptyForm = { name: '', email: '', password: '', confirm: '', consent: false }
+const emptyForm = { name: '', email: '', password: '', confirm: '', consent: false, photo: '' }
 const strengthLabels = ['Too weak', 'Weak', 'Fair', 'Good', 'Strong']
 
 function Register() {
@@ -37,7 +38,7 @@ function Register() {
 
     setLoading(true)
     try {
-      await register({ name: form.name, email: form.email, password: form.password })
+      await register({ name: form.name, email: form.email, password: form.password, photo: form.photo })
     } catch (err) {
       setServerError(err.message)
       setLoading(false)
@@ -62,6 +63,9 @@ function Register() {
       )}
 
       <form onSubmit={handleSubmit} noValidate>
+        <div className="mb-3">
+          <PhotoPicker value={form.photo} name={form.name} onChange={(photo) => setForm({ ...form, photo })} />
+        </div>
         <FormField
           id="name"
           name="name"
@@ -142,3 +146,6 @@ function Register() {
 }
 
 export default Register
+
+
+

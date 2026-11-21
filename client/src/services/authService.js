@@ -1,4 +1,4 @@
-import seedUsers from '../data/users.json'
+﻿import seedUsers from '../data/users.json'
 import { storage } from '../utils/storage'
 import { createStore } from './localStore'
 
@@ -17,7 +17,7 @@ const startSession = (user) => {
   return safe
 }
 
-export const registerUser = async ({ name, email, password }) => {
+export const registerUser = async ({ name, email, password, photo = '' }) => {
   const list = users.read()
   const exists = list.some((item) => item.email.toLowerCase() === email.trim().toLowerCase())
 
@@ -32,6 +32,8 @@ export const registerUser = async ({ name, email, password }) => {
     email: email.trim(),
     password,
     role: 'user',
+    photo,
+    discoverable: true,
     createdAt: now,
     consentAcceptedAt: now,
   }
@@ -62,4 +64,27 @@ export const getCurrentUser = () => {
   } catch {
     return null
   }
+}
+
+export const getUsers = () => users.read().map(withoutPassword)
+
+export const updateProfile = async (id, data) => {
+  const list = users.read()
+  const index = list.findIndex((item) => item.id === id)
+  if (index === -1) throw new Error('Account not found')
+
+  const fields = ['name', 'phone', 'city', 'bio', 'photo', 'discoverable']
+  const next = { ...list[index] }
+  fields.forEach((field) => {
+    if (field in data) next[field] = data[field]
+  })
+
+  list[index] = next
+  users.save(list)
+  return startSession(next)
+}
+
+export const removeUser = (id) => {
+  users.save(users.read().filter((item) => item.id !== id))
+  storage.remove(SESSION_KEY)
 }

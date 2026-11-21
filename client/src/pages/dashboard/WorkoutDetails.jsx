@@ -9,6 +9,7 @@ import WorkoutForm from '../../components/workouts/WorkoutForm'
 import useConfirm from '../../hooks/useConfirm'
 import { deleteWorkout, getWorkout, updateWorkout } from '../../services/workoutService'
 import { formatDate } from '../../utils/format'
+import { showWeight, toWeight, weightUnit } from '../../utils/units'
 
 function WorkoutDetails() {
   const { id } = useParams()
@@ -105,7 +106,7 @@ function WorkoutDetails() {
         </div>
         <div className="col-6 col-xl-3">
           <Reveal delay={240} className="h-100">
-            <StatCard icon="bi-bar-chart" label="Total volume" value={totalVolume} unit="kg" />
+            <StatCard icon="bi-bar-chart" label="Total volume" value={toWeight(totalVolume)} unit={weightUnit()} />
           </Reveal>
         </div>
       </div>
@@ -133,7 +134,7 @@ function WorkoutDetails() {
                   )}
                 </div>
 
-                <div className="exercise-weight">{exercise.weight ? `${exercise.weight} kg` : 'Bodyweight'}</div>
+                <div className="exercise-weight">{exercise.weight ? showWeight(exercise.weight) : 'Bodyweight'}</div>
               </div>
             ))
           )}
@@ -176,3 +177,4 @@ function WorkoutDetails() {
 }
 
 export default WorkoutDetails
+

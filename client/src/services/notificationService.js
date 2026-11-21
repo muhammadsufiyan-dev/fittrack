@@ -2,6 +2,7 @@
 import { todayISO } from '../utils/format'
 import { getGoals } from './goalService'
 import { createStore } from './localStore'
+import { getCommunityAlerts } from './communityService'
 import { getAllLogs } from './nutritionService'
 import { getEntries } from './progressService'
 import { getReminders } from './reminderService'
@@ -27,6 +28,22 @@ const build = async () => {
   const reminders = (await getReminders()).filter((item) => item.enabled && item.days.includes(todayIndex))
 
   const list = []
+
+  workouts
+    .filter((item) => item.date === today)
+    .forEach((item) => {
+      list.push({
+        id: `done-${item.id}`,
+        type: 'workout',
+        group: 'wins',
+        icon: 'bi-check2-circle',
+        tone: 'teal',
+        title: `Workout completed: ${item.name}`,
+        text: `${item.duration} minutes logged today. Great work!`,
+        to: `/workouts/${item.id}`,
+        action: 'View workout',
+      })
+    })
 
   if (workouts.length === 0) {
     list.push({
@@ -162,6 +179,36 @@ const build = async () => {
       })
     })
 
+  const community = await getCommunityAlerts()
+
+  community.followers.forEach((item) => {
+    list.push({
+      id: `follower-${item.id}`,
+      type: 'community',
+      group: 'wins',
+      icon: 'bi-person-plus',
+      tone: 'indigo',
+      title: `${item.name} started following you`,
+      text: 'Check out their profile and follow back.',
+      to: `/users/${item.id}`,
+      action: 'View profile',
+    })
+  })
+
+  community.replies.forEach((item) => {
+    list.push({
+      id: `reply-${item.id}`,
+      type: 'community',
+      group: 'attention',
+      icon: 'bi-chat-dots',
+      tone: 'indigo',
+      title: `${item.author.name} replied to your post`,
+      text: `"${item.text}"`,
+      to: '/community',
+      action: 'Open community',
+    })
+  })
+
   return list
 }
 
@@ -186,3 +233,4 @@ export const dismiss = async (ids) => {
   hidden.save([...new Set([...hidden.read(), ...ids])])
   window.dispatchEvent(new Event('ft-notifications'))
 }
+

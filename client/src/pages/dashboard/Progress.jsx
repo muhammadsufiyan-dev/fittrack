@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import EmptyState from '../../components/ui/EmptyState'
 import Loader from '../../components/ui/Loader'
 import useConfirm from '../../hooks/useConfirm'
@@ -12,6 +12,7 @@ import { addEntry, deleteEntry, getEntries, updateEntry } from '../../services/p
 import { getWorkouts } from '../../services/workoutService'
 import { progressMetrics } from '../../utils/constants'
 import { formatDate } from '../../utils/format'
+import { lengthUnit, showLength, showWeight, toLength, toUnit, toWeight, unitLabel, weightUnit } from '../../utils/units'
 
 const show = (value, unit) => (value === null || value === undefined ? '-' : `${value} ${unit}`)
 
@@ -59,12 +60,12 @@ function Progress() {
   const oldestFirst = [...entries].reverse()
   const chartData = oldestFirst
     .filter((item) => item[metric.key] !== null && item[metric.key] !== undefined)
-    .map((item) => ({ date: item.date, value: item[metric.key] }))
+    .map((item) => ({ date: item.date, value: toUnit(item[metric.key], metric.unit) }))
 
-  const latestWeight = entries.length > 0 ? entries[0].weight : null
-  const change = entries.length > 1 ? Math.round((latestWeight - oldestFirst[0].weight) * 10) / 10 : 0
+  const latestWeight = entries.length > 0 ? toWeight(entries[0].weight) : null
+  const change = entries.length > 1 ? Math.round((latestWeight - toWeight(oldestFirst[0].weight)) * 10) / 10 : 0
   const latestBodyFat = entries.find((item) => item.bodyFat)?.bodyFat
-  const latestWaist = entries.find((item) => item.waist)?.waist
+  const latestWaist = toLength(entries.find((item) => item.waist)?.waist)
 
   return (
     <>
@@ -81,21 +82,21 @@ function Progress() {
         <>
           <div className="row g-3 mb-4">
             <div className="col-6 col-xl-3">
-              <StatCard icon="bi-speedometer2" label="Current weight" value={latestWeight} unit="kg" />
+              <StatCard icon="bi-speedometer2" label="Current weight" value={latestWeight} unit={weightUnit()} />
             </div>
             <div className="col-6 col-xl-3">
               <StatCard
                 icon="bi-arrow-down-up"
                 label="Change since first entry"
                 value={`${change > 0 ? '+' : ''}${change}`}
-                unit="kg"
+                unit={weightUnit()}
               />
             </div>
             <div className="col-6 col-xl-3">
               <StatCard icon="bi-percent" label="Body fat" value={latestBodyFat ?? '-'} unit={latestBodyFat ? '%' : ''} />
             </div>
             <div className="col-6 col-xl-3">
-              <StatCard icon="bi-rulers" label="Waist" value={latestWaist ?? '-'} unit={latestWaist ? 'cm' : ''} />
+              <StatCard icon="bi-rulers" label="Waist" value={latestWaist ?? '-'} unit={latestWaist ? lengthUnit() : ''} />
             </div>
           </div>
 
@@ -120,7 +121,7 @@ function Progress() {
                 {chartData.length < 2 ? (
                   <p className="text-secondary mb-0">Add at least two entries with {metric.label.toLowerCase()} to see the chart.</p>
                 ) : (
-                  <ProgressChart data={chartData} label={metric.label} unit={metric.unit} />
+                  <ProgressChart data={chartData} label={metric.label} unit={unitLabel(metric.unit)} />
                 )}
               </div>
             </div>
@@ -149,11 +150,11 @@ function Progress() {
                   {entries.map((item) => (
                     <tr key={item.id}>
                       <td className="text-nowrap">{formatDate(item.date)}</td>
-                      <td className="fw-semibold">{show(item.weight, 'kg')}</td>
+                      <td className="fw-semibold">{showWeight(item.weight)}</td>
                       <td>{show(item.bodyFat, '%')}</td>
-                      <td>{show(item.waist, 'cm')}</td>
-                      <td>{show(item.chest, 'cm')}</td>
-                      <td>{show(item.hips, 'cm')}</td>
+                      <td>{showLength(item.waist)}</td>
+                      <td>{showLength(item.chest)}</td>
+                      <td>{showLength(item.hips)}</td>
                       <td className="text-end text-nowrap">
                         <button
                           type="button"
@@ -191,3 +192,4 @@ function Progress() {
 }
 
 export default Progress
+

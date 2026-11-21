@@ -1,5 +1,5 @@
-import { createContext, useState } from 'react'
-import { getCurrentUser, loginUser, logoutUser, registerUser } from '../services/authService'
+﻿import { createContext, useState } from 'react'
+import { getCurrentUser, loginUser, logoutUser, registerUser, updateProfile as saveProfile } from '../services/authService'
 
 export const AuthContext = createContext(null)
 
@@ -14,10 +14,16 @@ export function AuthProvider({ children }) {
     setUser(await registerUser(details))
   }
 
+  const updateProfile = async (data) => {
+    setUser(await saveProfile(user.id, data))
+  }
+
   const logout = () => {
     logoutUser()
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, login, register, updateProfile, logout }}>{children}</AuthContext.Provider>
+  )
 }

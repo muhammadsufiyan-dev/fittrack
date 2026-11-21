@@ -8,6 +8,7 @@ import Reveal from '../../components/ui/Reveal'
 import StatCard from '../../components/ui/StatCard'
 import useAuth from '../../hooks/useAuth'
 import { getDashboard } from '../../services/dashboardService'
+import { weightUnit } from '../../utils/units'
 
 const quickActions = [
   { to: '/workouts', icon: 'bi-lightning-charge', title: 'Log workout', text: 'Record a session' },
@@ -130,7 +131,7 @@ function Dashboard() {
               icon="bi-speedometer2"
               label="Current weight"
               value={stats.weight}
-              unit="kg"
+              unit={weightUnit()}
               change={stats.weightChange}
             />
           </Reveal>
@@ -235,3 +236,4 @@ function Dashboard() {
 }
 
 export default Dashboard
+

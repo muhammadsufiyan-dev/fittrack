@@ -3,12 +3,17 @@ import DatePicker from '../ui/DatePicker'
 import FormGroup from '../ui/FormGroup'
 import { workoutCategories } from '../../utils/constants'
 import { todayISO } from '../../utils/format'
+import { fromWeight, toWeight, weightUnit } from '../../utils/units'
 
 const emptyExercise = { name: '', sets: '', reps: '', weight: '' }
 
 const startForm = (initial) => {
   if (initial) {
-    return { ...initial, tags: initial.tags.join(', ') }
+    return {
+      ...initial,
+      tags: initial.tags.join(', '),
+      exercises: initial.exercises.map((item) => ({ ...item, weight: toWeight(item.weight) })),
+    }
   }
 
   return {
@@ -75,7 +80,7 @@ function WorkoutForm({ initial, onSubmit, onCancel }) {
           name: item.name.trim(),
           sets: Number(item.sets) || 0,
           reps: Number(item.reps) || 0,
-          weight: Number(item.weight) || 0,
+          weight: fromWeight(Number(item.weight) || 0),
         })),
     })
   }
@@ -196,13 +201,13 @@ function WorkoutForm({ initial, onSubmit, onCancel }) {
                 />
               </div>
               <div>
-                <span className="ex-label">Weight (kg)</span>
+                <span className="ex-label">Weight ({weightUnit()})</span>
                 <input
                   className="form-control"
                   type="number"
                   min="0"
                   step="any"
-                  aria-label="Weight in kg"
+                  aria-label="Weight"
                   value={item.weight}
                   onChange={(event) => updateExercise(index, 'weight', event.target.value)}
                 />
@@ -263,3 +268,4 @@ function WorkoutForm({ initial, onSubmit, onCancel }) {
 }
 
 export default WorkoutForm
+

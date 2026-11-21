@@ -1,4 +1,4 @@
-@import './variables.css';
+﻿@import './variables.css';
 @import './base.css';
 @import './animations.css';
 @import './layout.css';
@@ -18,4 +18,10 @@
 @import './reminders.css';
 @import './notifications.css';
 @import './nutrition.css';
+@import './banner.css';
+@import './community.css';
+@import './account.css';
 @import './responsive.css';
+
+
+

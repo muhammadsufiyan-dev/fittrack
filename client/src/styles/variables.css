@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --ft-navy: #0b1220;
   --ft-teal: #14b8a6;
   --ft-cyan: #06b6d4;
@@ -7,19 +7,19 @@
 
   --ft-primary: #0f766e;
   --ft-surface: #ffffff;
-  --ft-border: #e2e8f0;
+  --ft-border: #d3dce8;
   --ft-muted: #64748b;
-  --ft-glass: rgba(255, 255, 255, 0.82);
+  --ft-glass: rgba(233, 238, 245, 0.8);
   --ft-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
   --ft-radius: 20px;
   --ft-display: 'Barlow Condensed', 'Inter', sans-serif;
 
   --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --bs-body-bg: #f8fafc;
+  --bs-body-bg: #e9eef5;
   --bs-body-color: #0f172a;
-  --bs-tertiary-bg: #f1f5f9;
+  --bs-tertiary-bg: #e2e9f2;
   --bs-secondary-rgb: 100, 116, 139;
-  --bs-border-color: #e2e8f0;
+  --bs-border-color: #d3dce8;
   --bs-primary: #0f766e;
   --bs-primary-rgb: 15, 118, 110;
   --bs-link-color: #0f766e;
@@ -48,3 +48,4 @@
   --bs-link-hover-color: #5eead4;
   --bs-link-hover-color-rgb: 94, 234, 212;
 }
+

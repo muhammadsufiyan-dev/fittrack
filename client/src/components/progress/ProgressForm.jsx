@@ -2,6 +2,7 @@
 import DatePicker from '../ui/DatePicker'
 import FormGroup from '../ui/FormGroup'
 import { todayISO } from '../../utils/format'
+import { fromLength, fromWeight, toLength, toWeight, unitLabel, weightUnit } from '../../utils/units'
 
 const measurements = [
   { name: 'bodyFat', label: 'Body fat', unit: '%' },
@@ -14,11 +15,11 @@ const startForm = (initial) => {
   if (initial) {
     return {
       date: initial.date,
-      weight: initial.weight,
+      weight: toWeight(initial.weight),
       bodyFat: initial.bodyFat ?? '',
-      waist: initial.waist ?? '',
-      chest: initial.chest ?? '',
-      hips: initial.hips ?? '',
+      waist: toLength(initial.waist ?? ''),
+      chest: toLength(initial.chest ?? ''),
+      hips: toLength(initial.hips ?? ''),
     }
   }
 
@@ -40,17 +41,17 @@ function ProgressForm({ initial, onSubmit, onCancel }) {
 
     const found = {}
     if (!form.date) found.date = 'Choose a date'
-    if (!(Number(form.weight) > 0)) found.weight = 'Enter your weight in kg'
+    if (!(Number(form.weight) > 0)) found.weight = 'Enter your weight'
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
     onSubmit({
       date: form.date,
-      weight: Number(form.weight),
+      weight: fromWeight(Number(form.weight)),
       bodyFat: toNumber(form.bodyFat),
-      waist: toNumber(form.waist),
-      chest: toNumber(form.chest),
-      hips: toNumber(form.hips),
+      waist: fromLength(toNumber(form.waist)),
+      chest: fromLength(toNumber(form.chest)),
+      hips: fromLength(toNumber(form.hips)),
     })
   }
 
@@ -81,7 +82,7 @@ function ProgressForm({ initial, onSubmit, onCancel }) {
                 value={form.weight}
                 onChange={handleChange}
               />
-              <span>kg</span>
+              <span>{weightUnit()}</span>
             </div>
           </FormGroup>
         </div>
@@ -102,7 +103,7 @@ function ProgressForm({ initial, onSubmit, onCancel }) {
                   value={form[field.name]}
                   onChange={handleChange}
                 />
-                <span>{field.unit}</span>
+                <span>{unitLabel(field.unit)}</span>
               </div>
             </FormGroup>
           ))}
@@ -122,3 +123,4 @@ function ProgressForm({ initial, onSubmit, onCancel }) {
 }
 
 export default ProgressForm
+

@@ -1,4 +1,5 @@
 ﻿import { formatDate } from '../../utils/format'
+import { showLength, showWeight, toWeight, weightUnit } from '../../utils/units'
 
 const show = (value, unit) => (value === null || value === undefined ? '-' : `${value} ${unit}`)
 
@@ -24,7 +25,7 @@ function ReportSheet({ report }) {
     { label: 'Avg calories eaten', value: `${report.avgEaten} kcal` },
     {
       label: 'Weight change',
-      value: report.weightChange === null ? '-' : `${report.weightChange > 0 ? '+' : ''}${report.weightChange} kg`,
+      value: report.weightChange === null ? '-' : `${report.weightChange > 0 ? '+' : ''}${toWeight(report.weightChange)} ${weightUnit()}`,
     },
     { label: 'Goals completed', value: `${report.goalsDone} of ${report.goals.length}` },
   ]
@@ -115,11 +116,11 @@ function ReportSheet({ report }) {
               ...report.entries.map((item) =>
                 row(item.id, 'body', [
                   formatDate(item.date),
-                  show(item.weight, 'kg'),
+                  showWeight(item.weight),
                   show(item.bodyFat, '%'),
-                  show(item.waist, 'cm'),
-                  show(item.chest, 'cm'),
-                  show(item.hips, 'cm'),
+                  showLength(item.waist),
+                  showLength(item.chest),
+                  showLength(item.hips),
                 ])
               ),
             ]}
@@ -172,3 +173,4 @@ function ReportSheet({ report }) {
 }
 
 export default ReportSheet
+

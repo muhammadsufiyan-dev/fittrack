@@ -1,4 +1,5 @@
-import { formatDate } from '../../utils/format'
+﻿import { formatDate } from '../../utils/format'
+import { showWeight } from '../../utils/units'
 
 const getBests = (workouts) => {
   const best = {}
@@ -36,7 +37,7 @@ function PersonalBests({ workouts }) {
               <div className="fw-semibold">{item.name}</div>
               <div className="text-secondary small">{formatDate(item.date)}</div>
             </div>
-            <strong>{item.weight} kg</strong>
+            <strong>{showWeight(item.weight)}</strong>
           </div>
         ))
       )}
@@ -45,3 +46,4 @@ function PersonalBests({ workouts }) {
 }
 
 export default PersonalBests
+

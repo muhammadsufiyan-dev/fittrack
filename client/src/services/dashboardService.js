@@ -2,9 +2,10 @@
 import { formatDate, shiftDate, todayISO } from '../utils/format'
 import { getGoals } from './goalService'
 import { getEntries } from './progressService'
+import { toWeight, weightUnit } from '../utils/units'
 import { getWorkouts } from './workoutService'
 
-const formatChange = (value) => `${value > 0 ? '+' : ''}${Math.round(value * 10) / 10} kg`
+const formatChange = (value) => `${value > 0 ? '+' : ''}${Math.round(toWeight(value) * 10) / 10} ${weightUnit()}`
 
 const getDayLabel = (date) => {
   const today = todayISO()
@@ -26,7 +27,7 @@ export const getDashboard = async () => {
   if (weeklyGoal) stats.workoutsGoal = weeklyGoal.target
 
   if (entries.length > 0) {
-    stats.weight = entries[0].weight
+    stats.weight = toWeight(entries[0].weight)
     stats.weightChange = entries.length > 1 ? formatChange(entries[0].weight - entries[1].weight) : ''
   }
 
@@ -43,3 +44,4 @@ export const getDashboard = async () => {
     })),
   }
 }
+

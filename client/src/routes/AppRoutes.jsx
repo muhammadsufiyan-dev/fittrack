@@ -11,6 +11,7 @@ import PrivacyPolicy from '../pages/PrivacyPolicy'
 import ProtectedRoute from './ProtectedRoute'
 
 const Analytics = lazy(() => import('../pages/dashboard/Analytics'))
+const Community = lazy(() => import('../pages/dashboard/Community'))
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
 const Goals = lazy(() => import('../pages/dashboard/Goals'))
 const Help = lazy(() => import('../pages/dashboard/Help'))
@@ -47,6 +48,7 @@ function AppRoutes() {
             <Route path="/nutrition" element={<Nutrition />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/goals" element={<Goals />} />
+            <Route path="/community" element={<Community />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/reminders" element={<Reminders />} />
             <Route path="/notifications" element={<Notifications />} />
@@ -67,3 +69,4 @@ function AppRoutes() {
 }
 
 export default AppRoutes
+

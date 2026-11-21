@@ -9,6 +9,7 @@ import StatCard from '../../components/ui/StatCard'
 import { getReport } from '../../services/reportService'
 import { downloadCSV } from '../../utils/download'
 import { formatDate } from '../../utils/format'
+import { showLength, showWeight, toWeight, weightUnit } from '../../utils/units'
 
 const ranges = [
   { days: 7, label: 'Last 7 days' },
@@ -140,7 +141,7 @@ function Reports() {
                   {report.weightChange !== null && (
                     <span className="form-total">
                       {report.weightChange > 0 ? '+' : ''}
-                      {report.weightChange} kg
+                      {toWeight(report.weightChange)} {weightUnit()}
                     </span>
                   )}
                 </div>
@@ -162,9 +163,9 @@ function Reports() {
                         {report.entries.map((item) => (
                           <tr key={item.id}>
                             <td>{formatDate(item.date)}</td>
-                            <td>{show(item.weight, 'kg')}</td>
+                            <td>{showWeight(item.weight)}</td>
                             <td>{show(item.bodyFat, '%')}</td>
-                            <td>{show(item.waist, 'cm')}</td>
+                            <td>{showLength(item.waist)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -212,3 +213,4 @@ function Reports() {
 }
 
 export default Reports
+

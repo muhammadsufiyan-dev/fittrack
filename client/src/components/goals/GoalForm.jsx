@@ -2,6 +2,7 @@
 import DatePicker from '../ui/DatePicker'
 import FormGroup from '../ui/FormGroup'
 import { goalTypes } from '../../utils/constants'
+import { fromWeight, toWeight } from '../../utils/units'
 
 const typeHints = {
   weight: 'Follows the weight you log on the Progress page.',
@@ -10,7 +11,15 @@ const typeHints = {
 }
 
 const startForm = (initial) => {
-  if (initial) return { ...initial, deadline: initial.deadline || '' }
+  if (initial) {
+    const weight = initial.type === 'weight'
+    return {
+      ...initial,
+      start: weight ? toWeight(initial.start) : initial.start,
+      target: weight ? toWeight(initial.target) : initial.target,
+      deadline: initial.deadline || '',
+    }
+  }
 
   return { title: '', type: 'weight', start: '', target: '', current: '', unit: '', deadline: '' }
 }
@@ -38,12 +47,12 @@ function GoalForm({ initial, latestWeight, onSubmit, onCancel }) {
     const data = {
       title: form.title.trim(),
       type: form.type,
-      target: Number(form.target),
+      target: form.type === 'weight' ? fromWeight(Number(form.target)) : Number(form.target),
       deadline: form.deadline,
     }
 
     if (form.type === 'weight') {
-      data.start = isEdit ? Number(form.start) : latestWeight || Number(form.target)
+      data.start = isEdit ? fromWeight(Number(form.start)) : latestWeight || fromWeight(Number(form.target))
       data.current = 0
       data.unit = 'kg'
     } else if (form.type === 'workouts') {
@@ -180,3 +189,4 @@ function GoalForm({ initial, latestWeight, onSubmit, onCancel }) {
 }
 
 export default GoalForm
+

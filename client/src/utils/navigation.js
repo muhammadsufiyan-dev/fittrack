@@ -7,6 +7,7 @@
       { to: '/nutrition', label: 'Nutrition', icon: 'bi-egg-fried' },
       { to: '/progress', label: 'Progress', icon: 'bi-graph-up-arrow' },
       { to: '/goals', label: 'Goals', icon: 'bi-bullseye' },
+      { to: '/community', label: 'Community', icon: 'bi-people' },
     ],
   },
   {
@@ -36,3 +37,4 @@
 ]
 
 export const navLinks = navGroups.flatMap((group) => group.links)
+

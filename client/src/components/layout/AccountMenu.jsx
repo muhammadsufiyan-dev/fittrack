@@ -1,6 +1,7 @@
 ﻿import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import Avatar from '../ui/Avatar'
 import useConfirm from '../../hooks/useConfirm'
 import useTheme from '../../hooks/useTheme'
 import { formatDate } from '../../utils/format'
@@ -52,7 +53,7 @@ function AccountMenu() {
     }
   }
 
-  const initial = user.name.charAt(0).toUpperCase()
+
   const isDark = theme === 'dark'
 
   return (
@@ -64,7 +65,7 @@ function AccountMenu() {
         aria-expanded={open}
         aria-haspopup="true"
       >
-        <span className="avatar avatar-online">{initial}</span>
+        <Avatar user={user} className="avatar avatar-online" />
         <span className="account-info">
           <strong>{user.name.split(' ')[0]}</strong>
           <small>Member</small>
@@ -76,7 +77,7 @@ function AccountMenu() {
         <div className="account-card" role="menu">
           <div className="account-cover"></div>
           <div className="account-body">
-            <span className="account-avatar">{initial}</span>
+            <Avatar user={user} className="account-avatar" />
             <h2 className="account-name">{user.name}</h2>
             <div className="account-email">{user.email}</div>
             <span className="account-since">
@@ -133,3 +134,5 @@ function AccountMenu() {
 }
 
 export default AccountMenu
+
+
