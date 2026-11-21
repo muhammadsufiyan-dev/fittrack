@@ -63,9 +63,7 @@ function Register() {
       )}
 
       <form onSubmit={handleSubmit} noValidate>
-        <div className="mb-3">
-          <PhotoPicker value={form.photo} name={form.name} onChange={(photo) => setForm({ ...form, photo })} />
-        </div>
+
         <FormField
           id="name"
           name="name"
