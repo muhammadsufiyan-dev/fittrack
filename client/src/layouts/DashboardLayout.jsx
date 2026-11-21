@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import ChatBot from '../components/chat/ChatBot'
 import AppHeader from '../components/layout/AppHeader'
 import Sidebar from '../components/layout/Sidebar'
 
@@ -21,6 +22,8 @@ function DashboardLayout() {
           </div>
         </main>
       </div>
+
+      <ChatBot />
     </div>
   )
 }
