@@ -9,28 +9,33 @@ import { removeUser } from '../../services/authService'
 import { clearData, exportData } from '../../services/dataService'
 import { getSettings, notifyTypes, saveSettings } from '../../services/settingsService'
 
-const sections = [
-  { key: 'appearance', label: 'Appearance', icon: 'bi-palette', text: 'Choose a light or dark look.' },
-  { key: 'units', label: 'Units', icon: 'bi-rulers', text: 'How weight and measurements are shown.' },
-  { key: 'notifications', label: 'Alerts', icon: 'bi-bell', text: 'Pick the notifications you want to get.' },
-  { key: 'privacy', label: 'Privacy', icon: 'bi-shield-lock', text: 'Control who can find you.' },
-  { key: 'data', label: 'Data', icon: 'bi-database', text: 'Download or delete your information.' },
-]
-
 const themes = [
-  { value: 'light', label: 'Light', icon: 'bi-sun', text: 'Bright and clear' },
-  { value: 'dark', label: 'Dark', icon: 'bi-moon-stars', text: 'Easy on the eyes' },
+  { value: 'light', label: 'Light', icon: 'bi-sun' },
+  { value: 'dark', label: 'Dark', icon: 'bi-moon-stars' },
 ]
 
-const unitGroups = [
-  { key: 'weight', label: 'Weight', icon: 'bi-speedometer2', choices: [['kg', 'Kilograms (kg)'], ['lb', 'Pounds (lb)']] },
-  { key: 'length', label: 'Body measurements', icon: 'bi-rulers', choices: [['cm', 'Centimetres (cm)'], ['in', 'Inches (in)']] },
+const unitRows = [
+  { key: 'weight', label: 'Weight', text: 'Workouts and body weight', choices: [['kg', 'kg'], ['lb', 'lb']] },
+  { key: 'length', label: 'Body measurements', text: 'Chest, waist, hips and more', choices: [['cm', 'cm'], ['in', 'in']] },
 ]
 
 function Switch({ checked, onChange, label }) {
   return (
-    <div className="form-check form-switch">
+    <div className="form-check form-switch m-0">
       <input className="form-check-input" type="checkbox" role="switch" checked={checked} onChange={onChange} aria-label={label} />
+    </div>
+  )
+}
+
+function Segmented({ value, options, onChange }) {
+  return (
+    <div className="seg">
+      {options.map((item) => (
+        <button key={item.value} type="button" className={`seg-btn ${value === item.value ? 'active' : ''}`} onClick={() => onChange(item.value)}>
+          {item.icon && <i className={`bi ${item.icon}`}></i>}
+          {item.label}
+        </button>
+      ))}
     </div>
   )
 }
@@ -41,7 +46,6 @@ function Settings() {
   const confirm = useConfirm()
   const navigate = useNavigate()
   const [settings, setSettings] = useState(getSettings)
-  const [section, setSection] = useState('appearance')
 
   const update = (next) => {
     setSettings(next)
@@ -79,102 +83,82 @@ function Settings() {
     }
   }
 
-  const current = sections.find((item) => item.key === section)
-
   return (
     <>
       <PageHeader title="Settings" subtitle="Make FitTrack work the way you like." />
 
-      <div className="set-layout">
-        <aside className="set-side">
-          <Link to="/profile" className="ft-card set-user">
-            <Avatar user={user} className="avatar member-avatar big" />
-            <div>
-              <strong>{user.name}</strong>
-              <small>{user.email}</small>
+      <div className="ft-card sx-top">
+        <Avatar user={user} className="avatar member-avatar big" />
+        <div>
+          <strong>{user.name}</strong>
+          <small>{user.email}</small>
+        </div>
+        <Link to="/profile" className="btn btn-outline-secondary">
+          <i className="bi bi-pencil me-1"></i>Edit profile
+        </Link>
+      </div>
+
+      <div className="sx-grid">
+        <div className="sx-col">
+          <section className="ft-card sx-card">
+            <h2 className="sx-title">
+              <i className="bi bi-palette"></i>Appearance
+            </h2>
+            <div className="sx-row">
+              <div>
+                <strong>Theme</strong>
+                <small>Pick a light or dark look</small>
+              </div>
+              <Segmented value={theme} options={themes} onChange={setTheme} />
             </div>
-          </Link>
+          </section>
 
-          <nav className="set-nav" aria-label="Settings sections">
-            {sections.map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                className={`set-link ${section === item.key ? 'active' : ''}`}
-                onClick={() => setSection(item.key)}
-              >
-                <i className={`bi ${item.icon}`}></i>
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        <section className="ft-card set-panel" key={section}>
-          <div className="set-head">
-            <span className="set-head-icon">
-              <i className={`bi ${current.icon}`}></i>
-            </span>
-            <div>
-              <h2 className="set-title">{current.label}</h2>
-              <p className="set-text">{current.text}</p>
-            </div>
-          </div>
-
-          {section === 'appearance' && (
-            <div className="theme-cards">
-              {themes.map((item) => (
-                <button
-                  key={item.value}
-                  type="button"
-                  className={`theme-card theme-${item.value} ${theme === item.value ? 'active' : ''}`}
-                  onClick={() => setTheme(item.value)}
-                >
-                  <span className="theme-preview">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                  </span>
-                  <span className="theme-meta">
-                    <i className={`bi ${item.icon}`}></i>
-                    <strong>{item.label}</strong>
-                    <small>{item.text}</small>
-                  </span>
-                  {theme === item.value && <i className="bi bi-check-circle-fill theme-check"></i>}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {section === 'units' && (
-            <>
-              {unitGroups.map((group) => (
-                <div className="unit-block" key={group.key}>
-                  <div className="unit-label">
-                    <i className={`bi ${group.icon}`}></i>
-                    {group.label}
-                  </div>
-                  <div className="chip-row">
-                    {group.choices.map(([value, label]) => (
-                      <button
-                        key={value}
-                        type="button"
-                        className={`chip-btn ${settings.units[group.key] === value ? 'active' : ''}`}
-                        onClick={() => setUnit(group.key, value)}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
+          <section className="ft-card sx-card">
+            <h2 className="sx-title">
+              <i className="bi bi-rulers"></i>Units
+            </h2>
+            {unitRows.map((row) => (
+              <div className="sx-row" key={row.key}>
+                <div>
+                  <strong>{row.label}</strong>
+                  <small>{row.text}</small>
                 </div>
-              ))}
-              <p className="text-secondary small mb-0">Your saved data does not change. Only how it is shown and entered.</p>
-            </>
-          )}
+                <Segmented
+                  value={settings.units[row.key]}
+                  options={row.choices.map(([value, label]) => ({ value, label }))}
+                  onChange={(value) => setUnit(row.key, value)}
+                />
+              </div>
+            ))}
+            <p className="sx-note">Your saved data does not change. Only how it is shown and entered.</p>
+          </section>
 
-          {section === 'notifications' &&
-            notifyTypes.map((item) => (
-              <div className="setting-row" key={item.key}>
+          <section className="ft-card sx-card">
+            <h2 className="sx-title">
+              <i className="bi bi-shield-lock"></i>Privacy
+            </h2>
+            <div className="sx-row">
+              <div>
+                <strong>Let others find me</strong>
+                <small>Members can see your name, city and bio</small>
+              </div>
+              <Switch
+                checked={user.discoverable !== false}
+                onChange={() => updateProfile({ discoverable: user.discoverable === false })}
+                label="Let others find me"
+              />
+            </div>
+            <p className="sx-note">Your workouts, meals and progress are always private.</p>
+          </section>
+        </div>
+
+        <div className="sx-col">
+          <section className="ft-card sx-card">
+            <h2 className="sx-title">
+              <i className="bi bi-bell"></i>Notifications
+            </h2>
+            {notifyTypes.map((item) => (
+              <div className="sx-row" key={item.key}>
                 <span className="ft-icon">
                   <i className={`bi ${item.icon}`}></i>
                 </span>
@@ -185,69 +169,48 @@ function Settings() {
                 <Switch checked={settings.notify[item.key]} onChange={() => toggleNotify(item.key)} label={item.label} />
               </div>
             ))}
+          </section>
 
-          {section === 'privacy' && (
-            <>
-              <div className="setting-row">
-                <span className="ft-icon">
-                  <i className="bi bi-people"></i>
-                </span>
-                <div>
-                  <strong>Let others find me</strong>
-                  <small>Other members can see your name, city and bio in search.</small>
-                </div>
-                <Switch
-                  checked={user.discoverable !== false}
-                  onChange={() => updateProfile({ discoverable: user.discoverable === false })}
-                  label="Let others find me"
-                />
+          <section className="ft-card sx-card">
+            <h2 className="sx-title">
+              <i className="bi bi-database"></i>Your data
+            </h2>
+            <div className="sx-row">
+              <div>
+                <strong>Download my data</strong>
+                <small>Everything you logged, in one file</small>
               </div>
-              <p className="text-secondary small mt-3 mb-0">
-                Your workouts, meals and progress are always private. Only you can see them.
-              </p>
-            </>
-          )}
-
-          {section === 'data' && (
-            <>
-              <div className="setting-row">
-                <span className="ft-icon">
-                  <i className="bi bi-download"></i>
-                </span>
-                <div>
-                  <strong>Download my data</strong>
-                  <small>Get everything you logged in one file.</small>
-                </div>
-                <button type="button" className="btn btn-outline-secondary" onClick={() => exportData(user)}>
-                  Download
-                </button>
-              </div>
-
-              <div className="danger-zone">
-                <h3>Danger zone</h3>
-                <div className="setting-row">
-                  <div>
-                    <strong>Clear my data</strong>
-                    <small>Removes workouts, meals, progress, goals and reminders.</small>
-                  </div>
-                  <button type="button" className="btn btn-outline-danger" onClick={handleClear}>
-                    Clear
-                  </button>
-                </div>
-                <div className="setting-row">
-                  <div>
-                    <strong>Delete account</strong>
-                    <small>Permanently removes your account and data.</small>
-                  </div>
-                  <button type="button" className="btn btn-danger" onClick={handleDelete}>
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-        </section>
+              <button type="button" className="btn btn-outline-secondary" onClick={() => exportData(user)}>
+                <i className="bi bi-download me-1"></i>Download
+              </button>
+            </div>
+          </section>
+        </div>
       </div>
+
+      <section className="ft-card sx-card sx-danger">
+        <h2 className="sx-title">
+          <i className="bi bi-exclamation-triangle"></i>Danger zone
+        </h2>
+        <div className="sx-row">
+          <div>
+            <strong>Clear my data</strong>
+            <small>Removes workouts, meals, progress, goals and reminders</small>
+          </div>
+          <button type="button" className="btn btn-outline-danger" onClick={handleClear}>
+            Clear data
+          </button>
+        </div>
+        <div className="sx-row">
+          <div>
+            <strong>Delete account</strong>
+            <small>Permanently removes your account and data</small>
+          </div>
+          <button type="button" className="btn btn-danger" onClick={handleDelete}>
+            Delete account
+          </button>
+        </div>
+      </section>
     </>
   )
 }
