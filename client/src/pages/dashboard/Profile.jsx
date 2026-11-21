@@ -67,7 +67,7 @@ function Profile() {
       <PageHeader title="Profile" subtitle="Your details and how others see you." action={editButton} />
 
       <div className="row g-3">
-        <div className="col-lg-4">
+        <div className="col-lg-4 order-lg-2">
           <div className="ft-card prof-card">
             <div className="prof-cover"></div>
             <div className="prof-body">
@@ -105,7 +105,7 @@ function Profile() {
           </div>
         </div>
 
-        <div className="col-lg-8">
+        <div className="col-lg-8 order-lg-1">
           <div className="ft-card p-3 p-md-4 mb-3">
             <div className="d-flex justify-content-between align-items-center mb-2">
               <h2 className="panel-title mb-0">Profile strength</h2>
@@ -177,3 +177,4 @@ function Profile() {
 }
 
 export default Profile
+

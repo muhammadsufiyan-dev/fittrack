@@ -145,3 +145,29 @@ export const getCommunityAlerts = async () => {
     ),
   }
 }
+
+const followerIds = (id) =>
+  getUsers()
+    .filter((item) => item.id !== id && createStore(`ft_following_${item.id}`, []).read().includes(id))
+    .map((item) => item.id)
+
+export const getFollowerCount = (id) => {
+  const ids = followerIds(id)
+  if (id === me().id) getFollowers().forEach((item) => ids.push(item.id))
+  return new Set(ids).size
+}
+
+export const getFollowingCount = (id) => createStore(`ft_following_${id}`, []).read().length
+
+export const getMemberPosts = async (id) => (await getPosts()).filter((post) => post.authorId === id)
+
+export const getMemberStats = async (id) => {
+  const written = posts.read().filter((post) => post.authorId === id)
+
+  return {
+    posts: written.length,
+    likes: written.reduce((total, post) => total + (post.likes || []).length, 0),
+    followers: getFollowerCount(id),
+    following: getFollowingCount(id),
+  }
+}

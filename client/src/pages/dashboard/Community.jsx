@@ -13,6 +13,7 @@ import {
   addReply,
   deletePost,
   follow,
+  getFollowerCount,
   getFollowers,
   getFollowingIds,
   getPeople,
@@ -23,22 +24,16 @@ import {
   topics,
   unfollow,
 } from '../../services/communityService'
+import { ago } from '../../utils/time'
 
 const tabs = [
   { key: 'latest', label: 'Latest' },
   { key: 'popular', label: 'Popular' },
   { key: 'following', label: 'Following' },
+  { key: 'people', label: 'People' },
 ]
 
 const topicOf = (key) => topics.find((item) => item.key === key) || topics[topics.length - 1]
-
-const ago = (iso) => {
-  const minutes = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000))
-  if (minutes < 1) return 'Just now'
-  if (minutes < 60) return `${minutes} min ago`
-  if (minutes < 1440) return `${Math.floor(minutes / 60)} h ago`
-  return `${Math.floor(minutes / 1440)} d ago`
-}
 
 function PostForm({ onSubmit, onCancel }) {
   const [form, setForm] = useState({ topic: topics[0].key, title: '', body: '' })
@@ -176,12 +171,29 @@ function Community() {
   const people = getPeople()
   const followers = getFollowers()
   const query = term.trim().toLowerCase()
+  const isPeople = tab === 'people'
 
   let visible = posts.filter((post) => topic === 'all' || post.topic === topic)
   if (tab === 'following') visible = visible.filter((post) => following.includes(post.authorId))
   if (query) visible = visible.filter((post) => `${post.title} ${post.body}`.toLowerCase().includes(query))
   if (tab === 'popular') {
     visible = [...visible].sort((a, b) => b.likes.length * 2 + b.replies.length - (a.likes.length * 2 + a.replies.length))
+  }
+
+  const members = people.filter((item) => !query || `${item.name} ${item.city}`.toLowerCase().includes(query))
+
+  const followButton = (id, className = '') => {
+    const isFollowed = following.includes(id)
+    return (
+      <button
+        type="button"
+        className={`btn btn-sm ${isFollowed ? 'btn-outline-secondary' : 'btn-primary'} ${className}`}
+        onClick={() => toggleFollow(id)}
+      >
+        <i className={`bi ${isFollowed ? 'bi-person-check' : 'bi-person-plus'} me-1`}></i>
+        {isFollowed ? 'Following' : 'Follow'}
+      </button>
+    )
   }
 
   const addButton = (
@@ -225,108 +237,147 @@ function Community() {
               <input
                 type="search"
                 className="form-control"
-                placeholder="Search posts"
-                aria-label="Search posts"
+                placeholder={isPeople ? 'Search members' : 'Search posts'}
+                aria-label={isPeople ? 'Search members' : 'Search posts'}
                 value={term}
                 onChange={(event) => setTerm(event.target.value)}
               />
             </div>
           </div>
 
-          <div className="chip-row mb-3">
-            <button type="button" className={`chip-btn ${topic === 'all' ? 'active' : ''}`} onClick={() => setTopic('all')}>
-              All
-            </button>
-            {topics.map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                className={`chip-btn ${topic === item.key ? 'active' : ''}`}
-                onClick={() => setTopic(item.key)}
-              >
-                {item.label}
+          {!isPeople && (
+            <div className="chip-row mb-3">
+              <button type="button" className={`chip-btn ${topic === 'all' ? 'active' : ''}`} onClick={() => setTopic('all')}>
+                All
               </button>
-            ))}
-          </div>
-
-          {visible.length === 0 ? (
-            <EmptyState
-              icon={tab === 'following' ? 'bi-person-plus' : 'bi-chat-dots'}
-              title={tab === 'following' ? 'Nothing from people you follow' : 'No posts found'}
-              text={tab === 'following' ? 'Follow a few members and their posts will show up here.' : 'Be the first to start this conversation.'}
-              action={addButton}
-            />
-          ) : (
-            visible.map((post, index) => {
-              const isOpen = openId === post.id
-              const tag = topicOf(post.topic)
-
-              return (
-                <article className="ft-card post-card" key={post.id} style={{ '--i': index }}>
-                  <div className="post-head">
-                    <Avatar user={post.author} className="avatar member-avatar" />
-                    <div className="post-who">
-                      <Link to={`/users/${post.author.id}`} className="post-author">
-                        {post.author.id === user.id ? 'You' : post.author.name}
-                      </Link>
-                      <small>{ago(post.createdAt)}</small>
-                    </div>
-                    <span className={`topic-tag topic-${post.topic}`}>
-                      <i className={`bi ${tag.icon}`}></i>
-                      {tag.label}
-                    </span>
-                  </div>
-
-                  <h2 className="post-title">{post.title}</h2>
-                  <p className="post-body">{post.body}</p>
-
-                  <div className="post-actions">
-                    <button type="button" className={`post-btn like ${post.liked ? 'on' : ''}`} onClick={() => handleLike(post.id)}>
-                      <i className={`bi ${post.liked ? 'bi-heart-fill' : 'bi-heart'}`}></i>
-                      {post.likes.length}
-                    </button>
-                    <button type="button" className={`post-btn ${isOpen ? 'on' : ''}`} onClick={() => setOpenId(isOpen ? null : post.id)}>
-                      <i className="bi bi-chat-dots"></i>
-                      {post.replies.length}
-                    </button>
-                    {post.authorId === user.id && (
-                      <button type="button" className="post-btn danger ms-auto" onClick={() => handleDelete(post)} aria-label="Delete post">
-                        <i className="bi bi-trash3"></i>
-                      </button>
-                    )}
-                  </div>
-
-                  {isOpen && (
-                    <div className="post-replies">
-                      {post.replies.map((item) => (
-                        <div className="reply-row" key={item.id}>
-                          <Avatar user={item.author} className="avatar member-avatar small" />
-                          <div className="reply-bubble">
-                            <strong>{item.author.id === user.id ? 'You' : item.author.name}</strong>
-                            <small>{ago(item.at)}</small>
-                            <p>{item.text}</p>
-                          </div>
-                        </div>
-                      ))}
-
-                      <form className="reply-form" onSubmit={(event) => handleReply(event, post.id)}>
-                        <input
-                          className="form-control"
-                          placeholder="Write a reply"
-                          aria-label="Write a reply"
-                          value={reply}
-                          onChange={(event) => setReply(event.target.value)}
-                        />
-                        <button type="submit" className="btn btn-primary" aria-label="Send reply">
-                          <i className="bi bi-send"></i>
-                        </button>
-                      </form>
-                    </div>
-                  )}
-                </article>
-              )
-            })
+              {topics.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  className={`chip-btn ${topic === item.key ? 'active' : ''}`}
+                  onClick={() => setTopic(item.key)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           )}
+
+          {isPeople &&
+            (members.length === 0 ? (
+              <EmptyState icon="bi-people" title="No members found" text="Try another name or city." />
+            ) : (
+              <div className="people-grid">
+                {members.map((item) => (
+                  <div className="ft-card person-card" key={item.id}>
+                    <Avatar user={item} className="avatar member-avatar big" />
+                    <Link to={`/users/${item.id}`} className="post-author">
+                      {item.name}
+                    </Link>
+                    <small className="person-city">{item.city || 'FitTrack member'}</small>
+                    <div className="person-stats">
+                      <span>
+                        <strong>{posts.filter((post) => post.authorId === item.id).length}</strong>
+                        Posts
+                      </span>
+                      <span>
+                        <strong>{getFollowerCount(item.id)}</strong>
+                        Followers
+                      </span>
+                    </div>
+                    <div className="person-actions">
+                      {followButton(item.id)}
+                      <Link to={`/users/${item.id}`} className="btn btn-sm btn-outline-secondary">
+                        Profile
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+
+          {!isPeople &&
+            (visible.length === 0 ? (
+              <EmptyState
+                icon={tab === 'following' ? 'bi-person-plus' : 'bi-chat-dots'}
+                title={tab === 'following' ? 'Nothing from people you follow' : 'No posts found'}
+                text={tab === 'following' ? 'Open the People tab and follow a few members.' : 'Be the first to start this conversation.'}
+                action={addButton}
+              />
+            ) : (
+              visible.map((post, index) => {
+                const isOpen = openId === post.id
+                const tag = topicOf(post.topic)
+
+                return (
+                  <article className="ft-card post-card" key={post.id} style={{ '--i': index }}>
+                    <div className="post-head">
+                      <Avatar user={post.author} className="avatar member-avatar" />
+                      <div className="post-who">
+                        <Link to={`/users/${post.author.id}`} className="post-author">
+                          {post.author.id === user.id ? 'You' : post.author.name}
+                        </Link>
+                        <small>{ago(post.createdAt)}</small>
+                      </div>
+                      <span className={`topic-tag topic-${post.topic}`}>
+                        <i className={`bi ${tag.icon}`}></i>
+                        {tag.label}
+                      </span>
+                    </div>
+
+                    <h2 className="post-title">{post.title}</h2>
+                    <p className="post-body">{post.body}</p>
+
+                    <div className="post-actions">
+                      <button type="button" className={`post-btn like ${post.liked ? 'on' : ''}`} onClick={() => handleLike(post.id)}>
+                        <i className={`bi ${post.liked ? 'bi-heart-fill' : 'bi-heart'}`}></i>
+                        {post.likes.length}
+                      </button>
+                      <button type="button" className={`post-btn ${isOpen ? 'on' : ''}`} onClick={() => setOpenId(isOpen ? null : post.id)}>
+                        <i className="bi bi-chat-dots"></i>
+                        {post.replies.length}
+                      </button>
+                      {post.authorId !== user.id && (
+                        <span className="ms-auto">{followButton(post.authorId)}</span>
+                      )}
+                      {post.authorId === user.id && (
+                        <button type="button" className="post-btn danger ms-auto" onClick={() => handleDelete(post)} aria-label="Delete post">
+                          <i className="bi bi-trash3"></i>
+                        </button>
+                      )}
+                    </div>
+
+                    {isOpen && (
+                      <div className="post-replies">
+                        {post.replies.map((item) => (
+                          <div className="reply-row" key={item.id}>
+                            <Avatar user={item.author} className="avatar member-avatar small" />
+                            <div className="reply-bubble">
+                              <strong>{item.author.id === user.id ? 'You' : item.author.name}</strong>
+                              <small>{ago(item.at)}</small>
+                              <p>{item.text}</p>
+                            </div>
+                          </div>
+                        ))}
+
+                        <form className="reply-form" onSubmit={(event) => handleReply(event, post.id)}>
+                          <input
+                            className="form-control"
+                            placeholder="Write a reply"
+                            aria-label="Write a reply"
+                            value={reply}
+                            onChange={(event) => setReply(event.target.value)}
+                          />
+                          <button type="submit" className="btn btn-primary" aria-label="Send reply">
+                            <i className="bi bi-send"></i>
+                          </button>
+                        </form>
+                      </div>
+                    )}
+                  </article>
+                )
+              })
+            ))}
         </main>
 
         <aside className="comm-side">
@@ -347,6 +398,9 @@ function Community() {
                 <small>Posts</small>
               </div>
             </div>
+            <Link to={`/users/${user.id}`} className="btn btn-sm btn-outline-secondary w-100">
+              View my profile
+            </Link>
             <small className="side-note">
               {stats.members} members - {stats.posts} posts - {stats.replies} replies
             </small>
@@ -359,7 +413,10 @@ function Community() {
                 key={item.key}
                 type="button"
                 className={`topic-row ${topic === item.key ? 'active' : ''}`}
-                onClick={() => setTopic(topic === item.key ? 'all' : item.key)}
+                onClick={() => {
+                  setTab(tab === 'people' ? 'latest' : tab)
+                  setTopic(topic === item.key ? 'all' : item.key)
+                }}
               >
                 <span className={`topic-dot topic-${item.key}`}>
                   <i className={`bi ${item.icon}`}></i>
@@ -397,27 +454,23 @@ function Community() {
             {people.length === 0 ? (
               <p className="text-secondary mb-0">No other members yet.</p>
             ) : (
-              people.map((item) => {
-                const isFollowed = following.includes(item.id)
-                return (
-                  <div className="side-row" key={item.id}>
-                    <Avatar user={item} className="avatar member-avatar" />
-                    <div>
-                      <Link to={`/users/${item.id}`} className="post-author">
-                        {item.name}
-                      </Link>
-                      <small>{item.city || 'FitTrack member'}</small>
-                    </div>
-                    <button
-                      type="button"
-                      className={`btn btn-sm ${isFollowed ? 'btn-outline-secondary' : 'btn-primary'}`}
-                      onClick={() => toggleFollow(item.id)}
-                    >
-                      {isFollowed ? 'Following' : 'Follow'}
-                    </button>
+              people.slice(0, 5).map((item) => (
+                <div className="side-row" key={item.id}>
+                  <Avatar user={item} className="avatar member-avatar" />
+                  <div>
+                    <Link to={`/users/${item.id}`} className="post-author">
+                      {item.name}
+                    </Link>
+                    <small>{item.city || 'FitTrack member'}</small>
                   </div>
-                )
-              })
+                  {followButton(item.id)}
+                </div>
+              ))
+            )}
+            {people.length > 5 && (
+              <button type="button" className="btn btn-sm btn-outline-secondary w-100 mt-2" onClick={() => setTab('people')}>
+                See all members
+              </button>
             )}
           </div>
         </aside>
@@ -433,4 +486,3 @@ function Community() {
 }
 
 export default Community
-

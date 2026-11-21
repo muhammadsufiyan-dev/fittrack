@@ -1,6 +1,6 @@
-﻿function Avatar({ user, className }) {
+﻿function Avatar({ user, className = '' }) {
   return (
-    <span className={className}>
+    <span className={`pfp ${className}`}>
       {user.photo ? <img src={user.photo} alt="" /> : user.name.charAt(0).toUpperCase()}
     </span>
   )

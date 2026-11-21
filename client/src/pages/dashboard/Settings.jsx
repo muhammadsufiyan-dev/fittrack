@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import Avatar from '../../components/ui/Avatar'
 import PageHeader from '../../components/ui/PageHeader'
 import useAuth from '../../hooks/useAuth'
 import useConfirm from '../../hooks/useConfirm'
@@ -11,14 +12,14 @@ import { getSettings, notifyTypes, saveSettings } from '../../services/settingsS
 const sections = [
   { key: 'appearance', label: 'Appearance', icon: 'bi-palette', text: 'Choose a light or dark look.' },
   { key: 'units', label: 'Units', icon: 'bi-rulers', text: 'How weight and measurements are shown.' },
-  { key: 'notifications', label: 'Notifications', icon: 'bi-bell', text: 'Pick the alerts you want to get.' },
+  { key: 'notifications', label: 'Alerts', icon: 'bi-bell', text: 'Pick the notifications you want to get.' },
   { key: 'privacy', label: 'Privacy', icon: 'bi-shield-lock', text: 'Control who can find you.' },
-  { key: 'data', label: 'Your data', icon: 'bi-database', text: 'Download or delete your information.' },
+  { key: 'data', label: 'Data', icon: 'bi-database', text: 'Download or delete your information.' },
 ]
 
 const themes = [
-  { value: 'light', label: 'Light', icon: 'bi-sun' },
-  { value: 'dark', label: 'Dark', icon: 'bi-moon-stars' },
+  { value: 'light', label: 'Light', icon: 'bi-sun', text: 'Bright and clear' },
+  { value: 'dark', label: 'Dark', icon: 'bi-moon-stars', text: 'Easy on the eyes' },
 ]
 
 const unitGroups = [
@@ -85,35 +86,61 @@ function Settings() {
       <PageHeader title="Settings" subtitle="Make FitTrack work the way you like." />
 
       <div className="set-layout">
-        <nav className="set-nav" aria-label="Settings sections">
-          {sections.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              className={`set-link ${section === item.key ? 'active' : ''}`}
-              onClick={() => setSection(item.key)}
-            >
-              <i className={`bi ${item.icon}`}></i>
-              {item.label}
-            </button>
-          ))}
-        </nav>
+        <aside className="set-side">
+          <Link to="/profile" className="ft-card set-user">
+            <Avatar user={user} className="avatar member-avatar big" />
+            <div>
+              <strong>{user.name}</strong>
+              <small>{user.email}</small>
+            </div>
+          </Link>
+
+          <nav className="set-nav" aria-label="Settings sections">
+            {sections.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                className={`set-link ${section === item.key ? 'active' : ''}`}
+                onClick={() => setSection(item.key)}
+              >
+                <i className={`bi ${item.icon}`}></i>
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </aside>
 
         <section className="ft-card set-panel" key={section}>
-          <h2 className="set-title">{current.label}</h2>
-          <p className="set-text">{current.text}</p>
+          <div className="set-head">
+            <span className="set-head-icon">
+              <i className={`bi ${current.icon}`}></i>
+            </span>
+            <div>
+              <h2 className="set-title">{current.label}</h2>
+              <p className="set-text">{current.text}</p>
+            </div>
+          </div>
 
           {section === 'appearance' && (
-            <div className="theme-options">
+            <div className="theme-cards">
               {themes.map((item) => (
                 <button
                   key={item.value}
                   type="button"
-                  className={`theme-option ${theme === item.value ? 'active' : ''}`}
+                  className={`theme-card theme-${item.value} ${theme === item.value ? 'active' : ''}`}
                   onClick={() => setTheme(item.value)}
                 >
-                  <i className={`bi ${item.icon}`}></i>
-                  {item.label}
+                  <span className="theme-preview">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </span>
+                  <span className="theme-meta">
+                    <i className={`bi ${item.icon}`}></i>
+                    <strong>{item.label}</strong>
+                    <small>{item.text}</small>
+                  </span>
+                  {theme === item.value && <i className="bi bi-check-circle-fill theme-check"></i>}
                 </button>
               ))}
             </div>
