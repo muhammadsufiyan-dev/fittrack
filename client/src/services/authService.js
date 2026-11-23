@@ -63,3 +63,13 @@ export const removeUser = async () => {
   await api.remove('/users/me')
   endSession()
 }
+
+export const changePassword = async (currentPassword, newPassword) => {
+  const data = await api.put('/auth/password', { currentPassword, newPassword })
+  setToken(data.token)
+  return startSession(data.user)
+}
+
+export const forgotPassword = (email) => api.post('/auth/forgot-password', { email: email.trim() })
+
+export const resetPassword = ({ email, token, password }) => api.post('/auth/reset-password', { email, token, password })

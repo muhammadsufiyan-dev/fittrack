@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema(
   {
@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema(
     bio: { type: String, default: '', trim: true, maxlength: 200 },
     discoverable: { type: Boolean, default: true },
     consentAcceptedAt: { type: Date, required: true },
+    passwordChangedAt: { type: Date, select: false },
+    resetTokenHash: { type: String, select: false },
+    resetExpires: { type: Date, select: false },
   },
   {
     timestamps: true,
@@ -20,6 +23,7 @@ const userSchema = new mongoose.Schema(
         delete ret._id
         delete ret.__v
         delete ret.password
+        delete ret.passwordChangedAt
         return ret
       },
     },

@@ -1,4 +1,4 @@
-﻿import User from '../models/User.js'
+import User from '../models/User.js'
 import AppError from '../utils/AppError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import { verifyToken } from '../utils/token.js'
@@ -15,8 +15,11 @@ const protect = asyncHandler(async (req, res, next) => {
     throw new AppError('Your session has expired. Please log in again', 401)
   }
 
-  const user = await User.findById(payload.id)
+  const user = await User.findById(payload.id).select('+passwordChangedAt')
   if (!user) throw new AppError('This account no longer exists', 401)
+  if (user.passwordChangedAt && payload.iat < Math.floor(user.passwordChangedAt.getTime() / 1000)) {
+    throw new AppError('Your password was changed. Please log in again', 401)
+  }
 
   req.user = user
   next()

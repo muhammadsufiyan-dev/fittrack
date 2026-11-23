@@ -80,6 +80,12 @@ function Login() {
           autoComplete="current-password"
         />
 
+        <div className="text-end mb-2">
+          <Link to="/forgot-password" className="small fw-semibold">
+            Forgot password?
+          </Link>
+        </div>
+
         <button type="submit" className="btn btn-primary btn-lg w-100 mt-2" disabled={loading}>
           {loading ? 'Logging in...' : 'Log in'}
         </button>

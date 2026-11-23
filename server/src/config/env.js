@@ -1,4 +1,4 @@
-﻿import dotenv from 'dotenv'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -20,5 +20,7 @@ export const env = {
   jwtSecret: process.env.JWT_SECRET,
   clientUrls: (process.env.CLIENT_URL || 'http://localhost:5173').split(',').map((item) => item.trim()),
   isProd: process.env.NODE_ENV === 'production',
+  appUrl: (process.env.APP_URL || 'http://localhost:5173/fittrack').replace(/\/$/, ''),
+  mail: { user: process.env.MAIL_USER || '', pass: process.env.MAIL_PASS || '' },
 }
 

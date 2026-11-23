@@ -1,10 +1,12 @@
-﻿import { lazy, Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Loader from '../components/ui/Loader'
 import DashboardLayout from '../layouts/DashboardLayout'
 import PublicLayout from '../layouts/PublicLayout'
 import Login from '../pages/auth/Login'
+import ForgotPassword from '../pages/auth/ForgotPassword'
 import Register from '../pages/auth/Register'
+import ResetPassword from '../pages/auth/ResetPassword'
 import Home from '../pages/home/Home'
 import NotFound from '../pages/NotFound'
 import PrivacyPolicy from '../pages/PrivacyPolicy'
@@ -34,6 +36,8 @@ function AppRoutes() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />

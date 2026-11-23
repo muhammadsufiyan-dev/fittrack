@@ -1,5 +1,6 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import ChangePassword from '../../components/account/ChangePassword'
 import Avatar from '../../components/ui/Avatar'
 import PageHeader from '../../components/ui/PageHeader'
 import useAuth from '../../hooks/useAuth'
@@ -186,6 +187,8 @@ function Settings() {
           </section>
         </div>
       </div>
+
+      <ChangePassword />
 
       <section className="ft-card sx-card sx-danger">
         <h2 className="sx-title">
