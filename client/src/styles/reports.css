@@ -1,0 +1,282 @@
+﻿.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.sheet {
+  display: none;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html[data-bs-theme] {
+    --ft-primary: #0f766e;
+    --ft-surface: #ffffff;
+    --ft-border: #e2e8f0;
+    --ft-muted: #64748b;
+    --bs-body-bg: #ffffff;
+    --bs-body-color: #0f172a;
+    --bs-tertiary-bg: #f1f5f9;
+    color-scheme: light;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    background: #ffffff !important;
+    color: #0f172a;
+  }
+
+  .app-sidebar,
+  .app-header,
+  .app-backdrop,
+  .report-screen {
+    display: none !important;
+  }
+
+  .app-shell,
+  .app-main {
+    display: block !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-content {
+    max-width: none;
+    padding: 0;
+  }
+
+  .page-enter {
+    animation: none;
+  }
+
+  .sheet {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+  }
+
+  .sheet {
+    color: #0f172a;
+  }
+
+  .sheet tr {
+    break-inside: avoid;
+  }
+
+  .sheet tr.keep {
+    break-after: avoid;
+  }
+
+  .sheet td {
+    padding: 0;
+  }
+
+  .sheet-space {
+    height: 12mm;
+  }
+
+  .sheet-pad {
+    padding: 0 14mm;
+  }
+
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 5mm;
+  }
+
+  .sheet-brand {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    font-family: var(--ft-display);
+    font-size: 24pt;
+    font-style: italic;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .sheet-brand img {
+    width: 12mm;
+    height: 12mm;
+    border-radius: 3mm;
+  }
+
+  .sheet-brand span span {
+    color: #14b8a6;
+  }
+
+  .sheet-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1mm;
+  }
+
+  .sheet-meta strong {
+    font-size: 13pt;
+  }
+
+  .sheet-meta span {
+    color: #64748b;
+    font-size: 9pt;
+  }
+
+  .sheet-rule {
+    height: 1.2mm;
+    margin-bottom: 6mm;
+    border-radius: 1mm;
+    background: linear-gradient(90deg, #14b8a6, #06b6d4);
+  }
+
+  .sheet-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3mm;
+    margin-bottom: 4mm;
+  }
+
+  .sheet-summary div {
+    padding: 4mm;
+    border: 0.3mm solid #e2e8f0;
+    border-radius: 3mm;
+    background: #f8fafc;
+  }
+
+  .sheet-summary small {
+    display: block;
+    color: #64748b;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sheet-summary strong {
+    display: block;
+    margin-top: 1.5mm;
+    color: #0f766e;
+    font-family: var(--ft-display);
+    font-size: 19pt;
+    font-style: italic;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .sheet-title {
+    display: flex;
+    align-items: center;
+    gap: 2.5mm;
+    margin: 6mm 0 2mm;
+    font-size: 12pt;
+    font-weight: 800;
+    break-after: avoid;
+  }
+
+  .sheet-title::before {
+    content: '';
+    width: 1.6mm;
+    height: 5mm;
+    border-radius: 1mm;
+    background: linear-gradient(180deg, #14b8a6, #06b6d4);
+  }
+
+  .sheet-line {
+    display: grid;
+    align-items: center;
+    gap: 3mm;
+    padding: 2.2mm 0;
+    border-bottom: 0.2mm solid #e2e8f0;
+  }
+
+  .sheet-line.one {
+    color: #64748b;
+  }
+
+  .sheet-line.head {
+    padding: 1.5mm 0;
+    border-bottom: 0.4mm solid #14b8a6;
+    color: #64748b;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sheet-line.workouts {
+    grid-template-columns: 27mm 1fr 22mm 24mm;
+  }
+
+  .sheet-line.body {
+    grid-template-columns: 27mm repeat(5, 1fr);
+  }
+
+  .sheet-line.workouts span:nth-child(3),
+  .sheet-line.workouts span:nth-child(4) {
+    text-align: right;
+  }
+
+  .sheet-line b {
+    display: block;
+  }
+
+  .sheet-line em {
+    display: block;
+    color: #64748b;
+    font-size: 8pt;
+    font-style: normal;
+  }
+
+  .sheet-goal {
+    padding: 2.2mm 0;
+    border-bottom: 0.2mm solid #e2e8f0;
+  }
+
+  .sheet-goal > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5mm;
+  }
+
+  .sheet-goal span {
+    color: #0f766e;
+    font-weight: 700;
+  }
+
+  .sheet-track {
+    height: 2mm;
+    overflow: hidden;
+    border-radius: 1mm;
+    background: #e2e8f0;
+  }
+
+  .sheet-track span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #14b8a6, #06b6d4);
+  }
+
+  .sheet-foot {
+    margin: 8mm 0 0;
+    padding-top: 3mm;
+    border-top: 0.2mm solid #e2e8f0;
+    color: #94a3b8;
+    font-size: 8pt;
+    text-align: center;
+  }
+}

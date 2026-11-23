@@ -1,0 +1,41 @@
+{
+  "stats": {
+    "caloriesBurned": 1240,
+    "caloriesBurnedChange": "+12%",
+    "workoutsThisWeek": 5,
+    "workoutsGoal": 6,
+    "caloriesEaten": 1850,
+    "caloriesTarget": 2200,
+    "weight": 72.4,
+    "weightChange": "-0.6 kg"
+  },
+  "weekly": [
+    { "day": "Mon", "burned": 520 },
+    { "day": "Tue", "burned": 380 },
+    { "day": "Wed", "burned": 610 },
+    { "day": "Thu", "burned": 450 },
+    { "day": "Fri", "burned": 720 },
+    { "day": "Sat", "burned": 890 },
+    { "day": "Sun", "burned": 1240 }
+  ],
+  "macros": [
+    { "name": "Protein", "value": 30 },
+    { "name": "Carbs", "value": 45 },
+    { "name": "Fats", "value": 25 }
+  ],
+  "goals": [
+    { "id": 1, "title": "Run 5 km", "progress": 80 },
+    { "id": 2, "title": "Bench press 60 kg", "progress": 65 },
+    { "id": 3, "title": "Drink 3 L water daily", "progress": 45 }
+  ],
+  "reminders": [
+    { "id": 1, "title": "Evening workout", "time": "6:00 PM" },
+    { "id": 2, "title": "Log dinner", "time": "9:00 PM" },
+    { "id": 3, "title": "Weigh in", "time": "Tomorrow, 7:00 AM" }
+  ],
+  "recent": [
+    { "id": 1, "name": "Upper body strength", "date": "Today", "duration": 45, "calories": 320 },
+    { "id": 2, "name": "Morning run", "date": "Yesterday", "duration": 30, "calories": 290 },
+    { "id": 3, "name": "Leg day", "date": "2 days ago", "duration": 55, "calories": 410 }
+  ]
+}
