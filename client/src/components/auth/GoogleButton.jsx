@@ -51,12 +51,16 @@ function GoogleButton() {
           },
         })
 
+        const full = wrap.current.offsetWidth || 320
+        const width = Math.min(400, full)
+        box.current.style.transform = 'scale(' + full / width + ', 1.15)'
+
         window.google.accounts.id.renderButton(box.current, {
           theme: 'outline',
           size: 'large',
           text: 'continue_with',
           shape: 'rectangular',
-          width: Math.min(400, wrap.current.offsetWidth || 320),
+          width,
         })
       })
       .catch(() => setError('Could not load Google sign-in'))
