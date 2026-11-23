@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import AuthShell from '../../components/auth/AuthShell'
 import FormField from '../../components/auth/FormField'
+import GoogleButton from '../../components/auth/GoogleButton'
 import PasswordField from '../../components/auth/PasswordField'
+import ResendVerification from '../../components/auth/ResendVerification'
 import useAuth from '../../hooks/useAuth'
 import { isEmail } from '../../utils/validators'
 
@@ -14,6 +16,7 @@ function Login() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const unverified = error.startsWith('Please verify your email')
 
   if (user) {
     return <Navigate to={redirectTo} replace />
@@ -57,6 +60,7 @@ function Login() {
           {error}
         </div>
       )}
+      {unverified && <ResendVerification email={form.email} />}
 
       <form onSubmit={handleSubmit} noValidate>
         <FormField
@@ -90,6 +94,10 @@ function Login() {
           {loading ? 'Logging in...' : 'Log in'}
         </button>
       </form>
+
+      <div className="auth-divider">or</div>
+
+      <GoogleButton />
     </AuthShell>
   )
 }

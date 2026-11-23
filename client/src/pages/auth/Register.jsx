@@ -1,8 +1,10 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import AuthShell from '../../components/auth/AuthShell'
 import FormField from '../../components/auth/FormField'
 import PasswordField from '../../components/auth/PasswordField'
+import GoogleButton from '../../components/auth/GoogleButton'
+import ResendVerification from '../../components/auth/ResendVerification'
 import PhotoPicker from '../../components/profile/PhotoPicker'
 import useAuth from '../../hooks/useAuth'
 import { passwordStrength, validateRegister } from '../../utils/validators'
@@ -16,12 +18,38 @@ function Register() {
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [sentTo, setSentTo] = useState('')
 
   if (user) {
     return <Navigate to="/dashboard" replace />
   }
 
   const score = passwordStrength(form.password)
+
+  if (sentTo) {
+    return (
+      <AuthShell
+        title="Check your email"
+        subtitle="One last step to activate your account."
+        footer={
+          <>
+            Wrong email?{' '}
+            <button type="button" className="btn btn-link p-0 align-baseline" onClick={() => setSentTo('')}>
+              Go back
+            </button>
+          </>
+        }
+      >
+        <div className="alert alert-success d-flex align-items-start gap-2" role="alert">
+          <i className="bi bi-envelope-check mt-1"></i>
+          <div>
+            We sent a verification link to <strong>{sentTo}</strong>. Open it to activate your account. The link works for 24 hours. Check your spam folder too.
+          </div>
+        </div>
+        <ResendVerification email={sentTo} />
+      </AuthShell>
+    )
+  }
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target
@@ -39,6 +67,8 @@ function Register() {
     setLoading(true)
     try {
       await register({ name: form.name, email: form.email, password: form.password, photo: form.photo })
+      setSentTo(form.email)
+      setLoading(false)
     } catch (err) {
       setServerError(err.message)
       setLoading(false)
@@ -139,6 +169,10 @@ function Register() {
           {loading ? 'Creating account...' : 'Create account'}
         </button>
       </form>
+
+      <div className="auth-divider">or</div>
+
+      <GoogleButton />
     </AuthShell>
   )
 }

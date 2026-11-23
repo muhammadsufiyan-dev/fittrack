@@ -7,6 +7,7 @@ import Login from '../pages/auth/Login'
 import ForgotPassword from '../pages/auth/ForgotPassword'
 import Register from '../pages/auth/Register'
 import ResetPassword from '../pages/auth/ResetPassword'
+import VerifyEmail from '../pages/auth/VerifyEmail'
 import Home from '../pages/home/Home'
 import NotFound from '../pages/NotFound'
 import PrivacyPolicy from '../pages/PrivacyPolicy'
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
 
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />

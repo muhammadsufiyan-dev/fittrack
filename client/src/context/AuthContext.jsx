@@ -1,5 +1,14 @@
-﻿import { createContext, useEffect, useState } from 'react'
-import { getCurrentUser, loginUser, logoutUser, refreshUser, registerUser, updateProfile as saveProfile } from '../services/authService'
+import { createContext, useEffect, useState } from 'react'
+import {
+  getCurrentUser,
+  googleLogin,
+  loginUser,
+  logoutUser,
+  refreshUser,
+  registerUser,
+  updateProfile as saveProfile,
+  verifyEmail,
+} from '../services/authService'
 import { loadSocial } from '../services/communityService'
 import { loadSettings } from '../services/settingsService'
 
@@ -26,15 +35,15 @@ export function AuthProvider({ children }) {
     return () => window.removeEventListener('ft-session-expired', expire)
   }, [])
 
-  const login = async (credentials) => {
-    setUser(await loginUser(credentials))
+  const startSession = async (request) => {
+    setUser(await request)
     loadSocial().catch(() => {})
   }
 
-  const register = async (details) => {
-    setUser(await registerUser(details))
-    loadSocial().catch(() => {})
-  }
+  const login = (credentials) => startSession(loginUser(credentials))
+  const verify = (details) => startSession(verifyEmail(details))
+  const google = (credential) => startSession(googleLogin(credential))
+  const register = (details) => registerUser(details)
 
   const updateProfile = async (data) => {
     setUser(await saveProfile(user.id, data))
@@ -46,6 +55,6 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, updateProfile, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, login, verify, google, register, updateProfile, logout }}>{children}</AuthContext.Provider>
   )
 }

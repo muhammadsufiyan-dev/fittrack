@@ -25,10 +25,8 @@ const signIn = async ({ token, user }) => {
   return startSession(user)
 }
 
-export const registerUser = async ({ name, email, password, photo = '' }) => {
-  const data = await api.post('/auth/register', { name: name.trim(), email: email.trim(), password, photo, consent: true })
-  return signIn(data)
-}
+export const registerUser = ({ name, email, password, photo = '' }) =>
+  api.post('/auth/register', { name: name.trim(), email: email.trim(), password, photo, consent: true })
 
 export const loginUser = async ({ email, password }) => {
   const data = await api.post('/auth/login', { email: email.trim(), password })
@@ -73,3 +71,9 @@ export const changePassword = async (currentPassword, newPassword) => {
 export const forgotPassword = (email) => api.post('/auth/forgot-password', { email: email.trim() })
 
 export const resetPassword = ({ email, token, password }) => api.post('/auth/reset-password', { email, token, password })
+
+export const verifyEmail = async ({ email, token }) => signIn(await api.post('/auth/verify-email', { email, token }))
+
+export const resendVerification = (email) => api.post('/auth/resend-verification', { email: email.trim() })
+
+export const googleLogin = async (credential) => signIn(await api.post('/auth/google', { credential }))

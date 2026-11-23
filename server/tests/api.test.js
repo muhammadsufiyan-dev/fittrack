@@ -1,4 +1,4 @@
-﻿import assert from 'node:assert/strict'
+import assert from 'node:assert/strict'
 import { after, before, describe, it } from 'node:test'
 import mongoose from 'mongoose'
 
@@ -6,6 +6,7 @@ process.env.NODE_ENV = 'test'
 
 const { default: app } = await import('../src/app.js')
 const { env } = await import('../src/config/env.js')
+const { default: User } = await import('../src/models/User.js')
 
 const testDb = 'fittrack_test'
 const today = new Date().toISOString().slice(0, 10)
@@ -29,7 +30,10 @@ const wipe = async () => {
 }
 
 const signUp = async (name, email) => {
-  const { data } = await call('POST', '/auth/register', { body: { name, email, password: 'Test1234', consent: true } })
+  const password = 'Test1234'
+  await call('POST', '/auth/register', { body: { name, email, password, consent: true } })
+  await User.updateOne({ email }, { emailVerified: true })
+  const { data } = await call('POST', '/auth/login', { body: { email, password } })
   return { token: data.token, id: data.user.id }
 }
 
@@ -65,19 +69,23 @@ describe('auth', () => {
     assert.equal(status, 400)
   })
 
-  it('registers, blocks a duplicate and logs in', async () => {
+  it('registers, needs a verified email and logs in', async () => {
     const body = { name: 'Ali Khan', email: 'ali@example.com', password: 'Test1234', consent: true }
 
     const created = await call('POST', '/auth/register', { body })
     assert.equal(created.status, 201)
-    assert.ok(created.data.token)
-    assert.equal(created.data.user.password, undefined)
+    assert.equal(created.data.token, undefined)
+
+    assert.equal((await call('POST', '/auth/login', { body: { email: 'ali@example.com', password: 'Test1234' } })).status, 403)
+
+    await User.updateOne({ email: 'ali@example.com' }, { emailVerified: true })
 
     assert.equal((await call('POST', '/auth/register', { body })).status, 409)
     assert.equal((await call('POST', '/auth/login', { body: { email: 'ali@example.com', password: 'wrong' } })).status, 401)
 
     const login = await call('POST', '/auth/login', { body: { email: 'ALI@example.com', password: 'Test1234' } })
     assert.equal(login.status, 200)
+    assert.equal(login.data.user.password, undefined)
   })
 
   it('needs a token for private routes', async () => {
