@@ -52,7 +52,6 @@ The first request can be a little slow because the server and database wake up a
     |-- server        Express backend
     |   |-- api           Vercel entry file
     |   |-- docs          API.md with all the endpoints
-    |   |-- scripts       seed script
     |   |-- src
     |   |   |-- controllers
     |   |   |-- middleware
