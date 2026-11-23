@@ -235,3 +235,40 @@
   background: var(--ft-border);
 }
 
+.google-wrap {
+  position: relative;
+  max-width: 400px;
+  height: 46px;
+  overflow: hidden;
+  border-radius: 12px;
+  color-scheme: light;
+}
+
+.google-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  height: 100%;
+  border: 1px solid var(--ft-border);
+  border-radius: 12px;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  font-weight: 600;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.google-wrap:hover .google-face {
+  border-color: var(--ft-teal);
+  background: rgba(20, 184, 166, 0.08);
+}
+
+.google-hit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.01;
+  transform: scaleY(1.15);
+}
