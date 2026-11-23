@@ -11,13 +11,6 @@ I made this as my Aptech Software Engineering eProject using the MERN stack (Mon
 
 The first request can be a little slow because the server and database wake up after some idle time.
 
-## Demo account
-
-    Email: demo@fittrack.com
-    Password: Demo@123
-
-You can also click "Use demo account" on the login page.
-
 ## What you can do
 
 - Register, log in and edit your profile
@@ -89,10 +82,6 @@ Open the new `.env` file and fill these values:
 Then start the server:
 
     npm run dev
-
-To add the demo account and some sample data:
-
-    npm run seed
 
 ### 2. Frontend
 

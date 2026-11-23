@@ -1,17 +1,8 @@
-﻿import seedUsers from '../data/users.json'
 import { storage } from '../utils/storage'
 import { api, clearToken, getToken, setToken } from './api'
-import { createStore } from './localStore'
 import { loadSettings } from './settingsService'
 
 const SESSION_KEY = 'ft_session'
-const users = createStore('ft_users', seedUsers)
-
-const withoutPassword = (user) => {
-  const safe = { ...user }
-  delete safe.password
-  return safe
-}
 
 const startSession = (user) => {
   storage.set(SESSION_KEY, JSON.stringify(user))
@@ -61,12 +52,6 @@ export const getCurrentUser = () => {
 export const refreshUser = async () => {
   const { user } = await api.get('/auth/me')
   return startSession(user)
-}
-
-export const getUsers = () => {
-  const me = getCurrentUser()
-  const list = users.read().map(withoutPassword)
-  return me && !list.some((item) => item.id === me.id) ? [...list, me] : list
 }
 
 export const updateProfile = async (id, data) => {

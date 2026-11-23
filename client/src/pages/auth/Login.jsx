@@ -6,8 +6,6 @@ import PasswordField from '../../components/auth/PasswordField'
 import useAuth from '../../hooks/useAuth'
 import { isEmail } from '../../utils/validators'
 
-const demoAccount = { email: 'demo@fittrack.com', password: 'Demo@123' }
-
 function Login() {
   const { user, login } = useAuth()
   const location = useLocation()
@@ -86,14 +84,6 @@ function Login() {
           {loading ? 'Logging in...' : 'Log in'}
         </button>
       </form>
-
-      <div className="auth-divider">or</div>
-
-      <div className="text-center">
-        <button type="button" className="demo-chip" onClick={() => setForm(demoAccount)}>
-          <i className="bi bi-magic"></i>Use demo account
-        </button>
-      </div>
     </AuthShell>
   )
 }

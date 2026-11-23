@@ -1,6 +1,0 @@
-﻿[
-  { "id": "r1", "title": "Morning workout", "type": "workout", "time": "06:30", "days": [0, 1, 2, 3, 4], "enabled": true, "note": "Warm up for 5 minutes first" },
-  { "id": "r2", "title": "Drink water", "type": "water", "time": "11:00", "days": [0, 1, 2, 3, 4, 5, 6], "enabled": true, "note": "" },
-  { "id": "r3", "title": "Weekly weigh-in", "type": "weigh", "time": "08:00", "days": [6], "enabled": true, "note": "Before breakfast" },
-  { "id": "r4", "title": "Log dinner", "type": "meal", "time": "21:00", "days": [0, 1, 2, 3, 4, 5, 6], "enabled": false, "note": "" }
-]
