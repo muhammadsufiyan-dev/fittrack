@@ -178,7 +178,7 @@ function Settings() {
             <div className="sx-row">
               <div>
                 <strong>Download my data</strong>
-                <small>Everything you logged, in one file</small>
+                <small>Everything you logged, as a PDF file</small>
               </div>
               <button type="button" className="btn btn-outline-secondary" onClick={() => exportData(user)}>
                 <i className="bi bi-download me-1"></i>Download
