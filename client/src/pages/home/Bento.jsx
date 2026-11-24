@@ -165,10 +165,10 @@ function Bento() {
             <div className="ft-card ft-hover bento-card p-4 p-md-5">
               <div className="row align-items-center g-4">
                 <div className="col-md-6">
-                  <span className="ft-badge mb-3">Coming soon</span>
+                  <span className="ft-badge mb-3">Built in</span>
                   <h3 className="h4">Ask your fitness guide</h3>
                   <p className="text-secondary mb-0">
-                    Get quick answers about workouts, nutrition and recovery from the built-in fitness chatbot.
+                    Chat with FitBot inside your dashboard. It reads your own FitTrack data, explains every page and shares workout, nutrition and recovery tips.
                   </p>
                 </div>
                 <div className="col-md-6">

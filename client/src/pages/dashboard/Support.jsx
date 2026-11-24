@@ -10,7 +10,7 @@ import { formatDate } from '../../utils/format'
 const emptyForm = { type: 'question', subject: '', message: '' }
 
 const contacts = [
-  { icon: 'bi-envelope', title: 'Email us', text: 'support@fittrack.com' },
+  { icon: 'bi-envelope', title: 'Email us', text: 'sufiyanshahid.dev@gmail.com' },
   { icon: 'bi-clock', title: 'Reply time', text: 'Within 1 working day' },
   { icon: 'bi-calendar-week', title: 'Support hours', text: 'Mon to Sat, 9 am to 6 pm' },
 ]
