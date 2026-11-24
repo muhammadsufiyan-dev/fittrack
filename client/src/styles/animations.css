@@ -124,12 +124,3 @@
     opacity: 0;
   }
 }
-
-@keyframes ecg-run {
-  from {
-    stroke-dashoffset: 0.22;
-  }
-  to {
-    stroke-dashoffset: -1;
-  }
-}
