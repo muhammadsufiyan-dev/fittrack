@@ -10,14 +10,16 @@ function PrivacyPolicy() {
         <h2>What we collect</h2>
         <ul>
           <li>Your name and email address when you create an account.</li>
+          <li>If you continue with Google, the name and verified email address Google shares with us. We never see your Google password.</li>
           <li>The workouts, meals and measurements you choose to log.</li>
           <li>Your theme preference, so the site looks the way you left it.</li>
+          <li>Your community posts, comments and the members you follow. Other members can see these.</li>
         </ul>
 
         <h2>How we use it</h2>
         <p>
           We use your information only to run FitTrack for you: to sign you in, show your own data and build your
-          charts and reports. We do not sell your data.
+          charts and reports. We use your email only to verify your account and to send password reset links. We do not sell your data.
         </p>
 
         <h2>Your choices</h2>
@@ -29,7 +31,7 @@ function PrivacyPolicy() {
 
         <h2>Keeping your data safe</h2>
         <p>
-          Passwords are never stored in plain text on a live system, and your data is only visible to you unless you
+          Passwords are stored as one-way hashes, never in plain text, and your data is only visible to you unless you
           choose to share it.
         </p>
 

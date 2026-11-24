@@ -4,16 +4,14 @@ FitTrack is a fitness tracker web app. You can log your workouts and meals, trac
 
 I made this as my Aptech Software Engineering eProject using the MERN stack (MongoDB, Express, React and Node).
 
-## Live links
+## Live website
 
-- Website: https://muhammadsufiyan-dev.github.io/fittrack/
-- API: https://fittrack-backend-rouge.vercel.app/api
-
-The first request can be a little slow because the server and database wake up after some idle time.
+https://muhammadsufiyan-dev.github.io/fittrack/
 
 ## What you can do
 
-- Register, log in and edit your profile
+- Create an account, verify your email and log in (or continue with Google)
+- Change your password, or reset it by email if you forget it
 - Add, edit and delete workouts
 - Log meals and see calories and macros
 - Track your weight and body progress
@@ -22,7 +20,8 @@ The first request can be a little slow because the server and database wake up a
 - See charts and analytics for your week
 - Download reports as CSV
 - Search across your workouts, meals and goals
-- Post in the community, reply, like and follow other members
+- Post in the community, edit your posts, reply, like and follow other members
+- Delete comments on your own posts
 - Get notifications for goals, reminders and followers
 - Change units, theme and notification settings
 - Export or clear your data and delete your account
@@ -33,9 +32,9 @@ The first request can be a little slow because the server and database wake up a
 - Frontend: React, Vite, React Router, Bootstrap, Recharts
 - Backend: Node.js, Express
 - Database: MongoDB Atlas with Mongoose
-- Login: JWT tokens and bcrypt for passwords
+- Login: JWT tokens, bcrypt for passwords and Google sign-in
+- Emails: Nodemailer
 - Security: helmet, CORS and rate limiting
-- Hosting: GitHub Pages for the frontend, Vercel for the backend
 
 ## Folder structure
 
@@ -45,21 +44,22 @@ The first request can be a little slow because the server and database wake up a
     |   `-- src
     |       |-- components
     |       |-- context
+    |       |-- layouts
     |       |-- pages
+    |       |-- routes
     |       |-- services      API calls
     |       |-- styles
     |       `-- utils
-    |-- server        Express backend
-    |   |-- api           Vercel entry file
-    |   |-- docs          API.md with all the endpoints
-    |   |-- src
-    |   |   |-- controllers
-    |   |   |-- middleware
-    |   |   |-- models
-    |   |   |-- routes
-    |   |   `-- utils
-    |   `-- tests
-    `-- .github/workflows   auto deploy for the frontend
+    `-- server        Express backend
+        |-- docs          API.md with all the endpoints
+        |-- src
+        |   |-- config
+        |   |-- controllers
+        |   |-- middleware
+        |   |-- models
+        |   |-- routes
+        |   `-- utils
+        `-- tests
 
 ## Run it on your computer
 
@@ -77,6 +77,15 @@ Open the new `.env` file and fill these values:
     PORT=5000
     JWT_SECRET=any long random text (at least 32 characters)
     CLIENT_URL=http://localhost:5173
+    APP_URL=http://localhost:5173/fittrack
+
+These are optional:
+
+    MAIL_USER=your Gmail address
+    MAIL_PASS=a Gmail app password
+    GOOGLE_CLIENT_ID=your Google OAuth client id
+
+Without `MAIL_USER` and `MAIL_PASS`, no real email is sent. The verification and reset links are printed in the backend terminal instead, so you can copy the link from there and open it in the browser.
 
 Then start the server:
 
@@ -91,6 +100,8 @@ Open a second terminal.
     copy .env.example .env
     npm run dev
 
+If you use Google sign-in, put the same client id in `client/.env` as `VITE_GOOGLE_CLIENT_ID`.
+
 Now open http://localhost:5173/fittrack/ in your browser.
 
 ## Tests
@@ -103,12 +114,6 @@ The backend has automated tests. They use a separate database called fittrack_te
 ## API
 
 All the endpoints are listed in `server/docs/API.md`.
-
-## Deployment
-
-- The frontend is built and deployed by GitHub Actions every time I push to main.
-- The backend is deployed on Vercel from the `server` folder.
-- The secrets (database link and JWT secret) are set in the Vercel settings and are not in the code.
 
 ## Author
 

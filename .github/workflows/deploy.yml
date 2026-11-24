@@ -32,6 +32,7 @@ jobs:
         env:
           VITE_API_URL: https://fittrack-backend-rouge.vercel.app/api
           VITE_GOOGLE_CLIENT_ID: 402673730675-29nso8keskmokcdngkl6ett89h3r9fj4.apps.googleusercontent.com
+          VITE_FORMSPREE_ID: xgakpqer
       - uses: actions/upload-pages-artifact@v3
         with:
           path: client/dist

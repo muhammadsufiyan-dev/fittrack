@@ -1,9 +1,10 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import FormGroup from '../../components/ui/FormGroup'
 import PageHeader from '../../components/ui/PageHeader'
 import useConfirm from '../../hooks/useConfirm'
-import { addRequest, deleteRequest, getRequests, supportTypes } from '../../services/supportService'
+import useAuth from '../../hooks/useAuth'
+import { addRequest, deleteRequest, getRequests, sendToFormspree, supportTypes } from '../../services/supportService'
 import { formatDate } from '../../utils/format'
 
 const emptyForm = { type: 'question', subject: '', message: '' }
@@ -19,6 +20,8 @@ function Support() {
   const [errors, setErrors] = useState({})
   const [requests, setRequests] = useState([])
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const { user } = useAuth()
   const confirm = useConfirm()
 
   useEffect(() => {
@@ -39,10 +42,18 @@ function Support() {
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
-    await addRequest({ type: form.type, subject: form.subject.trim(), message: form.message.trim() })
-    setForm(emptyForm)
-    setSent(true)
-    setRequests(await getRequests())
+    setSending(true)
+
+    try {
+      const data = { type: form.type, subject: form.subject.trim(), message: form.message.trim() }
+      await addRequest(data)
+      await sendToFormspree({ ...data, name: user.name, email: user.email })
+      setForm(emptyForm)
+      setSent(true)
+      setRequests(await getRequests())
+    } finally {
+      setSending(false)
+    }
   }
 
   const handleDelete = async (item) => {
@@ -119,8 +130,8 @@ function Support() {
               ></textarea>
             </FormGroup>
 
-            <button type="submit" className="btn btn-primary">
-              <i className="bi bi-send me-1"></i>Send message
+            <button type="submit" className="btn btn-primary" disabled={sending}>
+              <i className="bi bi-send me-1"></i>{sending ? 'Sending...' : 'Send message'}
             </button>
           </form>
         </div>
