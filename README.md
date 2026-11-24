@@ -25,6 +25,59 @@ https://muhammadsufiyan-dev.github.io/fittrack/
 - Export or clear your data and delete your account
 - Send a message from the support page
 
+## User guide
+
+### 1. Create an account and log in
+
+1. Open the website and click Get started.
+2. Enter your name, email and a password (8 characters with a letter and a number), accept the privacy policy and register.
+3. A verification email arrives in your inbox. Open the link in it, then log in. You cannot log in before the email is verified.
+4. You can also use Continue with Google, which needs no verification.
+5. If you forget your password, click Forgot password on the login page. A reset link arrives by email and works for 30 minutes. When you are logged in, you can change your password from Settings.
+
+### 2. Dashboard
+
+The first page after login. It shows your stats, the weekly chart, your calories and macros, your goals and your latest workouts. The search box on top finds your workouts, meals, goals and other members.
+
+### 3. Workouts
+
+Click Add workout and enter the name, category, date, duration and calories. You can add exercises with sets, reps and weight. Open a workout to see its details, and edit or delete it from there.
+
+### 4. Nutrition
+
+Add a meal for a day (breakfast, lunch, dinner or snack) with its food items. Calories, protein, carbs and fats are added up for each day.
+
+### 5. Progress
+
+Save your weight, body fat and body measurements. The chart shows how they change over time.
+
+### 6. Goals
+
+Create a goal with a start value, a target and a deadline. The progress bar fills automatically from the data you log, so there is nothing to update by hand.
+
+### 7. Reminders
+
+Set a reminder for a workout, meal, water or weigh-in. Choose the time and the days of the week, and switch it on or off whenever you like.
+
+### 8. Analytics and reports
+
+Analytics shows charts for the last 7, 30 or 90 days. Reports gives you a summary that you can print, save as PDF or download as CSV.
+
+### 9. Community
+
+Share a post under a topic, and edit it later if you need to. You can like and comment on other posts, follow members and open their profiles. On your own post you can delete any comment, and every member can delete their own comments.
+
+### 10. Notifications and FitBot
+
+The bell shows new followers, replies to your posts, goal progress and reminders. You can mark them as read or dismiss them. FitBot is the chat assistant inside the dashboard. Ask it about your own data, about any page or for fitness tips.
+
+### 11. Profile and settings
+
+Edit your name, city, bio and photo from Profile. You can choose whether other members can find you. Settings has the theme (light or dark), units, notifications, change password, data export, clearing your data and deleting your account.
+
+### 12. Support
+
+Open Support from the menu, choose a type, write a subject and a message and click Send message. It is saved under Your messages and emailed to the support inbox.
 ## Tech used
 
 - Frontend: React, Vite, React Router, Bootstrap, Recharts
