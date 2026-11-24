@@ -1,8 +1,7 @@
-﻿import { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { resizeImage } from '../../utils/image'
-import Avatar from '../ui/Avatar'
 
-function PhotoPicker({ value, name, onChange }) {
+function PhotoPicker({ value, onChange }) {
   const input = useRef(null)
   const [error, setError] = useState('')
 
@@ -25,11 +24,15 @@ function PhotoPicker({ value, name, onChange }) {
   }
 
   return (
-    <div className="photo-picker">
-      <Avatar user={{ name: name.trim() || '?', photo: value }} className="photo-preview" />
+    <div className="pp-row">
+      {value && (
+        <span className="pp-thumb">
+          <img src={value} alt="" />
+        </span>
+      )}
 
       <div>
-        <div className="photo-actions">
+        <div className="pp-buttons">
           <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => input.current.click()}>
             <i className="bi bi-camera me-1"></i>
             {value ? 'Change photo' : 'Add photo'}
@@ -40,7 +43,7 @@ function PhotoPicker({ value, name, onChange }) {
             </button>
           )}
         </div>
-        <small className="text-secondary">{error || 'Optional. JPG or PNG.'}</small>
+        <small className="text-secondary d-block mt-1">{error || 'Optional. JPG or PNG.'}</small>
       </div>
 
       <input ref={input} type="file" accept="image/*" hidden onChange={handlePick} />
