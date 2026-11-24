@@ -1,47 +1,48 @@
 # FitTrack - client
 
-React + Vite frontend for the FitTrack fitness tracker. Data is mocked in the browser (localStorage) for now.
+This is the React frontend of FitTrack, a fitness tracker with workouts, meals, goals, reminders, charts and a small community.
 
-## Run
+It does not store any data itself. Every page talks to the Express API in the `server` folder, and the API saves everything in MongoDB Atlas.
 
-```
-npm install
-npm run dev
-```
+## Tech used
 
-Build for production with `npm run build`.
+- React 19 with Vite
+- React Router (HashRouter, so it works on GitHub Pages)
+- Bootstrap 5 and Bootstrap Icons
+- Recharts for the charts
+- Google Identity Services for "Continue with Google"
+- Formspree for the support form
 
-Demo login: `demo@fittrack.com` / `Demo@123`
+## Folder structure
 
-## Folder guide
+    src
+    |-- components    buttons, cards, modals, forms and other small parts
+    |-- context       login state and theme
+    |-- hooks         shared hooks
+    |-- layouts       website layout and dashboard layout
+    |-- pages         one file for each page
+    |-- routes        all the routes and the login guard
+    |-- services      API calls for each feature
+    |-- styles        CSS files
+    `-- utils         small helper functions
 
-```
-src/
-  components/
-    layout/      Navbar, Footer, Sidebar, UserMenu, Brand, ThemeToggle
-    ui/          Modal, PageHeader, StatCard, Loader, EmptyState, ComingSoon, Reveal, CountUp, Ecg
-    auth/        AuthShell, FormField, PasswordField
-    charts/      ActivityRings, WeeklyChart, MacroChart
-    workouts/    WorkoutCard, WorkoutForm
-    nutrition/   MealCard, NutritionForm
-  pages/
-    home/        Landing page sections
-    auth/        Login, Register
-    dashboard/   All logged-in pages
-  layouts/       PublicLayout, DashboardLayout
-  routes/        AppRoutes, ProtectedRoute, ScrollToTop
-  context/       ThemeContext, AuthContext
-  hooks/         useTheme, useAuth, useGoTo
-  services/      Mock API functions (swap for axios calls later)
-  data/          Mock JSON data
-  utils/         Small helpers
-  styles/        variables, base, animations, layout, components, home, auth, dashboard
-```
+## Setup
 
-## Preloader
+    npm install
+    copy .env.example .env
 
-The loading screen is `components/ui/Preloader.jsx` with its styles in `styles/preloader.css`.
+Open `.env` and fill these values:
 
-## Deploy (GitHub Pages)
+    VITE_API_URL=http://localhost:5000/api
+    VITE_GOOGLE_CLIENT_ID=your Google OAuth ID (optional)
+    VITE_FORMSPREE_ID=your Formspree form ID (optional)
 
-`vite.config.js` sets `base: '/fittrack/'`. Change it if your repository has a different name.
+Without `VITE_GOOGLE_CLIENT_ID` the Google button is hidden. Without `VITE_FORMSPREE_ID` the support message is still saved, it is just not emailed.
+
+## Commands
+
+    npm run dev        start on http://localhost:5173/fittrack/
+    npm run build      make the production build in dist
+    npm run preview    open the production build locally
+
+Start the API from the `server` folder first, otherwise the pages cannot load any data.
