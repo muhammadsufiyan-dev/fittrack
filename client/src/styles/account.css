@@ -1,4 +1,4 @@
-﻿.prof-card {
+.prof-card {
   overflow: hidden;
   padding: 0;
 }
@@ -589,4 +589,21 @@
   .faq-box .faq-a {
     padding: 0 1rem 1rem;
   }
+}
+
+.prof-bio {
+  margin: 0.6rem 0 1.1rem;
+}
+
+.prof-chips {
+  margin-bottom: 1.2rem;
+}
+
+.prof-body .mini-stats {
+  gap: 0.6rem;
+  margin: 0 0 1.2rem;
+}
+
+.prof-body .mini-stats div {
+  padding: 0.85rem 0.4rem;
 }
