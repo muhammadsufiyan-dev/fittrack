@@ -303,3 +303,27 @@
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
+.ecg .ecg-glow,
+.ecg .ecg-pulse {
+  stroke-dasharray: 0.22 1;
+  filter: none;
+  animation: ecg-run 3.6s linear infinite;
+}
+
+.ecg .ecg-glow {
+  stroke: rgba(20, 184, 166, 0.3);
+  stroke-width: 10;
+}
+
+.ecg .ecg-pulse {
+  stroke-width: 3;
+}
+
+[data-bs-theme='dark'] .ecg .ecg-glow {
+  stroke: rgba(45, 212, 191, 0.35);
+}
+
+[data-bs-theme='dark'] .ecg .ecg-pulse {
+  filter: none;
+}

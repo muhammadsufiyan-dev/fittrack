@@ -125,13 +125,11 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+@keyframes ecg-run {
+  from {
+    stroke-dashoffset: 0.22;
+  }
+  to {
+    stroke-dashoffset: -1;
   }
 }
