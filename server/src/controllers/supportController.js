@@ -1,4 +1,4 @@
-﻿import Support, { supportTypes } from '../models/Support.js'
+import Support, { supportTypes } from '../models/Support.js'
 import AppError from '../utils/AppError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import { pick } from '../utils/fields.js'
