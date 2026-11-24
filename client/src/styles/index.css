@@ -1,4 +1,4 @@
-﻿@import './variables.css';
+@import './variables.css';
 @import './base.css';
 @import './animations.css';
 @import './layout.css';
@@ -24,6 +24,7 @@
 @import './social.css';
 @import './chatbot.css';
 @import './responsive.css';
+@import './settings.css';
 
 
 

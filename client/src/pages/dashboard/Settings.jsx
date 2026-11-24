@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ChangePassword from '../../components/account/ChangePassword'
 import Avatar from '../../components/ui/Avatar'
@@ -18,6 +18,16 @@ const themes = [
 const unitRows = [
   { key: 'weight', label: 'Weight', text: 'Workouts and body weight', choices: [['kg', 'kg'], ['lb', 'lb']] },
   { key: 'length', label: 'Body measurements', text: 'Chest, waist, hips and more', choices: [['cm', 'cm'], ['in', 'in']] },
+]
+
+const sections = [
+  { id: 'appearance', label: 'Appearance', icon: 'bi-palette' },
+  { id: 'units', label: 'Units', icon: 'bi-rulers' },
+  { id: 'notifications', label: 'Notifications', icon: 'bi-bell' },
+  { id: 'privacy', label: 'Privacy', icon: 'bi-shield-lock' },
+  { id: 'password', label: 'Password', icon: 'bi-key' },
+  { id: 'data', label: 'Your data', icon: 'bi-database' },
+  { id: 'danger', label: 'Danger zone', icon: 'bi-exclamation-triangle' },
 ]
 
 function Switch({ checked, onChange, label }) {
@@ -47,6 +57,29 @@ function Settings() {
   const confirm = useConfirm()
   const navigate = useNavigate()
   const [settings, setSettings] = useState(getSettings)
+  const [active, setActive] = useState('appearance')
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting)
+        if (visible.length > 0) setActive(visible[0].target.id)
+      },
+      { rootMargin: '-15% 0px -70% 0px' }
+    )
+
+    sections.forEach((item) => {
+      const element = document.getElementById(item.id)
+      if (element) observer.observe(element)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  const goTo = (id) => {
+    setActive(id)
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   const update = (next) => {
     setSettings(next)
@@ -64,7 +97,7 @@ function Settings() {
       icon: 'bi-eraser',
     })
     if (ok) {
-      await clearData()
+      clearData()
       window.location.reload()
     }
   }
@@ -77,7 +110,8 @@ function Settings() {
       icon: 'bi-trash3',
     })
     if (ok) {
-      await removeUser(user.id)
+      removeUser(user.id)
+      clearData()
       logout()
       navigate('/')
     }
@@ -98,9 +132,23 @@ function Settings() {
         </Link>
       </div>
 
-      <div className="sx-grid">
-        <div className="sx-col">
-          <section className="ft-card sx-card">
+      <div className="sx-layout">
+        <nav className="sx-nav" aria-label="Settings sections">
+          {sections.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={`sx-link ${active === item.id ? 'active' : ''} ${item.id === 'danger' ? 'danger' : ''}`}
+              onClick={() => goTo(item.id)}
+            >
+              <i className={`bi ${item.icon}`}></i>
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="sx-main">
+          <section id="appearance" className="ft-card sx-card">
             <h2 className="sx-title">
               <i className="bi bi-palette"></i>Appearance
             </h2>
@@ -113,7 +161,7 @@ function Settings() {
             </div>
           </section>
 
-          <section className="ft-card sx-card">
+          <section id="units" className="ft-card sx-card">
             <h2 className="sx-title">
               <i className="bi bi-rulers"></i>Units
             </h2>
@@ -133,27 +181,7 @@ function Settings() {
             <p className="sx-note">Your saved data does not change. Only how it is shown and entered.</p>
           </section>
 
-          <section className="ft-card sx-card">
-            <h2 className="sx-title">
-              <i className="bi bi-shield-lock"></i>Privacy
-            </h2>
-            <div className="sx-row">
-              <div>
-                <strong>Let others find me</strong>
-                <small>Members can see your name, city and bio</small>
-              </div>
-              <Switch
-                checked={user.discoverable !== false}
-                onChange={() => updateProfile({ discoverable: user.discoverable === false })}
-                label="Let others find me"
-              />
-            </div>
-            <p className="sx-note">Your workouts, meals and progress are always private.</p>
-          </section>
-        </div>
-
-        <div className="sx-col">
-          <section className="ft-card sx-card">
+          <section id="notifications" className="ft-card sx-card">
             <h2 className="sx-title">
               <i className="bi bi-bell"></i>Notifications
             </h2>
@@ -171,7 +199,29 @@ function Settings() {
             ))}
           </section>
 
-          <section className="ft-card sx-card">
+          <section id="privacy" className="ft-card sx-card">
+            <h2 className="sx-title">
+              <i className="bi bi-shield-lock"></i>Privacy
+            </h2>
+            <div className="sx-row">
+              <div>
+                <strong>Let others find me</strong>
+                <small>Members can see your name, city and bio</small>
+              </div>
+              <Switch
+                checked={user.discoverable !== false}
+                onChange={() => updateProfile({ discoverable: user.discoverable === false })}
+                label="Let others find me"
+              />
+            </div>
+            <p className="sx-note">Your workouts, meals and progress are always private.</p>
+          </section>
+
+          <div id="password">
+            <ChangePassword />
+          </div>
+
+          <section id="data" className="ft-card sx-card">
             <h2 className="sx-title">
               <i className="bi bi-database"></i>Your data
             </h2>
@@ -185,37 +235,34 @@ function Settings() {
               </button>
             </div>
           </section>
+
+          <section id="danger" className="ft-card sx-card sx-danger">
+            <h2 className="sx-title">
+              <i className="bi bi-exclamation-triangle"></i>Danger zone
+            </h2>
+            <div className="sx-row">
+              <div>
+                <strong>Clear my data</strong>
+                <small>Removes workouts, meals, progress, goals and reminders</small>
+              </div>
+              <button type="button" className="btn btn-outline-danger" onClick={handleClear}>
+                Clear data
+              </button>
+            </div>
+            <div className="sx-row">
+              <div>
+                <strong>Delete account</strong>
+                <small>Permanently removes your account and data</small>
+              </div>
+              <button type="button" className="btn btn-danger" onClick={handleDelete}>
+                Delete account
+              </button>
+            </div>
+          </section>
         </div>
       </div>
-
-      <ChangePassword />
-
-      <section className="ft-card sx-card sx-danger">
-        <h2 className="sx-title">
-          <i className="bi bi-exclamation-triangle"></i>Danger zone
-        </h2>
-        <div className="sx-row">
-          <div>
-            <strong>Clear my data</strong>
-            <small>Removes workouts, meals, progress, goals and reminders</small>
-          </div>
-          <button type="button" className="btn btn-outline-danger" onClick={handleClear}>
-            Clear data
-          </button>
-        </div>
-        <div className="sx-row">
-          <div>
-            <strong>Delete account</strong>
-            <small>Permanently removes your account and data</small>
-          </div>
-          <button type="button" className="btn btn-danger" onClick={handleDelete}>
-            Delete account
-          </button>
-        </div>
-      </section>
     </>
   )
 }
 
 export default Settings
-

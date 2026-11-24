@@ -1,0 +1,134 @@
+.sx-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.sx-nav {
+  position: sticky;
+  top: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid var(--ft-border);
+  border-radius: 16px;
+  background: var(--ft-surface);
+}
+
+.sx-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ft-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: left;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sx-link i {
+  font-size: 1.05rem;
+}
+
+.sx-link:hover {
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
+}
+
+.sx-link.active {
+  background: rgba(20, 184, 166, 0.14);
+  color: var(--ft-primary);
+}
+
+.sx-link.danger:hover,
+.sx-link.danger.active {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.sx-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.sx-main > * {
+  scroll-margin-top: 6rem;
+}
+
+.sx-main .sx-card {
+  padding: 1.25rem 1.5rem;
+}
+
+.sx-row > .btn {
+  flex-shrink: 0;
+  min-width: 150px;
+}
+
+.sx-row > .seg {
+  margin-left: auto;
+}
+
+#password form {
+  max-width: 560px;
+}
+
+@media (max-width: 991.98px) {
+  .sx-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sx-nav {
+    position: static;
+    flex-direction: row;
+    gap: 0.35rem;
+    padding: 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .sx-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sx-link {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .sx-main > * {
+    scroll-margin-top: 5rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .sx-main .sx-card {
+    padding: 1rem;
+  }
+
+  .sx-row {
+    flex-wrap: wrap;
+  }
+
+  .sx-row > .seg {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sx-row > .seg .seg-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .sx-row > .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
