@@ -47,7 +47,14 @@ function Support() {
     try {
       const data = { type: form.type, subject: form.subject.trim(), message: form.message.trim() }
       await addRequest(data)
-      await sendToFormspree({ ...data, name: user.name, email: user.email })
+      await sendToFormspree({
+        name: user.name,
+        email: user.email,
+        type: data.type,
+        topic: data.subject,
+        message: data.message,
+        _subject: `FitTrack ${data.type}: ${data.subject}`,
+      })
       setForm(emptyForm)
       setSent(true)
       setRequests(await getRequests())
