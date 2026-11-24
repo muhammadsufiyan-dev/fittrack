@@ -1,4 +1,4 @@
-﻿.dash-hero {
+.dash-hero {
   position: relative;
   display: flex;
   align-items: center;
@@ -181,14 +181,5 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.6rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dash-hero,
-  .dash-hero::before,
-  .mini-bar span,
-  .ft-progress .progress-bar {
-    animation: none;
   }
 }

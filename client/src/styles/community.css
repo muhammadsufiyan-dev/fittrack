@@ -1,4 +1,4 @@
-﻿.comm-layout {
+.comm-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
   gap: 1.25rem;
@@ -415,12 +415,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .post-card,
-  .post-btn.like.on i {
-    animation: none;
-  }
-}
+
 
 .composer {
   display: flex;

@@ -1,4 +1,4 @@
-﻿.ft-modal-box {
+.ft-modal-box {
   max-height: calc(100dvh - 2rem);
 }
 
@@ -521,15 +521,5 @@ textarea.form-control {
 
   .date-pick {
     width: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cal,
-  .cal-days,
-  .ex-card,
-  .exercise-row,
-  .form-error {
-    animation: none;
   }
 }

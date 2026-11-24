@@ -137,16 +137,3 @@
     stroke-dashoffset: 0;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .loader-word,
-  .loader-fill,
-  .loader-gradient {
-    animation: none;
-  }
-
-  .loader-ecg path {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-}

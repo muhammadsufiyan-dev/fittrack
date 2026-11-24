@@ -1,4 +1,4 @@
-﻿.search-box {
+.search-box {
   position: relative;
   display: flex;
   gap: 0.6rem;
@@ -96,11 +96,5 @@
 @media (max-width: 575.98px) {
   .search-box .btn {
     display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .result-group > div {
-    animation: none;
   }
 }

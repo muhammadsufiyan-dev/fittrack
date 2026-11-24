@@ -1,4 +1,4 @@
-﻿body::before,
+body::before,
 body::after {
   content: '';
   position: fixed;
@@ -234,14 +234,5 @@ body::after {
   body::before,
   body::after {
     display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before,
-  body::after,
-  .ft-banner,
-  .ft-banner::before {
-    animation: none;
   }
 }

@@ -1,4 +1,4 @@
-﻿.pfp {
+.pfp {
   display: grid;
   flex-shrink: 0;
   place-items: center;
@@ -352,12 +352,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .person-card,
-  .theme-card {
-    transition: none;
-  }
-}
+
 
 .sx-top {
   display: flex;

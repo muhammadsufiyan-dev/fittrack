@@ -344,16 +344,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .header-title,
-  .theme-btn i,
-  .bell-btn:hover i,
-  .account-card,
-  .account-link,
-  .side-link {
-    animation: none;
-  }
-}
+
 
 .app-sidebar {
   padding: 0.9rem;

@@ -1,4 +1,4 @@
-﻿.day-bar {
+.day-bar {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -255,12 +255,5 @@
   .macro-value {
     margin: 0.25rem 0 0.5rem;
     font-size: 1.6rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cal-value,
-  .day-today {
-    animation: none;
   }
 }

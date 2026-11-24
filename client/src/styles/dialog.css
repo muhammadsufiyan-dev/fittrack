@@ -1,4 +1,4 @@
-﻿.confirm-overlay {
+.confirm-overlay {
   position: fixed;
   inset: 0;
   z-index: 2000;
@@ -128,14 +128,5 @@
   }
   75% {
     transform: rotate(-6deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .confirm-overlay,
-  .confirm-box,
-  .confirm-icon::after,
-  .confirm-icon i {
-    animation: none;
   }
 }

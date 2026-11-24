@@ -1,4 +1,4 @@
-﻿.bl {
+.bl {
   display: block;
   width: 100%;
   height: 100%;
@@ -566,22 +566,5 @@
   .bot-panel,
   .bot-hello {
     display: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bl,
-  .bl *,
-  .bot-fab::before,
-  .bot-fab::after,
-  .bot-logo::after,
-  .bot-head,
-  .bot-dot,
-  .bot-typing span,
-  .bot-panel,
-  .bot-row,
-  .bot-chips,
-  .bot-hello {
-    animation: none !important;
   }
 }

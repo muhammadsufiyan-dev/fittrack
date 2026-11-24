@@ -1,4 +1,4 @@
-﻿.form-check-input:checked {
+.form-check-input:checked {
   border-color: var(--ft-teal);
   background-color: var(--ft-teal);
 }
@@ -468,12 +468,5 @@
 
   .time-input {
     max-width: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rem-hero,
-  .rem-row {
-    animation: none;
   }
 }

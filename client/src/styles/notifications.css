@@ -1,4 +1,4 @@
-﻿.bell-btn {
+.bell-btn {
   position: relative;
 }
 
@@ -381,16 +381,5 @@
     width: 42px;
     height: 42px;
     font-size: 1.15rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nc,
-  .bell-badge,
-  .orb-ring,
-  .orb-core i,
-  .orb-core b,
-  .nc-dot {
-    animation: none;
   }
 }
