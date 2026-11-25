@@ -1,10 +1,11 @@
-﻿import { formatDate, shiftDate, todayISO } from '../utils/format'
+import { formatDate, shiftDate, todayISO } from '../utils/format'
 import { showWeight } from '../utils/units'
 import { getGoals } from './goalService'
 import { getAllLogs } from './nutritionService'
 import { getEntries } from './progressService'
 import { getReminders } from './reminderService'
 import { getWorkouts } from './workoutService'
+import { knowledgeIntents } from './fitnessKnowledge'
 
 export const suggestions = [
   'How are you?',
@@ -13,6 +14,8 @@ export const suggestions = [
   'How do I add a meal?',
   'Beginner workout plan',
   'How to lose weight?',
+  'What is protein?',
+  'Benefits of creatine',
   'Give me a tip',
   'What can you do?',
 ]
@@ -288,7 +291,8 @@ const intents = [
   },
   {
     words: ['forgot password', 'reset password', 'change password', 'password'],
-    reply: answer('FitTrack does not have password reset yet. If you are locked out or need help, send us a message from Support.', [
+    reply: answer('On the login page press Forgot password and we email you a reset link. When you are logged in, open Settings and use Change password. Still stuck? Send us a message from Support.', [
+      { label: 'Open settings', to: '/settings' },
       { label: 'Contact support', to: '/support' },
     ]),
   },
@@ -522,22 +526,17 @@ const intents = [
     ),
   },
   {
-    words: ['creatine', 'supplement', 'whey', 'protein powder'],
-    reply: answer(
-      'Supplements are optional. Good food, sleep and training matter far more. Protein powder and creatine are common but not needed for everyone. Talk to a doctor before taking any, especially if you have a health condition.'
-    ),
-  },
-  {
     words: ['consistent', 'consistency', 'habit', 'stay motivated', 'stick to'],
     reply: answer(
       'Consistency beats intensity:\n- Plan workouts like appointments\n- Start small, even 15 minutes\n- Use Reminders and a weekly goal\n- Watch your streak grow\nMissing one day is fine. Just do not miss two.',
       [{ label: 'Open reminders', to: '/reminders' }, { label: 'Open goals', to: '/goals' }]
     ),
   },
+  ...knowledgeIntents,
 ]
 
 const fallback = {
-  text: 'I am not sure about that one yet. Try asking about your workouts, calories or goals, how to use a page, or a fitness question like "how to lose weight".',
+  text: 'I am not sure about that one yet. Try asking about your workouts, calories or goals, how to use a page, or a fitness or supplement question like "what is protein" or "benefits of creatine".',
   links: [
     { label: 'Help and FAQ', to: '/help' },
     { label: 'Contact support', to: '/support' },
@@ -546,6 +545,7 @@ const fallback = {
 }
 
 const scoreOf = (intent, query) => {
+  if (intent.score) return intent.score(query)
   const words = intent.words.reduce((total, word) => (new RegExp(`\\b${word}s?\\b`).test(query) ? total + word.length : total), 0)
   const patterns = (intent.patterns || []).reduce((total, pattern) => (pattern.test(query) ? total + 25 : total), 0)
   return words + patterns
@@ -564,5 +564,5 @@ export const getReply = async (text, user) => {
     }
   }
 
-  return best ? best.reply(user) : fallback
+  return best ? best.reply(user, query) : fallback
 }
