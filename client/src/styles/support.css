@@ -1,0 +1,130 @@
+.msg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.msg {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: start;
+  padding: 0.9rem;
+  border: 1px solid var(--ft-border);
+  border-radius: 14px;
+  background: rgba(148, 163, 184, 0.06);
+  transition: border-color 0.2s ease;
+}
+
+.msg:hover {
+  border-color: var(--ft-teal);
+}
+
+.msg-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(20, 184, 166, 0.14);
+  color: var(--ft-primary);
+  font-size: 1.1rem;
+}
+
+.msg-issue .msg-icon {
+  background: rgba(239, 68, 68, 0.14);
+  color: #ef4444;
+}
+
+.msg-feedback .msg-icon {
+  background: rgba(245, 158, 11, 0.16);
+  color: #f59e0b;
+}
+
+.msg-body {
+  min-width: 0;
+}
+
+.msg-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+}
+
+.msg-head strong {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.msg-text {
+  display: -webkit-box;
+  margin: 0.3rem 0 0.5rem;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  color: var(--ft-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.msg-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+  color: var(--ft-muted);
+  font-size: 0.78rem;
+}
+
+.msg-meta span + span::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin-right: 0.9rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+  vertical-align: middle;
+}
+
+.msg-delete {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ft-muted);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.msg-delete:hover {
+  background: rgba(239, 68, 68, 0.14);
+  color: #ef4444;
+}
+
+.msg-delete:focus {
+  outline: none;
+}
+
+.msg-delete:focus-visible {
+  outline: 2px solid rgba(239, 68, 68, 0.6);
+  outline-offset: 2px;
+}
+
+@media (max-width: 575.98px) {
+  .msg {
+    gap: 0.65rem;
+    padding: 0.8rem;
+  }
+
+  .msg-icon {
+    width: 36px;
+    height: 36px;
+  }
+}

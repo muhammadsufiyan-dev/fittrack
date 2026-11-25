@@ -149,24 +149,32 @@ function Support() {
             {requests.length === 0 ? (
               <p className="text-secondary mb-0">Nothing sent yet. Your messages will show here.</p>
             ) : (
-              requests.map((item) => {
-                const type = supportTypes.find((entry) => entry.value === item.type) || supportTypes[0]
-                return (
-                  <div className="ticket" key={item.id}>
-                    <span className="ft-icon">
-                      <i className={`bi ${type.icon}`}></i>
-                    </span>
-                    <div>
-                      <strong>{item.subject}</strong>
-                      <small>{formatDate(item.createdAt.slice(0, 10))}</small>
-                    </div>
-                    <span className="status-pill">{item.status}</span>
-                    <button type="button" className="icon-btn" onClick={() => handleDelete(item)} aria-label="Delete message">
-                      <i className="bi bi-trash3"></i>
-                    </button>
-                  </div>
-                )
-              })
+              <div className="msg-list">
+                {requests.map((item) => {
+                  const type = supportTypes.find((entry) => entry.value === item.type) || supportTypes[0]
+                  return (
+                    <article className={`msg msg-${type.value}`} key={item.id}>
+                      <span className="msg-icon">
+                        <i className={`bi ${type.icon}`}></i>
+                      </span>
+                      <div className="msg-body">
+                        <div className="msg-head">
+                          <strong>{item.subject}</strong>
+                          <span className="status-pill">{item.status}</span>
+                        </div>
+                        <p className="msg-text">{item.message}</p>
+                        <div className="msg-meta">
+                          <span>{type.label}</span>
+                          <span>{formatDate(item.createdAt.slice(0, 10))}</span>
+                        </div>
+                      </div>
+                      <button type="button" className="msg-delete" onClick={() => handleDelete(item)} aria-label="Delete message">
+                        <i className="bi bi-trash3"></i>
+                      </button>
+                    </article>
+                  )
+                })}
+              </div>
             )}
           </div>
 
