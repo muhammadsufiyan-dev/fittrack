@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { options, owner, part } from '../utils/schema.js'
 
 export const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
@@ -18,5 +18,7 @@ const nutritionSchema = new mongoose.Schema(
   },
   options
 )
+
+nutritionSchema.index({ user: 1, date: -1 })
 
 export default mongoose.model('Nutrition', nutritionSchema)

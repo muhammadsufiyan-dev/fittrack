@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { options, owner } from '../utils/schema.js'
 
 export const goalTypes = ['weight', 'workouts', 'custom']
@@ -16,5 +16,7 @@ const goalSchema = new mongoose.Schema(
   },
   options
 )
+
+goalSchema.index({ user: 1, createdAt: -1 })
 
 export default mongoose.model('Goal', goalSchema)

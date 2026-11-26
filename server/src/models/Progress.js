@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { options, owner } from '../utils/schema.js'
 
 const progressSchema = new mongoose.Schema(
@@ -13,5 +13,7 @@ const progressSchema = new mongoose.Schema(
   },
   options
 )
+
+progressSchema.index({ user: 1, date: -1 })
 
 export default mongoose.model('Progress', progressSchema)

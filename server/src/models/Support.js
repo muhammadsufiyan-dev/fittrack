@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { datedOptions, owner } from '../utils/schema.js'
 
 export const supportTypes = ['question', 'issue', 'feedback']
@@ -13,5 +13,7 @@ const supportSchema = new mongoose.Schema(
   },
   datedOptions
 )
+
+supportSchema.index({ user: 1, createdAt: -1 })
 
 export default mongoose.model('Support', supportSchema)

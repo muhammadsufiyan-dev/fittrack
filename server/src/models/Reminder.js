@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { options, owner } from '../utils/schema.js'
 
 export const reminderTypes = ['workout', 'meal', 'water', 'weigh', 'custom']
@@ -15,5 +15,7 @@ const reminderSchema = new mongoose.Schema(
   },
   options
 )
+
+reminderSchema.index({ user: 1 })
 
 export default mongoose.model('Reminder', reminderSchema)

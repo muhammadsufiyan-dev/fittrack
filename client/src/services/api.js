@@ -1,4 +1,4 @@
-﻿import { storage } from '../utils/storage'
+import { storage } from '../utils/storage'
 import { todayISO } from '../utils/format'
 
 const TOKEN_KEY = 'ft_token'
@@ -37,9 +37,38 @@ const request = async (method, path, body) => {
 
 const withToday = (path, params = {}) => `${path}?${new URLSearchParams({ ...params, today: todayISO() })}`
 
+const cache = new Map()
+const pending = new Map()
+const TTL = 15000
+
+const cachedGet = (url) => {
+  const key = `${getToken()}|${url}`
+  const hit = cache.get(key)
+  if (hit && Date.now() - hit.time < TTL) return Promise.resolve(structuredClone(hit.data))
+  if (pending.has(key)) return pending.get(key).then((data) => structuredClone(data))
+
+  const job = request('GET', url)
+    .then((data) => {
+      cache.set(key, { data, time: Date.now() })
+      return data
+    })
+    .finally(() => pending.delete(key))
+
+  pending.set(key, job)
+  return job.then((data) => structuredClone(data))
+}
+
+const change = async (job) => {
+  try {
+    return await job
+  } finally {
+    cache.clear()
+  }
+}
+
 export const api = {
-  get: (path, params) => request('GET', withToday(path, params)),
-  post: (path, body = {}) => request('POST', path, body),
-  put: (path, body = {}) => request('PUT', path, body),
-  remove: (path) => request('DELETE', path),
+  get: (path, params) => cachedGet(withToday(path, params)),
+  post: (path, body = {}) => change(request('POST', path, body)),
+  put: (path, body = {}) => change(request('PUT', path, body)),
+  remove: (path) => change(request('DELETE', path)),
 }
