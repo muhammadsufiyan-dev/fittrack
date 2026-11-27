@@ -16,6 +16,4 @@ const reminderSchema = new mongoose.Schema(
   options
 )
 
-reminderSchema.index({ user: 1 })
-
 export default mongoose.model('Reminder', reminderSchema)
